@@ -11,7 +11,7 @@ country_Import_Export <- function(country,num) {
   #                         Initialization
   #####################################################################
   
-  #data <- as.data.frame(read.csv("data.csv"))[2:21]
+  data <- as.data.frame(read.csv("data.csv"))[2:21]
   
   # Importation / Exportation :
   if (num == 0) { 
