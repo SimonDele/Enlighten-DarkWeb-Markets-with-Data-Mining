@@ -11,7 +11,7 @@ library (stringr)
 #data <- as.data.frame(read.csv("data.csv"))[2:21]
 
 # Choose Your country :
-country <- "United States"
+country <- "Russia"
 
 
 #####################################################################
@@ -34,7 +34,7 @@ cat <- str_match(country_cat, regex)
 # Counting this categories 
 tab <- table(cat[,3])   #cat[,3] : 2nd category 
 tab <- sort(tab, decreasing = TRUE)  # Sorting (biggest in first) 
-tab <- tab[1:13] # Taking only the most important
+tab <- tab#[1:10] # Taking only the most important
 
 # Calculation in percentage
 piepercent<- round(100*tab/sum(tab), 1)
