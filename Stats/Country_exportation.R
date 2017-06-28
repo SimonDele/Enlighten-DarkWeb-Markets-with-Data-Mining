@@ -8,7 +8,7 @@ library (stringr)
 #                         Initialization
 #####################################################################
 
-#data <- as.data.frame(read.csv("data.csv"))[2:21]
+data <- as.data.frame(read.csv("data.csv"))[2:21]
 
 # Choose Your country :
 country <- "Russia"
