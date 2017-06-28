@@ -69,12 +69,12 @@ for(i in 1:length(database$unit)) {
         database[i,"dose"] <- as.units(value, with(ud_units, g))
         database[i,"unit"] <- "g"
       }
-      if (str_detect(database[i,"unit"],"l"))  {
+      else if (str_detect(database[i,"unit"],"l"))  {
         value <- set_units(database[i,"dose"],with(ud_units,database[i,"unit"]))
         database[i,"dose"] <- as.units(value, with(ud_units, l))
         database[i,"unit"] <- "l"
       }
-       if (str_detect(database[i,"unit"],"oz")) {
+       else if (str_detect(database[i,"unit"],"oz")) {
          database[i,"dose"] <- database[i,"dose"] * oz_conversion
          database[i,"unit"] <- "g"
       }
