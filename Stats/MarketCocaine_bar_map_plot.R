@@ -1,17 +1,18 @@
-#data <- as.data.frame(read.csv("data.csv"))
+data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
 library(ggmap)
 
 #library(rworldmap)
 
-matching_vector <- c( (str_detect(data$category, "Drugs") ) & !str_detect(data$origin, "Worldwide"))
+#matching_vector <- c( (str_detect(data$category, "Drugs") ) & !str_detect(data$origin, "Worldwide"))
+matching_vector <- c(  !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
 
 sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
 
 
-barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,3300),  col = rainbow(10), cex.names = 0.8)
-barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "red")
+barp <- barplot(sumup[1:10], main="Number of ads in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,4000),  col = rainbow(10), cex.names = 0.8)
+barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
 
 
 data_country <- read.csv("lat_long.csv")
