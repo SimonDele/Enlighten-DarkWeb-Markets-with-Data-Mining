@@ -43,15 +43,18 @@ country_Import_Export <- function(country,num) {
   tab <- sort(tab, decreasing = TRUE)  # Sorting (biggest in first) 
   tab <- tab[1:10] # Taking only the most important
   
-  # Calculation in percentage
-  piepercent<- round(100*tab/sum(tab), 1)
-  # round(a,1) : one digit after the comma
   
   #####################################################################
   #                           Pie Chart     
   #####################################################################
   
+  
   # 1- Labels :
+  
+  # Calculation in percentage
+  piepercent<- round(100*tab/sum(tab), 1)
+     # round(a,1) : one digit after the comma
+  
   lab <- c()
   
   for(i in 1:length(piepercent)) {
