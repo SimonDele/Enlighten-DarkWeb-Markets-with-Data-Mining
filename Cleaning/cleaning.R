@@ -6,7 +6,7 @@ cleaningData <- function(database) {
     { database[,i] <- iconv(database[,i], from="UTF-8", to="latin9", sub=" ")   # conversion UTF in ISO/IEC 8859-15  
       database[,i] <- gsub(pattern="<.*?>|\n", replacement=" ", database[,i])   # HTML tags and \n
       database[,i] <- tolower(database[,i])                                     # put in lowercase
-      database[,i] <- gsub(pattern="\\s\\s*", replacement=" ", database[,i])    # remove spaces
+      database[,i] <- gsub(pattern="\\s{2,}", replacement=" ", database[,i])    # remove spaces
     }
   
   return (database)
