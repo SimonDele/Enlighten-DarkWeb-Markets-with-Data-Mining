@@ -47,6 +47,6 @@ c <- rainbow(length(piepercent))
 pie(piepercent,labels = lab, main = title ,col=c)
 
 # 5- Legend :
-legend(1.2,0.9, names(piepercent), cex = 0.8, fill = c)
+legend(1.2,0.8, names(piepercent), cex = 0.7, fill = c)
 
 
