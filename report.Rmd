@@ -1,7 +1,11 @@
 ---
 title: "R Notebook"
 output:
-  pdf_document: default
+  html_document:
+    toc: yes
+  pdf_document:
+    latex_engine: xelatex
+    toc: yes
 ---
 # Introduction
 ## sfsd
@@ -24,4 +28,4 @@ barp <- barplot(sumup[1:10], main="Number of ads in the World", xlab="Countries"
 barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
 ```
 
-
+### test
