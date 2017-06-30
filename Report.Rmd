@@ -43,7 +43,7 @@ data <- as.data.frame(read.csv("C:/BDP/Doc/alphaspider.csv"))
 #                Cleaning Function :
 #----------------------------------------------------------
 
-cleaningData <- function(database) {
+CleaningData <- function(database) {
   for(i in 2:4)
     { database[,i] <- iconv(database[,i], from="UTF-8", to="latin9", sub=" ")   
           # conversion UTF in ISO/IEC 8859-15  
@@ -59,7 +59,7 @@ cleaningData <- function(database) {
   
 }
 
-data <- cleaningData(database = data)
+data <- CleaningData(database = data)
 
 ```
 
@@ -68,7 +68,7 @@ data <- cleaningData(database = data)
 #      Making data readable in a computering way : 
 #----------------------------------------------------------
 
-computerReadable <- function(database) {
+ComputerReadable <- function(database) {
 
   oz_conversion <- 28.3495
       
@@ -232,7 +232,7 @@ computerReadable <- function(database) {
   return(database) 
 } 
 
-data <- computerReadable(database = data)
+data <- ComputerReadable(database = data)
 
 ```
 
@@ -242,15 +242,21 @@ data <- computerReadable(database = data)
 #      Number of ads in the world
 #-----------------------------------------------
 
-#Get rid of unwanted orign like Worldwide and Null which are not relevant
-matching_vector <- c(  !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
+NumberOfAds <- function(database) {
 
-sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
+  #Get rid of unwanted orign like Worldwide and Null which are not relevant
+  matching_vector <- c(  !str_detect(database$origin, "Worldwide") & !str_detect(database$origin, "NULL"))
+  
+  sumup <- sort(summary(database[matching_vector, "origin"]), decreasing=TRUE)
+  
+  #Bar plot with the total number ofs ads in each country
+  barp <- barplot(sumup[1:10], main="Number of ads in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,4000),  col = rainbow(10), cex.names = 0.8)
+  
+  barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
+}
+  
+NumberOfAds(database = data)
 
-#Bar plot with the total number ofs ads in each country
-barp <- barplot(sumup[1:10], main="Number of ads in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,4000),  col = rainbow(10), cex.names = 0.8)
-
-barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
 
 ```
 
@@ -262,56 +268,61 @@ barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, 
 #      Distribution of Drugs in the market
 #-----------------------------------------------
 
-#----------------------------
-#   The most common drugs
-#----------------------------
+DistributionDrugs <- function(database) {
 
-selectDrug <- function(drugName){
-  matching_vector <- c( (str_detect(data$category, drugName)))
-  return(matching_vector)
+  #----------------------------
+  #   The most common drugs
+  #----------------------------
+  
+  selectDrug <- function(drugName){
+    matching_vector <- c( (str_detect(database$category, drugName)))
+    return(matching_vector)
+  }
+  
+  drugs <- c("Cocaine", "Meth", "LSD", "Opioids", "Cannabis", "Steroids", "Ecstasy", "Ketamine", "Heroin", "Shrooms", "Tobacco", "Benzos", "Paraphernalia")
+  
+  freq <- c()
+  for(i in 1:length(drugs)){
+    matching_vector <- selectDrug(drugs[i]);
+    sumup<-summary(matching_vector)
+    freq[i] <- sumup[3]
+  }
+  
+  freq <- as.numeric(freq)
+  
+  res <- data.frame(drugs, freq)
+  res <- res[order(res$freq, decreasing = TRUE),]
+  
+  #----------------------
+  #     Pie Chart 
+  #----------------------
+  
+  # 1- Labels :
+  
+  # Calculation in percentage
+  piepercent<- round(100*res$freq/sum(res$freq), 1)
+    # round(a,1) : one digit after the comma
+  
+  lab <- c()
+  
+  for(i in 1:length(piepercent)) {
+    lab[i] <- paste(piepercent[[i]], "%", sep=" ")
+  }
+  
+  # 2- Title :
+  title <- "Distribution of drugs"
+  
+  # 3- Colors :
+  c <- rainbow(length(piepercent))
+  
+  # 5- Plot :
+  pie(piepercent,labels = lab, main = title ,col=c)
+  
+  # 6- Legend :
+  legend(1.3,0.8,res$drugs, cex = 0.7, fill = c)
 }
 
-drugs <- c("Cocaine", "Meth", "LSD", "Opioids", "Cannabis", "Steroids", "Ecstasy", "Ketamine", "Heroin", "Shrooms", "Tobacco", "Benzos", "Paraphernalia")
-
-freq <- c()
-for(i in 1:length(drugs)){
-  matching_vector <- selectDrug(drugs[i]);
-  sumup<-summary(matching_vector)
-  freq[i] <- sumup[3]
-}
-
-freq <- as.numeric(freq)
-
-res <- data.frame(drugs, freq)
-res <- res[order(res$freq, decreasing = TRUE),]
-
-#----------------------
-#     Pie Chart 
-#----------------------
-
-# 1- Labels :
-
-# Calculation in percentage
-piepercent<- round(100*res$freq/sum(res$freq), 1)
-  # round(a,1) : one digit after the comma
-
-lab <- c()
-
-for(i in 1:length(piepercent)) {
-  lab[i] <- paste(piepercent[[i]], "%", sep=" ")
-}
-
-# 2- Title :
-title <- "Distribution of drugs"
-
-# 3- Colors :
-c <- rainbow(length(piepercent))
-
-# 5- Plot :
-pie(piepercent,labels = lab, main = title ,col=c)
-
-# 6- Legend :
-legend(1.3,0.8,res$drugs, cex = 0.7, fill = c)
+DistributionDrugs(database = data)
 
 ```
 ici jeujfuhhuhhusdkcbjwaecfhaoklcsdlajkvncahfslfdvhblfdsuihviausopvhfiudhsviujdnfzvshujoiuhocnuohoiuzhskcbfvkfjv
