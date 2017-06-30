@@ -2,7 +2,7 @@
 title: "Dark Market"
 author: "Simon Delecourt & Edouard Donze"
 output:
-  html_document:
+  html_notebook:
     number_sections: yes
     toc: yes
   pdf_document:
@@ -15,3 +15,9 @@ mainfont: Arial
 ## jf
 
 fdgvsvvg
+
+
+```{r}
+1+1
+```
+
