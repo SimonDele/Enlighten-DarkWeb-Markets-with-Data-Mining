@@ -57,12 +57,13 @@ piepercent<- round(100*res$freq/sum(res$freq), 1)
 #----------------------------------------
 #     Price of the most common drugs according to articles
 #----------------------------------------
+   
+drugs <- c("Cocaine", "Meth", "LSD", "Opioids", "Cannabis", "Steroids", "Ecstasy", "Ketamine", "Heroin","Shrooms", "Tobacco", "Benzos", "Paraphernalia")
+drugs_prices_art <- data.frame(drugs) 
+colnames(drugs_prices_art) <- drugs
+#rownames(drugs_prices_art) <- "http://www.drugwise.org.uk/how-much-do-drugs-cost/"
 
-prices <- c()
-ref <- c()
-for(i  in 1 : length(drugs)){
-  prices[i] <- c()
-  ref <- 
-}
+#ref 1
+drugs_prices_art[,length(drugs_prices_art)+1]<- c(NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
 
-drugs_prices_art <- data.frame(drugs, prices, ref) 
+drugs_prices_art["Cocaine",1] <- 4 
