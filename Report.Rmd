@@ -340,6 +340,22 @@ At first sight, drugs and chemicals are principle products dealt in the black ma
 
 3. Let's focus on Drugs Market now.
 
+```{r}
+#---------------------------------------------------
+#           Number of ads of Drugs in the world
+#--------------------------------------------------
+
+#Get rid of unwanted orign like Worldwide and Null which are not relevant
+matching_vector <- c( str_detect(data$category, "Drugs") & !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
+
+sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
+par(mfrow = c(1,1))
+#Bar plot with the total number of ads of Drugs in each country
+
+barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,3200),  col = rainbow(10), cex.names = 0.8, angle = 45)
+barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
+
+```
 
 
 At first sight, the chart is similar to the first one. This is coherent, indeed by comparing the ratio between drugs ads and the total number of ads, we can deduced that there are mainly dealing drugs. This also match with the second chart that show us that drugs are the main product in the market. There are few exceptions such as Afghanistan which has been replaced by India and Canada has been reversed with China. Finally, let's note that drugs market is gathered in Europe and United States.

@@ -10,7 +10,7 @@ matching_vector <- c( str_detect(data$category, "Drugs") & !str_detect(data$orig
 
 sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
 par(mfrow = c(1,1))
-#Bar plot with the total number ofs ads in each country
-#par(mar=c(5,2,4,0)+.1)
+#Bar plot with the total number of ads of Drugs in each country
+
 barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,3200),  col = rainbow(10), cex.names = 0.8, angle = 45)
 barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
