@@ -48,6 +48,7 @@ country_Import_Export <- function(country,num) {
   #                           Pie Chart     
   #####################################################################
   
+  #par(mfrow = c(1,2))
   
   # 1- Labels :
   
@@ -85,5 +86,6 @@ country_Import_Export <- function(country,num) {
 #   0 -> Exportation
 #   1 -> Importation
 
+par(mfrow = c(1,2))
 country_Import_Export("United Kingdom",0)
-
+country_Import_Export("United Kingdom",0)
