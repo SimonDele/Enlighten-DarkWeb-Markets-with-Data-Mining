@@ -49,6 +49,8 @@ country_Import_Export <- function(country,num) {
   #####################################################################
   
   #par(mfrow = c(1,2))
+  par(mar=c(5.1, 4.1, 4.1, 15.1), xpd=TRUE)
+  
   
   # 1- Labels :
   
@@ -72,7 +74,7 @@ country_Import_Export <- function(country,num) {
   pie(piepercent,labels = lab, main = title ,col=c)
   
   # 5- Legend :
-  legend(1.2,0.9, names(piepercent), cex = 0.8, fill = c)
+  legend("topright", legend = (piepercent), cex = 0.8, fill = c ,  inset=c(-2,-5))
   
 }
 
@@ -86,6 +88,8 @@ country_Import_Export <- function(country,num) {
 #   0 -> Exportation
 #   1 -> Importation
 
-par(mfrow = c(1,2))
-country_Import_Export("United Kingdom",0)
+
+#par(mfrow = c(1,2))
+
+#country_Import_Export("United Kingdom",0)
 country_Import_Export("United Kingdom",0)
