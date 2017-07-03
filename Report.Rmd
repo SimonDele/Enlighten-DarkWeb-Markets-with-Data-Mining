@@ -8,10 +8,6 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
-  pdf_document:
-    highlight: pygments
-    number_sections: yes
-    toc: yes
 mainfont: Arial
 ---
 
@@ -28,6 +24,7 @@ mainfont: Arial
 library(stringr)
 library(units)
 library(ggmap)
+library(plotrix)
 
 ```
 
@@ -335,10 +332,10 @@ DistributionDrugs <- function(database) {
   c <- rainbow(length(piepercent))
   
   # 4- Plot :
-   pie(piepercent,labels = lab, main = title ,col=c)
+  pie3D(piepercent,labels = lab,labelcex = 0.9, main = title ,col=c, theta = 0.9, explode = 0.04)
   
   # 5- Legend :
-  legend(x=-1.5,y=-1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)
+  legend(x=-2.2,y=-1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA, bty="o")
 }
 
 DistributionDrugs(database = data)
@@ -376,7 +373,7 @@ At first sight, the chart is similar to the first one. This is coherent, indeed 
 
 4. Take a global view of the drugs market in Europe with the following map.
 
-```{r Europe Map}
+```{r Europe Map, message=FALSE}
 
 MapEurope <- function(database) {
 
@@ -398,7 +395,7 @@ MapEurope <- function(database) {
   #Create a map of EUROPE with circles showing the amount of ads
   map <- get_map(location = 'Europe', zoom =4 )
   mapPoints <- ggmap(map)  + xlab("") + ylab("") + ggtitle("Number of ads of Drugs in the World")+
-    geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(0,18)) 
+    geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(0,17)) 
   
   #Display
   mapPoints
@@ -417,12 +414,15 @@ Circles shows the amount of ads about drugs. The map confirm our assumptions tha
 #   Importation / Exportation of a country
 #-----------------------------------------------
 
-country_Import_Export <- function(country,num) {
+country_Import_Export <- function(database) {
 
   #-------------------
   #  Initialization
   #-------------------
 
+  country <- "United Kingdom"
+  num <- 0
+  
   # Importation / Exportation :
   if (num == 0) { 
     way <- "origin"
@@ -437,11 +437,11 @@ country_Import_Export <- function(country,num) {
   #------------------
   
   # Country as destination
-  matching_vector <- str_detect(data[,way], country)
+  matching_vector <- str_detect(database[,way], country)
   
   # list of the categories (among the line that have "Country" as origin)
   # -> Products (categories) exporting by the country 
-  country_cat <- data[matching_vector,"category"] 
+  country_cat <- database[matching_vector,"category"] 
   
   # Handling of this categories
   # Regular expression for spliting the categories
@@ -476,40 +476,191 @@ country_Import_Export <- function(country,num) {
   # 3- Colors :
   c <- rainbow(length(piepercent))
  
-  # 4- Margin : 
-  #par(mar=c(3,3,3,0))
+  # 4- Plot :
+  pie3D(piepercent,labels = lab,labelcex = 0.9, main = title ,col=c, theta = 0.9, explode = 0.04)
   
-  # 5- Plot :
-  pie(piepercent,labels = lab, main = title ,col=c)
-  
-  # 6- Legend :
-  legend(1.2,0.9, names(piepercent), cex = 0.7, fill = c)
+  # 5- Legend :
+  legend(x=-2.1,y=-1,names(piepercent), cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
   
 }
 
-```
-
-```{r}
-country_Import_Export("United Kingdom",0)
+country_Import_Export(database = data)
 ```
 
 
 
 
 ```{r}
-country_Import_Export("China",0)
+#-----------------------------------------------
+#   Importation / Exportation of a country
+#-----------------------------------------------
+
+country_Import_Export <- function(database) {
+
+  #-------------------
+  #  Initialization
+  #-------------------
+
+  country <- "China"
+  num <- 0
+  
+  # Importation / Exportation :
+  if (num == 0) { 
+    way <- "origin"
+    txt <- "- Exportation"
+  } else if (num == 1) {
+    way <- "destination"
+    txt <- "- Importation"
+  }
+  
+  #------------------
+  #    Analysis
+  #------------------
+  
+  # Country as destination
+  matching_vector <- str_detect(database[,way], country)
+  
+  # list of the categories (among the line that have "Country" as origin)
+  # -> Products (categories) exporting by the country 
+  country_cat <- database[matching_vector,"category"] 
+  
+  # Handling of this categories
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(country_cat, regex)
+  
+  # Counting this categories 
+  tab <- table(cat[,3])   #cat[,3] : 2nd category 
+  tab <- sort(tab, decreasing = TRUE)  # Sorting (biggest in first) 
+  tab <- tab[1:10] # Taking only the most important
+  
+  
+  #-----------------
+  #    Pie Chart     
+  #-----------------
+  
+  # 1- Labels :
+  
+  # Calculation in percentage
+  piepercent<- round(100*tab/sum(tab), 1)
+     # round(a,1) : one digit after the comma
+  
+  lab <- c()
+  
+  for(i in 1:length(piepercent)) {
+    lab[i] <- paste(piepercent[[i]], "%", sep=" ")
+  }
+  
+  # 2- Title :
+  title <- paste(country, txt, sep=" ")
+  
+  # 3- Colors :
+  c <- rainbow(length(piepercent))
+ 
+  # 4- Plot :
+  pie3D(piepercent,labels = lab,labelcex = 0.9, main = title ,col=c, theta = 0.9, explode = 0.04)
+  
+  # 5- Legend :
+  legend(x=-2.1,y=-1,names(piepercent), cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
+  
+}
+
+country_Import_Export(database = data)
 ```
 
 
 ```{r}
-country_Import_Export("France",0)
+#-----------------------------------------------
+#   Importation / Exportation of a country
+#-----------------------------------------------
+
+country_Import_Export <- function(database) {
+
+  #-------------------
+  #  Initialization
+  #-------------------
+
+  country <- "France"
+  
+  #---------------------------
+  #    Analysis - Exportation
+  #---------------------------
+  
+  # Country as destination
+  matching_vector_exp <- str_detect(database[,"origin"], country)
+  
+  # list of the categories (among the line that have "Country" as origin)
+  # -> Products (categories) exporting by the country 
+  country_cat_exp <- database[matching_vector_exp,"category"] 
+  
+  # Handling of this categories
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat_exp <- str_match(country_cat_exp, regex)
+  
+  # Counting this categories 
+  tab_exp <- table(cat_exp[,3])   #cat[,3] : 2nd category 
+  tab_exp <- sort(tab_exp, decreasing = TRUE)  # Sorting (biggest in first) 
+  tab_exp <- tab_exp[1:10] # Taking only the most important
+  
+  #---------------------------
+  #    Analysis - Importation
+  #---------------------------
+  
+  # Country as destination
+  matching_vector_imp <- str_detect(database[,"destination"], country)
+  
+  # list of the categories (among the line that have "Country" as origin)
+  # -> Products (categories) exporting by the country 
+  country_cat_imp <- database[matching_vector_imp,"category"] 
+  
+  # Handling of this categories
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat_imp <- str_match(country_cat_imp, regex)
+  
+  # Counting this categories 
+  tab_imp <- table(cat_imp[,3])   #cat[,3] : 2nd category 
+  tab_imp <- sort(tab_imp, decreasing = TRUE)  # Sorting (biggest in first) 
+  tab_imp <- tab_imp[1:10] # Taking only the most important
+  
+  
+  #---------------------------
+  #    Pie Chart - Exporation     
+  #---------------------------
+  
+  par(mfrow = c(1,2))
+  
+  # 1- Title :
+  title <- paste(country, "- Exportation", sep=" ")
+  
+  # 2- Colors :
+  c <- rainbow(length(tab_exp))
+ 
+  par(mar=c(1,6,1,1.9))
+  
+  # 3- Plot :
+  pie(tab_exp, main = title ,col=c)
+  
+  #---------------------------
+  #    Pie Chart - Importation     
+  #---------------------------
+  
+  # 1- Title :
+  title <- paste(country, "- Importation", sep=" ")
+  
+  # 2- Colors :
+  c <- rainbow(length(tab_imp))
+ 
+  par(mar=c(1,3,1,5.9))
+  
+  # 3- Plot :
+  pie(tab_imp, main = title ,col=c)
+  
+}
+
+country_Import_Export(database = data)
 ```
-
-```{r}
-country_Import_Export("France",1)
-```
-
-
 
 
 ```{r Drugs Prices}

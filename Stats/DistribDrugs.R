@@ -52,6 +52,7 @@ piepercent<- round(100*res$freq/sum(res$freq), 1)
   
   # 4- Plot :
   pie3D(piepercent,labels = lab, main = title ,col=c, theta = 0.9, explode = 0.05)
+  pie3D
   
   # 5- Legend :
   legend(x=-1.5,y=-1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)

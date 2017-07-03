@@ -1,17 +1,19 @@
 
-country_Import_Export <- function(country,num) {
-
   #####################################################################
   #                            Library
   #####################################################################
   
   library (stringr)
+  library(plotrix)
   
   #####################################################################
   #                         Initialization
   #####################################################################
   
-  data <- as.data.frame(read.csv("data.csv"))[2:21]
+  #data <- as.data.frame(read.csv("data.csv"))[2:21]
+  
+  country <- "France"
+  num <- 0
   
   # Importation / Exportation :
   if (num == 0) { 
@@ -43,12 +45,31 @@ country_Import_Export <- function(country,num) {
   tab <- sort(tab, decreasing = TRUE)  # Sorting (biggest in first) 
   tab <- tab[1:10] # Taking only the most important
   
+  #############
+
+  # Country as destination
+  matching_vector2 <- str_detect(data[,"destination"], country)
+  
+  # list of the categories (among the line that have "Country" as origin)
+  # -> Products (categories) exporting by the country 
+  country_cat2 <- data[matching_vector2,"category"] 
+  
+  # Handling of this categories
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat2 <- str_match(country_cat2, regex)
+  
+  # Counting this categories 
+  tab2 <- table(cat2[,3])   #cat[,3] : 2nd category 
+  tab2 <- sort(tab2, decreasing = TRUE)  # Sorting (biggest in first) 
+  tab2 <- tab2[1:10] # Taking only the most important
+  
   
   #####################################################################
   #                           Pie Chart     
   #####################################################################
   
-  #par(mfrow = c(1,2))
+  par(mfrow = c(1,2))
   
   # 1- Labels :
   
@@ -66,26 +87,31 @@ country_Import_Export <- function(country,num) {
   title <- paste(country, txt, sep=" ")
   
   # 3- Colors :
-  c <- rainbow(length(piepercent))
+  c <- rainbow(length(tab))
   
   # 4- Plot :
-  pie(piepercent,labels = lab, main = title ,col=c)
+  pie(tab, main = title ,col=c)
   
-  # 5- Legend :
-  legend(1.2,0.9, names(piepercent), cex = 0.8, fill = c)
   
-}
-
-
-#####################################################################
-#                           Function  
-#####################################################################
-
-# 1st argument : Country
-# 2nd : 
-#   0 -> Exportation
-#   1 -> Importation
-
-par(mfrow = c(1,2))
-country_Import_Export("United Kingdom",0)
-country_Import_Export("United Kingdom",0)
+  ####
+  
+  # 1- Labels :
+  
+  # Calculation in percentage
+  piepercent2<- round(100*tab2/sum(tab2), 1)
+  # round(a,1) : one digit after the comma
+  
+  lab <- c()
+  
+  for(i in 1:length(piepercent2)) {
+    lab[i] <- paste(piepercent2[[i]], "%", sep=" ")
+  }
+  
+  # 2- Title :
+  title <- paste(country, txt, sep=" ")
+  
+  # 3- Colors :
+  c <- rainbow(length(piepercent2))
+  
+  # 4- Plot :
+  pie(piepercent2, main = title ,col=c)
