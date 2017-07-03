@@ -236,6 +236,11 @@ data <- ComputerReadable(database = data)
 
 ```
 
+# - Statistics
+
+We have perform basics statics in order to discover the database. 
+
+1. First of all, here is a general view of ads distribution in the world.
 
 ```{r Number of ads}
 #-----------------------------------------------
@@ -259,6 +264,9 @@ NumberOfAds(database = data)
 
 
 ```
+The bar-chart represents the 10 main dealers in the world regarding the number of ads. As we can see, US is the biggest dealer far ahead of other. Their number of ads is more than twice as big as the number of the second (UK). Moreover, most of these countries are developed countries, that is to say US and European countries. We can also notice that China and Afghanistan are presents.  
+
+2. Now let's see the distribution of ads per category.
 
 ```{r Function Select Drugs}
   selectDrug <- function(drugName, database){
@@ -266,9 +274,6 @@ NumberOfAds(database = data)
     return(matching_vector)
   }
 ```
-
-
-
 
 
 
@@ -330,7 +335,17 @@ DistributionDrugs(database = data)
 
 ```
 
+At first sight, drugs and chemicals are principle products dealt in the black market. They represents more than 50% of the global market. It is also interesting to see that the second product that is sold is counterfeit and paper fraud. On top of that, we can notice that a small percentage concern Jewel, Gold and Weapon.  
 
+
+3. Let's focus on Drugs Market now.
+
+
+
+At first sight, the chart is similar to the first one. This is coherent, indeed by comparing the ratio between drugs ads and the total number of ads, we can deduced that there are mainly dealing drugs. This also match with the second chart that show us that drugs are the main product in the market. There are few exceptions such as Afghanistan which has been replaced by India and Canada has been reversed with China. Finally, let's note that drugs market is gathered in Europe and United States.
+
+
+4. Take a global view of the drugs market in Europe with the following map.
 
 ```{r Europe Map}
 
@@ -364,7 +379,7 @@ MapEurope(database = data)
 
 ```
 
-
+Circles shows the amount of ads about drugs. The map confirm our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, United Kingdom, Netherlands and Germany.   
 
 
 
