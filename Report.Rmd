@@ -21,13 +21,14 @@ mainfont: Arial
 #----------------------------------------------------------
 
 #install.packages("stringr")
-
 #install.packages("units")
 #install.packages("ggmap")
+#install.packages("plotrix")
 
 library(stringr)
 library(units)
 library(ggmap)
+
 ```
 
 ```{r Importation}
@@ -35,7 +36,8 @@ library(ggmap)
 #               Importation of the data :
 #----------------------------------------------------------
 
-data <- as.data.frame(read.csv("C:/Internship/alpha.csv"))
+data <- as.data.frame(read.csv("C:/BDP/Doc/alphaspider.csv"))
+# C:/Internship/alpha.csv
 ```
 
 
@@ -47,7 +49,7 @@ data <- as.data.frame(read.csv("C:/Internship/alpha.csv"))
 CleaningData <- function(database) {
   for(i in 2:4)
     { database[,i] <- iconv(database[,i], from="UTF-8", to="latin9", sub=" ")   
-          # conversion UTF in ISO/IEC 8859-15  
+          # conversion UTF-8 in ISO/IEC 8859-15  
       database[,i] <- gsub(pattern="<.*?>|\n", replacement=" ", database[,i])   
           # HTML tags and \n
       database[,i] <- tolower(database[,i])                                     
@@ -266,9 +268,6 @@ NumberOfAds <- function(database) {
   #ad numbers at the end of each bar
   barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black") 
 
-
-
-
 }
   
 NumberOfAds(database = data)
@@ -336,10 +335,10 @@ DistributionDrugs <- function(database) {
   c <- rainbow(length(piepercent))
   
   # 4- Plot :
-  pie(piepercent,labels = lab, main = title ,col=c)
+   pie(piepercent,labels = lab, main = title ,col=c)
   
   # 5- Legend :
-  legend(1.3,0.8,res$drugs, cex = 0.7, fill = c)
+  legend(x=-1.5,y=-1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)
 }
 
 DistributionDrugs(database = data)
