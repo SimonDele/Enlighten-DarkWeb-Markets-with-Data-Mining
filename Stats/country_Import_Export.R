@@ -64,54 +64,35 @@
   tab2 <- sort(tab2, decreasing = TRUE)  # Sorting (biggest in first) 
   tab2 <- tab2[1:10] # Taking only the most important
   
+  tab <- data.frame(tab)
+  tab2 <- data.frame(tab2)
+  
+  v <- merge(tab,tab2,by.x="Var1",by.y="Var1",all = TRUE)
+  
   
   #####################################################################
   #                           Pie Chart     
   #####################################################################
   
-  par(mfrow = c(1,2))
-  
-  # 1- Labels :
-  
-  # Calculation in percentage
-  piepercent<- round(100*tab/sum(tab), 1)
-     # round(a,1) : one digit after the comma
-  
-  lab <- c()
-  
-  for(i in 1:length(piepercent)) {
-    lab[i] <- paste(piepercent[[i]], "%", sep=" ")
-  }
+  #par(mfrow = c(1,2))
   
   # 2- Title :
-  title <- paste(country, txt, sep=" ")
+  title <- "exp"
   
   # 3- Colors :
-  c <- rainbow(length(tab))
+  c <- rainbow(length())
   
   # 4- Plot :
-  pie(tab, main = title ,col=c)
+  pie(v[1:10,2],labels=v[,1], main = title ,col=c)
   
   
   ####
   
-  # 1- Labels :
-  
-  # Calculation in percentage
-  piepercent2<- round(100*tab2/sum(tab2), 1)
-  # round(a,1) : one digit after the comma
-  
-  lab <- c()
-  
-  for(i in 1:length(piepercent2)) {
-    lab[i] <- paste(piepercent2[[i]], "%", sep=" ")
-  }
-  
   # 2- Title :
-  title <- paste(country, txt, sep=" ")
+  title <- "imp"
   
   # 3- Colors :
-  c <- rainbow(length(piepercent2))
+  c <- rainbow(length(tab2))
   
   # 4- Plot :
-  pie(piepercent2, main = title ,col=c)
+  pie(tab2, main = title ,col=c)

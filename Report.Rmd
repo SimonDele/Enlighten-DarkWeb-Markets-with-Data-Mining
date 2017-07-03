@@ -637,7 +637,7 @@ country_Import_Export <- function(database) {
   # 2- Colors :
   c <- rainbow(length(tab_exp))
  
-  par(mar=c(1,6,1,1.9))
+  par(mar=c(1,6.1,1,1.9))
   
   # 3- Plot :
   pie(tab_exp, main = title ,col=c)
