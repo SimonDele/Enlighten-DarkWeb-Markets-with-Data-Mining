@@ -21,6 +21,7 @@ mainfont: Arial
 #----------------------------------------------------------
 
 #install.packages("stringr")
+
 #install.packages("units")
 #install.packages("ggmap")
 
@@ -34,7 +35,7 @@ library(ggmap)
 #               Importation of the data :
 #----------------------------------------------------------
 
-data <- as.data.frame(read.csv("C:/BDP/Doc/alphaspider.csv"))
+data <- as.data.frame(read.csv("C:/Internship/alpha.csv"))
 ```
 
 
@@ -255,9 +256,19 @@ NumberOfAds <- function(database) {
   sumup <- sort(summary(database[matching_vector, "origin"]), decreasing=TRUE)
   
   #Bar plot with the total number ofs ads in each country
-  barp <- barplot(sumup[1:10], main="Number of ads in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,4000),  col = rainbow(10), cex.names = 0.8)
   
-  barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
+  
+  par(las=1)#display yaxis horizontally
+  par(mar=c(8,8,1,1)) #give space for yaxis
+  
+  barp <- barplot(sumup[1:10], main="Number of ads in the World", xlim= c(0,max(sumup[1:10])+500), xlab="Number of ads",horiz = TRUE,  col = rainbow(10), cex.names = 0.8)
+  
+  #ad numbers at the end of each bar
+  barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black") 
+
+
+
+
 }
   
 NumberOfAds(database = data)
@@ -349,11 +360,14 @@ At first sight, drugs and chemicals are principle products dealt in the black ma
 matching_vector <- c( str_detect(data$category, "Drugs") & !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
 
 sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
-par(mfrow = c(1,1))
-#Bar plot with the total number of ads of Drugs in each country
 
-barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Countries", ylab="Number of ads",ylim = c(0,3200),  col = rainbow(10), cex.names = 0.8, angle = 45)
-barp <- text(x = barp, y = sumup[1:10], label = sumup[1:10], pos=3 , cex = 0.8, col= "black")
+
+#Bar plot with the total number of ads of Drugs in each country
+par(las=1)#display yaxis horizontally
+par(mar=c(8,8,3,1)) #give space for yaxis
+  
+barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Number of ads",xlim = c(0,max(sumup[1:10]+500)),  col = rainbow(10), cex.names = 0.8, horiz = TRUE)
+barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black")
 
 ```
 
@@ -373,7 +387,7 @@ MapEurope <- function(database) {
   sumup <- sort(summary(database[matching_vector, "origin"]), decreasing=TRUE)
   
   #read a file containing the latitude and longitude of the "center" of each country
-  data_country <- read.csv("C:/BDP/UEL-project/Stats/lat_long.csv")
+  data_country <- read.csv("./Stats/lat_long.csv")
   lat_long <- data.frame(Country = data_country$Country , long=  data_country$Longitude..average., lat=  data_country$Latitude..average.)
   
   #Create a data.frame with the name of the country and its nb of ads
@@ -385,7 +399,7 @@ MapEurope <- function(database) {
   #Create a map of EUROPE with circles showing the amount of ads
   map <- get_map(location = 'Europe', zoom =4 )
   mapPoints <- ggmap(map)  + xlab("") + ylab("") + ggtitle("Number of ads of Drugs in the World")+
-    geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(2,20)) 
+    geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(0,18)) 
   
   #Display
   mapPoints
@@ -516,8 +530,11 @@ DrugsPrices <- function(database) {
   
   priceDrugs <- priceDrugs[order(priceDrugs$med, decreasing=TRUE), ]
   
-  barp <- barplot(priceDrugs$med, main="Average Price of Drugs in the World", names.arg = priceDrugs$drugs, ylim = c(0,500),  xlab="Drugs", ylab="Price in USD", cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)) )
-  barp <- text(x = barp, y = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=3 , cex = 0.8, col= "Black")
+  par(las=1)#display yaxis horizontally
+  par(mar=c(8,8,3,1)) #give space for yaxis
+  
+  barp <- barplot(priceDrugs$med, main="Average Price of Drugs in the World", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)),  xlab="Drugs", cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
+  barp <- text(y = barp, x = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=4 , cex = 0.8, col= "Black")
 
 }
 
