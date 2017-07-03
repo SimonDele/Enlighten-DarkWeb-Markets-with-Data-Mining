@@ -335,7 +335,7 @@ DistributionDrugs <- function(database) {
   pie3D(piepercent,labels = lab,labelcex = 0.9, main = title ,col=c, theta = 0.9, explode = 0.04)
   
   # 5- Legend :
-  legend(x=-2.2,y=-1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA, bty="o")
+  legend(x=-2.2,y=-1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)
 }
 
 DistributionDrugs(database = data)
