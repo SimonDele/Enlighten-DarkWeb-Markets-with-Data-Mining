@@ -325,9 +325,8 @@ DistributionDrugs <- function(database) {
 DistributionDrugs(database = data)
 
 ```
-ici jeujfuhhuhhusdkcbjwaecfhaoklcsdlajkvncahfslfdvhblfdsuihviausopvhfiudhsviujdnfzvshujoiuhocnuohoiuzhskcbfvkfjv
-dfvujhfudvhousidvfhoijsdfoijv
-adfvjihoifdjvoijfdi
+
+
 
 ```{r}
 #Select the ads about drugs and get rid of the irrelevant orign Worlwide
@@ -459,16 +458,11 @@ country_Import_Export("France",1)
 
 ```{r}
 
-selectDrug2 <- function(drugName){
-  matching_vector <- c( (str_detect(data$category, drugName) | str_detect(data$title, drugName) | str_detect(data$brief, drugName) ) )
-  return(matching_vector)
-}
-
 drugs <- c("Cocaine", "Meth", "Opioids", "Cannabis", "Steroids", "Ecstasy", "Ketamine", "Heroin",  "NBOME","Shrooms", "Tobacco", "Benzos", "Paraphernalia")
 
 med <-c()
 for(i in 1:length(drugs)){
-  matching_vector <- selectDrug2(drugs[i]);
+  matching_vector <- selectDrug(drugs[i]);
   med[i] <- median((data[matching_vector, "priceUnitDose"]))
 }
 priceDrugs <- data.frame(drugs, med); 
