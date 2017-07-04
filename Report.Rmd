@@ -685,10 +685,62 @@ DrugsPrices <- function(database) {
   
   barp <- barplot(priceDrugs$med, main="Average Price of Drugs in the World", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)),  xlab="Drugs", cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
   barp <- text(y = barp, x = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=4 , cex = 0.8, col= "Black")
+  
+  return (priceDrugs)
 
 }
 
-DrugsPrices(database = data)
+priceDrugs <- DrugsPrices(database = data)
 ```
 
+```{r Comparison articles and database, message=FALSE, warning=FALSE}
+
+#####################################
+#        Prices find on articles 
+#####################################
+DrugsPricesDoc <- function(database){
+  cols <- c("Cocaine", "Meth", "Opioids",      "Cannabis"      , "Steroids", "Ecstasy", "Ketamine", "Heroin",  "NBOME","Shrooms", "Tobacco", "Benzos", "Paraphernalia" , "MDMA", "Amphetamine", "Crack", "LSD"   , "URL")
+
+  ref1  <- c(    35   ,   200  ,     NA   ,     (5.3 + 7.85)/2   ,    NA     ,     15   ,     25    ,    100   ,     NA  ,    NA   ,    NA    ,     NA  ,        NA      ,    40 ,   5         ,  NA    ,  NA     ,   "http://www.drugwise.org.uk/how-much-do-drugs-cost/")
+  ref2  <- c(    67   ,   NA   ,     NA   ,      51              ,    NA     ,     15   ,     32    ,    129   ,     NA  ,    NA   ,    NA    ,     NA  ,        NA      ,   51  ,   15        ,  97    ,  NA     , "http://www.telegraph.co.uk/news/uknews/crime/11346133/The-cost-of-street-drugs-in-Britain.html")
+  ref3  <- c(    110  ,   80   ,     NA   ,      NA              ,    NA     ,     NA   ,     NA    ,    170   ,     NA  ,    5.7  ,    NA    ,     NA  ,        NA      ,  150  ,   NA        ,   NA   ,  12000  ,   "http://www.rehabcenter.net/the-average-cost-of-illegal-drugs-on-the-street/ " )
+  ref4  <- c(    80   ,   109  ,     NA   ,      NA              ,    NA     ,   19.12  ,     NA    ,    91.16 ,     NA  ,    NA   ,    NA    ,     NA  ,        NA      ,    NA ,   NA        ,   NA   ,     NA  ,   " http://o.canada.com/business/interactive-what-illegal-drugs-cost-on-the-street-around-the-world")
+  ref5  <- c(     64  ,   NA   ,     NA   ,      NA              ,    NA     ,     20   ,     NA    ,    NA    ,     NA  ,    NA   ,    NA    ,     NA  ,        NA      ,    NA ,   NA        ,  NA    ,   NA    , " http://www.thestudentpocketguide.com/2012/01/student-life/health-and-relationships/facts-about-drugs/")
+  
+  doc_drugs <- t(data.frame(ref1, ref2, ref3, ref4, ref5))
+  colnames(doc_drugs) <- cols
+  
+  #calculate the mean price of each drugs find on articles
+  price_doc <- c()
+  for(i in 1 : length(cols)){
+    price_doc[i] <- summary(as.numeric(doc_drugs[,i]))[[4]]
+  }
+  price_doc.data <- data.frame(cols, price_doc)
+  
+  
+  #merge the previous dataframe which correspond to the mean price of each drugs in the database
+  # with the dataframe created above
+  beside_plot <- merge(price_doc.data, priceDrugs, by.x ="cols", by.y ="drugs") 
+  
+  rownames(beside_plot) <- beside_plot[,1]
+  beside_plot <- beside_plot[,-1]
+  
+  #Creating the barplot
+  par(las=1)#display yaxis horizontally
+  par(mar=c(8,8,4,1)) #give space for yaxis
+ 
+  b <- barplot(rbind(beside_plot[,1], beside_plot[,2]), main="Average price of Drugs", xlim = c(0, 500),
+          xlab="Price of Drugs", beside=TRUE, names.arg = rownames(beside_plot), col=1:2, horiz = TRUE, space = c(0,0.2))
+  
+  axis(side=1,at=c(50,150,250,350,450),labels=c(50,150,250,350,450))
+  
+  
+  lab <- c("Street", "AlphaBay")
+  
+  legend("topright",lab,fill=1:2)
+}
+
+DrugsPricesDoc(database = data)
+
+```
 
