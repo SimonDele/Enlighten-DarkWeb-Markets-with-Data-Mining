@@ -78,6 +78,8 @@
     #    Pie Chart - Exporation     
     #---------------------------
     
+    
+    
     par(mfrow = c(1,2))
     
     # 1- Labels :
@@ -89,17 +91,18 @@
     lab_exp <- c()
     
     for(i in 1:length(piepercent_exp)) {
-      lab_exp[i] <- paste(piepercent_exp[[i]], "%", sep=" ")
+      if(piepercent_exp[[i]] == 0) {lab_exp[i] <- ""}
+      else {lab_exp[i] <- paste(piepercent_exp[[i]], "%", sep=" ")}
     }
     
     # 2- Title :
-    title <- paste(country, "- Exportation", sep=" ")
+    title <- "Exportation"
     
     # 2- Colors :
     c <- rainbow(length(tab[,1]))
     
     # 3- Plot :
-    pie(tab[1:10,2],labels=lab_exp, main = title ,col=c)
+    pie(tab[,2],labels=lab_exp, main = title ,col=c)
     
     #---------------------------
     #    Pie Chart - Importation     
@@ -115,13 +118,17 @@
     lab_imp <- c()
     
     for(i in 1:length(piepercent_imp)) {
-      lab_imp[i] <- paste(piepercent_imp[[i]], "%", sep=" ")
+      if(piepercent_imp[[i]] == 0) {lab_imp[i] <- ""}
+      else {lab_imp[i] <- paste(piepercent_imp[[i]], "%", sep=" ")}
     }
     
     # 2- Title :
-    title <- paste(country, "- Importation", sep=" ")
+    title <- "Importation"
     
+
     # 3- Plot :
     pie(tab[,3],labels=lab_imp, main = title ,col=c)
     
-    legend(x=-5.5,y=-1,tab[,1], cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
+    
+    legend(x=-4.3,y=-1,tab[,1], cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
+    title(main="France", outer=TRUE)
