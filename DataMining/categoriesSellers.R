@@ -76,8 +76,10 @@ for(k in 2 : length(sellers)){
 
 rownames(cat_seller.data)<- names(sellers)
 
+library(rattle)
+library(rpart.plot)
 library(rpart)
 train <- data.frame(cat_seller.data[1:50,])
 
-tree_g <- rpart(cat_seller.data[1:50,1]~ ., train , method = "class")
+tree_g <- rpart(X.Drugs...Chemicals.Psychedelics.LSD ~., data=train , method = "class")
 fancyRpartPlot(tree_g)

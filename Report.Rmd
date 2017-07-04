@@ -33,7 +33,7 @@ library(plotrix)
 #               Importation of the data :
 #----------------------------------------------------------
 
-data <- as.data.frame(read.csv("C:/BDP/Doc/alphaspider.csv"))
+data <- as.data.frame(read.csv("../alpha.csv"))
 # C:/Internship/alpha.csv
 ```
 
