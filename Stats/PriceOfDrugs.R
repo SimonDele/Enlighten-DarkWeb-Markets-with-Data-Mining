@@ -1,4 +1,4 @@
-data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("data.csv"))
 library(stringr)
 
 selectDrug <- function(drugName){
@@ -54,8 +54,11 @@ beside_plot <- beside_plot[,-1]
 par(las=1)#display yaxis horizontally
 par(mar=c(8,8,4,1)) #give space for yaxis
 
-barplot(rbind(beside_plot[,1], beside_plot[,2]), main="Average price of Drugs",
+b <- barplot(rbind(beside_plot[,1], beside_plot[,2]), main="Average price of Drugs",
         xlab="Price of Drugs", beside=TRUE, names.arg = rownames(beside_plot), col=1:2, horiz = TRUE, space = c(0,0.2))
+
+axis(side=1,at=c(50,150,250,350),labels=c(50,150,250,350))
+#axis(side=1,at=b[c(50,150,250,350)],labels=seq(50,350,by=100))
 
 lab <- c("Street", "AlphaBay")
 
