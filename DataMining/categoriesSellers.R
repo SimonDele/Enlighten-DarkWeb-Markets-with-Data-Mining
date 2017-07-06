@@ -80,25 +80,12 @@ for(k in 2 : length(sellers)){
   
 }
 
-
-
 rownames(cat_seller.data)<- names(sellers)
 
-#Replace TRUE by 1 and FALSE by 0 for the decision tree
 
-#cat_seller.data.num <-c()
-#for(i in 1:length(colnames(cat_seller.data))){
-#  cat_seller.data[,i]<-gsub(TRUE, 1, cat_seller.data[,i])
-#  cat_seller.data[,i] <- gsub(FALSE, 0, cat_seller.data[,i])
-#  cat_seller.data.num <- as.numeric(cat_seller.data[,i])
-#  cat_seller.data[,i] <- cat_seller.data.num
-#}
-
-
-
-#Association Rules with rhs containing "Stimulants/Cocaine" only
+#Association Rules with rhs containing "Ecstasy" only
 rules <- apriori(cat_seller.data,
-                 parameter = list(minlen=3, supp=0.02, conf=0.8),
+                 parameter = list(minlen=2, supp=0.1, conf=0.8),
                  appearance = list(rhs=c("Ecstasy"),default="lhs"),
                  control = list(verbose=F))
 
@@ -107,16 +94,3 @@ inspect(rules.sorted)
 
 #Plot graph of rules
 plot(rules, method="graph", control=list(type="items"))
-
-
-
-# Descision tree
-
-#library(rattle)
-#library(rpart.plot)
-#library(rpart)
-
-#train <- data.frame(cat_seller.data[1:50,])
-
-#tree_g <- rpart(X.Drugs...Chemicals.Psychedelics.LSD ~., data=train , method = "class")
-#fancyRpartPlot(tree_g)
