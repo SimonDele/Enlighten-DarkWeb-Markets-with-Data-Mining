@@ -1,24 +1,37 @@
 #----------------------------------------------------------
-#           Descision tree UK
+#           Decision tree # CART
 #----------------------------------------------------------
 
-#data <- as.data.frame(read.csv("data.csv"))
+data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
+library(rattle)
+library(rpart)
+library(rpart.plot)
+library(RColorBrewer)
 
 #Select all ads of "Drugs & Chemicals"
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
 data_drugs <- data[matching_vector, ]
 
-descision.data <- subset(data_drugs, select = c(seller, origin, destination, category, priceUnitDose))
+decision.data <- subset(data_drugs, select = c(origin,category,seller,priceUnitDose))
+decision.data$category <- gsub(pattern = "/Drugs & Chemicals/", replacement = "", decision.data$category)
 
-descision.data$origin <-c ( str_detect(descision.data$origin, "United Kingdom"))
+decision.data$origin <-c ( str_detect(decision.data$origin, "United Kingdom"))
 
-names(descision.data)[match("origin",names(descision.data))] <- "UK"
+names(decision.data)[match("origin",names(decision.data))] <- "origin_UK"
 
-descision.data.num <-c()
+decision.data[,match("origin_UK",names(decision.data))]<-gsub(TRUE, 1, decision.data[,match("origin_UK",names(decision.data))])
+decision.data[,match("origin_UK",names(decision.data))] <- gsub(FALSE, 0, decision.data[,match("origin_UK",names(decision.data))])
 
-descision.data[,match("UK",names(descision.data))]<-gsub(TRUE, 1, descision.data[,match("UK",names(descision.data))])
-descision.data[,match("UK",names(descision.data))] <- gsub(FALSE, 0, descision.data[,match("UK",names(descision.data))])
+decision.data$origin_UK <- as.numeric(decision.data$origin_UK)
 
-descision.data$UK <- as.numeric(descision.data$UK)
+train <- decision.data[1:floor(length(decision.data[,1])/2),]
+test <- decision.data[(floor(length(decision.data[,1])/2)+1):length(decision.data[,1]),]
+
+tree <- rpart(origin_UK ~.,data=train, method="class")
+fancyRpartPlot(tree)
+
+pred <- predict(tree,test,type="class")
+conf <- table(decision.data[(floor(length(decision.data[,1])/2)+1):length(decision.data[,1]),match("origin_UK",names(decision.data))],pred)
+acc <- sum(diag(conf)) / sum(conf)
