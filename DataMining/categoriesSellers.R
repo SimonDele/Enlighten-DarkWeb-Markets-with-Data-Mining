@@ -4,7 +4,6 @@
 #     Guess if this dealer is selling this drugs
 #--------------------------------------------------------
 
-AssoRSellersCat <- function(){
   
   #------------------------------
   #  New Data frame for analysis
@@ -108,6 +107,5 @@ AssoRSellersCat <- function(){
   #Plot graph of rules
   plot(rules.sorted[3:7], method="graph", control=list(type="items"),main ="Association Rules on the product range of sellers")
 
-}
 
-AssoRSellersCat()
+
