@@ -5,14 +5,14 @@
 #data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
-
-
-#drugs <- c("Cocaine", "Meth", "Opioids", "Cannabis", "Steroids", "Ecstasy", "Ketamine", "Heroin",  "NBOME","Shrooms", "Tobacco", "Benzos", "Paraphernalia")
+library(arules)
+library(arulesViz)
 
 #Select all ads of "Drugs & Chemicals"
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
 data_drugs <- data[matching_vector, ]
 
+data_drugs$category <- gsub("/Drugs & Chemicals/", "", data_drugs$category)
 
 #List all the sellers
 sellers <-summary(data_drugs$seller)
@@ -20,7 +20,7 @@ sellers <- sellers[ sellers != "Null"]
 
 
 #List all categories concerning drugs
-list_category <- summary(data_drugs[,"category"])
+list_category <- table(data_drugs[,"category"])
 list_cat_drugs <- list_category [ list_category != 0 ]
 
 
@@ -78,20 +78,39 @@ for(k in 2 : length(sellers)){
 
 rownames(cat_seller.data)<- names(sellers)
 
-cat_seller.data.num <-c()
-for(i in 1:length(colnames(cat_seller.data))){
-  cat_seller.data[,i]<-gsub(TRUE, 1, cat_seller.data[,i])
-  cat_seller.data[,i] <- gsub(FALSE, 0, cat_seller.data[,i])
-  cat_seller.data.num <- as.numeric(cat_seller.data[,i])
-  cat_seller.data[,i] <- cat_seller.data.num
-}
+#Replace TRUE by 1 and FALSE by 0 for the decision tree
+
+#cat_seller.data.num <-c()
+#for(i in 1:length(colnames(cat_seller.data))){
+#  cat_seller.data[,i]<-gsub(TRUE, 1, cat_seller.data[,i])
+#  cat_seller.data[,i] <- gsub(FALSE, 0, cat_seller.data[,i])
+#  cat_seller.data.num <- as.numeric(cat_seller.data[,i])
+#  cat_seller.data[,i] <- cat_seller.data.num
+#}
 
 
-library(rattle)
-library(rpart.plot)
-library(rpart)
 
-train <- data.frame(cat_seller.data[1:50,])
+#Association Rules with rhs containing "Stimulants/Cocaine" only
+rules <- apriori(cat_seller.data,
+                 parameter = list(minlen=4, supp=0.01, conf=0.8),
+                 appearance = list(rhs=c("Stimulants/Cocaine"),default="lhs"),
+                 control = list(verbose=F))
 
-tree_g <- rpart(X.Drugs...Chemicals.Psychedelics.LSD ~., data=train , method = "class")
-fancyRpartPlot(tree_g)
+rules.sorted <- sort(rules, by="lift")
+inspect(rules.sorted)
+
+#Plot graph of rules
+plot(rules, method="graph", control=list(type="items"))
+
+
+
+# Descision tree
+
+#library(rattle)
+#library(rpart.plot)
+#library(rpart)
+
+#train <- data.frame(cat_seller.data[1:50,])
+
+#tree_g <- rpart(X.Drugs...Chemicals.Psychedelics.LSD ~., data=train , method = "class")
+#fancyRpartPlot(tree_g)
