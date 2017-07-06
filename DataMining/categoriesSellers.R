@@ -12,7 +12,13 @@ library(arulesViz)
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
 data_drugs <- data[matching_vector, ]
 
-data_drugs$category <- gsub("/Drugs & Chemicals/", "", data_drugs$category)
+#data_drugs$category <- gsub("/Drugs & Chemicals/", "", data_drugs$category)
+
+# Handling of this categories
+# Regular expression for spliting the categories
+regex <- "/(.*)/(.*)/(.*)"
+cat_exp <- str_match(data_drugs$category, regex)
+data_drugs$category <- cat_exp[,3]
 
 #List all the sellers
 sellers <-summary(data_drugs$seller)
@@ -92,8 +98,8 @@ rownames(cat_seller.data)<- names(sellers)
 
 #Association Rules with rhs containing "Stimulants/Cocaine" only
 rules <- apriori(cat_seller.data,
-                 parameter = list(minlen=4, supp=0.01, conf=0.8),
-                 appearance = list(rhs=c("Stimulants/Cocaine"),default="lhs"),
+                 parameter = list(minlen=3, supp=0.02, conf=0.8),
+                 appearance = list(rhs=c("Ecstasy"),default="lhs"),
                  control = list(verbose=F))
 
 rules.sorted <- sort(rules, by="lift")
