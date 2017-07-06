@@ -1,10 +1,8 @@
 
+data <- as.data.frame(read.csv("data.csv"))
   
-  # 4- Plot :
-  #pie(v[1:10,2],labels=v[,1], main = title ,col=c)
+  library(stringr)
 
-#data <- as.data.frame(read.csv("data.csv"))
-  
   #-----------------------------------------------
   #   Importation / Exportation of a country
   #-----------------------------------------------
@@ -19,20 +17,20 @@
     #    Analysis - Exportation
     #---------------------------
     
-    # Country as destination
-    matching_vector_exp <- str_detect(data[,"origin"], country)
+    # Country as origin
+    matching_vector <- str_detect(data[,"origin"], country)
     
     # list of the categories (among the line that have "Country" as origin)
     # -> Products (categories) exporting by the country 
-    country_cat_exp <- data[matching_vector_exp,"category"] 
+    country_cat <- data[matching_vector,"category"] 
     
     # Handling of this categories
     # Regular expression for spliting the categories
     regex <- "/(.*)/(.*)/(.*)"
-    cat_exp <- str_match(country_cat_exp, regex)
+    cat <- str_match(country_cat, regex)
     
     # Counting this categories 
-    tab_exp <- table(cat_exp[,3])   #cat[,3] : 2nd category 
+    tab_exp <- table(cat[,3])   #cat[,3] : 2nd category 
     tab_exp <- sort(tab_exp, decreasing = TRUE)  # Sorting (biggest in first) 
     tab_exp <- tab_exp[1:10] # Taking only the most important
     
@@ -41,19 +39,19 @@
     #---------------------------
     
     # Country as destination
-    matching_vector_imp <- str_detect(data[,"destination"], country)
+    matching_vector <- str_detect(data[,"destination"], country)
     
-    # list of the categories (among the line that have "Country" as origin)
-    # -> Products (categories) exporting by the country 
-    country_cat_imp <- data[matching_vector_imp,"category"] 
+    # list of the categories (among the line that have "Country" as destination)
+    # -> Products (categories) importing by the country 
+    country_cat <- data[matching_vector,"category"] 
     
     # Handling of this categories
     # Regular expression for spliting the categories
     regex <- "/(.*)/(.*)/(.*)"
-    cat_imp <- str_match(country_cat_imp, regex)
+    cat <- str_match(country_cat, regex)
     
     # Counting this categories 
-    tab_imp <- table(cat_imp[,3])   #cat[,3] : 2nd category 
+    tab_imp <- table(cat[,3])   #cat[,3] : 2nd category 
     tab_imp <- sort(tab_imp, decreasing = TRUE)  # Sorting (biggest in first) 
     tab_imp <- tab_imp[1:10] # Taking only the most important
     
@@ -61,74 +59,72 @@
     #    Analysis - Fusion
     #-------------------------
     
-    tab_exp <- data.frame(tab_exp)
-    tab_imp <- data.frame(tab_imp)
+    # Transformation in data frame
+    tab_exp <- as.data.frame(tab_exp)
+    tab_imp <- as.data.frame(tab_imp)
     
+    # Merger of the 2 data frame in order to have the same labels 
     tab <- merge(tab_exp,tab_imp,by.x="Var1",by.y="Var1",all = TRUE)
     
-    for(i in 1:length(tab[,2])){
-      if(is.na(tab[i,2])) {tab[i,2] <-0}
-    }
-    
-    for(i in 1:length(tab[,3])){
-      if(is.na(tab[i,3])) {tab[i,3] <-0}
-    }
+    # Handling of the "NA" value (substitution by 0)
+    for (j in 2:3) {
+      for(i in 1:length(tab[,j])){
+        if(is.na(tab[i,j])) {tab[i,j] <-0}
+      }
+    }  
     
     #---------------------------
     #    Pie Chart - Exporation     
     #---------------------------
     
-    
-    
+    # ploting 2 graphics om the same picture
     par(mfrow = c(1,2))
     
     # 1- Labels :
     
     # Calculation in percentage
-    piepercent_exp <- round(100*tab[,2]/sum(tab[,2]), 1)
+    piepercent <- round(100*tab[,2]/sum(tab[,2]), 1)
     # round(a,1) : one digit after the comma
     
-    lab_exp <- c()
+    lab <- c()
     
-    for(i in 1:length(piepercent_exp)) {
-      if(piepercent_exp[[i]] == 0) {lab_exp[i] <- ""}
-      else {lab_exp[i] <- paste(piepercent_exp[[i]], "%", sep=" ")}
+    for(i in 1:length(piepercent)) {
+      if(piepercent[[i]] == 0) {lab[i] <- ""} 
+      else {lab[i] <- paste(piepercent[[i]], "%", sep=" ")}
     }
-    
-    # 2- Title :
-    title <- "Exportation"
-    
+
     # 2- Colors :
     c <- rainbow(length(tab[,1]))
     
     # 3- Plot :
-    pie(tab[,2],labels=lab_exp, main = title ,col=c)
+    pie(piepercent,labels=lab,main="Exportation",col=c)
     
     #---------------------------
     #    Pie Chart - Importation     
     #---------------------------
     
-    
     # 1- Labels :
     
     # Calculation in percentage
-    piepercent_imp <- round(100*tab[,3]/sum(tab[,3]), 1)
+    piepercent <- round(100*tab[,3]/sum(tab[,3]), 1)
     # round(a,1) : one digit after the comma
     
-    lab_imp <- c()
+    lab <- c()
     
-    for(i in 1:length(piepercent_imp)) {
-      if(piepercent_imp[[i]] == 0) {lab_imp[i] <- ""}
-      else {lab_imp[i] <- paste(piepercent_imp[[i]], "%", sep=" ")}
+    for(i in 1:length(piepercent)) {
+      if(piepercent[[i]] == 0) {lab[i] <- ""}
+      else {lab[i] <- paste(piepercent[[i]], "%", sep=" ")}
     }
-    
-    # 2- Title :
-    title <- "Importation"
-    
 
-    # 3- Plot :
-    pie(tab[,3],labels=lab_imp, main = title ,col=c)
+    # 2- Plot :
+    pie(piepercent,labels=lab,main="Importation",col=c)
+    
+    #------------------
+    #   General - Plot     
+    #-----------------
+    
+    par(oma=c(0,0,1,0))
+    title("France",outer=TRUE)
+    legend(x=-4.3,y=-1,tab[,1], cex = 0.8, fill=c,ncol=4,border=NA, xpd=NA)
     
     
-    legend(x=-4.3,y=-1,tab[,1], cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
-    title(main="France", outer=TRUE)
