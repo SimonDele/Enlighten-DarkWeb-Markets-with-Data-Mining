@@ -744,3 +744,102 @@ DrugsPricesDoc(database = data)
 
 ```
 
+
+
+```{r Asso Rules Sellers Category}
+#----------------------------------------------------------
+#           Guess if this dealer is selling this drugs
+#----------------------------------------------------------
+
+
+
+library(stringr)
+library(arules)
+library(arulesViz)
+
+AssoRSellersCat <- function(database){#Select all ads of "Drugs & Chemicals"
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  data_drugs <- data[matching_vector, ]
+  
+  data_drugs$category <- gsub("/Drugs & Chemicals/", "", data_drugs$category)
+  
+  #List all the sellers
+  sellers <-summary(data_drugs$seller)
+  sellers <- sellers[ sellers != "Null"]
+  
+  
+  #List all categories concerning drugs
+  list_category <- table(data_drugs[,"category"])
+  list_cat_drugs <- list_category [ list_category != 0 ]
+  
+  
+  #First step : initialise a data.frame with the information of the first seller
+  
+  #Select all categories of the seller  
+  matching_vector <- c( str_detect(data$seller, names(sellers)[1]))
+  cat_seller <-summary(data.frame(data[matching_vector, "category"]))
+  
+  
+  #Loop which creates a boolean vector which tells if the seller sells stuffs in each category 
+  bool_cat <-c()
+  bool_vec <-c()
+  for( i in 1: length(list_cat_drugs)){
+    bool_vec <- str_detect(cat_seller, names(list_cat_drugs)[i])
+    
+    bool <- FALSE 
+    for(j in 1:length(bool_vec)){
+      bool <- bool || bool_vec[j]
+    }
+    bool_cat[i] <- bool
+    
+  }
+  
+  cat_seller.data <- t(data.frame(bool_cat))
+  colnames(cat_seller.data) <- names(list_cat_drugs)
+  
+  #Step 2 : Do the same for the other sellers
+  
+  for(k in 2 : length(sellers)){
+    #Select all categories of the seller  
+    matching_vector <- c( str_detect(data$seller, names(sellers)[k]))
+    cat_seller <-summary(data.frame(data[matching_vector, "category"]))
+    
+    
+    #Loop which creates a boolean vector which tells if the seller sells stuffs in each category 
+    bool_cat <-c()
+    bool_vec <-c()
+    for( i in 1: length(list_cat_drugs)){
+      bool_vec <- str_detect(cat_seller, names(list_cat_drugs)[i])
+      
+      bool <- FALSE 
+      for(j in 1:length(bool_vec)){
+        bool <- bool || bool_vec[j]
+      }
+      bool_cat[i] <- bool
+      
+    }
+    
+    cat_seller.data <- rbind(cat_seller.data,bool_cat)
+    
+  }
+  
+  
+  
+  rownames(cat_seller.data)<- names(sellers)
+  
+  
+  #Association Rules with rhs containing "Stimulants/Cocaine" only
+  rules <- apriori(cat_seller.data,
+                   parameter = list(minlen=6, supp=0.01, conf=0.8),
+                   appearance = list(rhs=c("Stimulants/Cocaine"),default="lhs"),
+                   control = list(verbose=F))
+  
+  rules.sorted <- sort(rules, by="lift")
+  inspect(rules.sorted)
+}
+
+AssoRSellersCat(database =data)
+
+
+```
+
