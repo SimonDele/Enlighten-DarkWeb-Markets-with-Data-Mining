@@ -1,8 +1,9 @@
-#----------------------------------------------------------
-#           Decision tree # CART
-#----------------------------------------------------------
+#----------------------------------------------------------------------
+#                  Decision tree - CART algorithm
+#   Prediction of the country knowing the seller / price / category
+#-----------------------------------------------------------------------
 
-data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
 library(rattle)
@@ -10,28 +11,70 @@ library(rpart)
 library(rpart.plot)
 library(RColorBrewer)
 
-#Select all ads of "Drugs & Chemicals"
+#-----------------
+#   New Data 
+#-----------------
+
+# Select all "Drugs & Chemicals" ads
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-data_drugs <- data[matching_vector, ]
+dectree.data <- data[matching_vector,]
 
-decision.data <- subset(data_drugs, select = c(origin,category,seller,priceUnitDose))
-decision.data$category <- gsub(pattern = "/Drugs & Chemicals/", replacement = "", decision.data$category)
+# Select the column of the data that are interesting for the tree
+# ie removing colunm like "id" or "url" that don't give any informations
+dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose))
+# Subset : choose the colunm that you want
 
-decision.data$origin <-c ( str_detect(decision.data$origin, "United Kingdom"))
+# Handling : column categorie
+# Regular expression for spliting the categories
+regex <- "/(.*)/(.*)/(.*)"
+cat <- str_match(dectree.data$category, regex)
+dectree.data$category <- cat[,3] # keep only the second part
 
-names(decision.data)[match("origin",names(decision.data))] <- "origin_UK"
+country <- "France"
 
-decision.data[,match("origin_UK",names(decision.data))]<-gsub(TRUE, 1, decision.data[,match("origin_UK",names(decision.data))])
-decision.data[,match("origin_UK",names(decision.data))] <- gsub(FALSE, 0, decision.data[,match("origin_UK",names(decision.data))])
+# Conversion to binary value
+# -> 1 if the origin = country
+# -> 0 if the origin # country
+dectree.data$origin <-c(str_detect(dectree.data$origin, country))
+dectree.data$origin <-gsub(TRUE, 1, dectree.data$origin)
+dectree.data$origin <- gsub(FALSE, 0, dectree.data$origin)
+dectree.data$origin <- as.numeric(dectree.data$origin)
 
-decision.data$origin_UK <- as.numeric(decision.data$origin_UK)
+#---------------------
+#   Decision tree
+#---------------------
 
-train <- decision.data[1:floor(length(decision.data[,1])/2),]
-test <- decision.data[(floor(length(decision.data[,1])/2)+1):length(decision.data[,1]),]
+# Half of the data for making the decision tree
+train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
 
-tree <- rpart(origin_UK ~.,data=train, method="class")
+# Creation of the tree
+tree <- rpart(origin ~.,data=train, method="class") 
+
+# Plot
 fancyRpartPlot(tree)
 
+#--------------------
+#   Prediction
+#--------------------
+
+# The other half for the prediction
+test <- dectree.data[(floor(nrow(dectree.data)/2)+1):nrow(dectree.data),]
+
+# Making prediction
 pred <- predict(tree,test,type="class")
-conf <- table(decision.data[(floor(length(decision.data[,1])/2)+1):length(decision.data[,1]),match("origin_UK",names(decision.data))],pred)
-acc <- sum(diag(conf)) / sum(conf)
+
+# Analysis:
+
+  # Comparison between the result and the prediction (prediction in colunm)
+  conf <- table(test[,match("origin",names(test))],pred)
+  
+  # Accurency :
+  acc <- sum(diag(conf)) / sum(conf)
+
+print(conf)
+print(acc)
+
+
+#-------------------------------------------------
+# /!\ To Do : keep only the 100 mains dealers /!\
+#-------------------------------------------------
