@@ -419,7 +419,10 @@ MapEurope()
 
 ```
 
-Circles shows the amount of ads about drugs. The map confirm our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, United Kingdom, Netherlands and Germany.   
+Circles shows the amount of ads about drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, United Kingdom, Netherlands and Germany.  
+
+
+5. The pie chart below represents the repartition of each categories that United Kingdom exports. We focused on the second subcategory which appears to be most the relevant since the first one is too wide and the third one is often "Other".
 
 
 
@@ -502,7 +505,11 @@ country_Export <- function() {
 country_Export()
 ```
 
+We can notice that most of exportations are drugs. That is not surprising since drugs are the products the most sold. This pie chart show that there is a lot of variety in market. Althought, a huge part concerns "Cannabis & Hashish". We can also notice that Psychedelics and other highly dangerous drugs are significantly present.
 
+We took the example of United Kingdom but most of European countries follow the same rules.
+
+6. Let's have a look at the exportations of China which are of a different kind than United Kingdom :
 
 
 ```{r Exportation China}
@@ -584,6 +591,12 @@ country_Export <- function() {
 
 country_Export()
 ```
+
+What is suprising is that, unlike most of countries, China exports more Jewelry than Drugs. Although, drugs are still widely presents. Moreover, we can notice that the category electronics appears.
+
+7. Let's compare France exportations with France importations and see if there is a difference between them.
+
+
 
 ```{r Export / Import FR}
   #-----------------------------------------------
@@ -722,6 +735,9 @@ Country_Export_Import()
     
 ```
 
+It is noticeable that both are different. The part of each category is different and some of them doesn't appear systematicaly in the other pie chart. But we have to moderate our conclusions since most of the value given by the importation variable doesn't target a unique country and we were compelled to ad "Europe" values to our model.
+
+8. We wondered if products sold in AlphaBay are cheapest than what offer street sellers. Firstly, we calculated the average price in AlphaBay of the most common drugs. We obtain the result below.  
 
 
 
@@ -756,6 +772,7 @@ DrugsPrices <- function() {
 
 priceDrugs <- DrugsPrices()
 ```
+9. Finally, we were looking to some information  about the price of street sellers for same drugs as above. Thus, we gathered these information in articles and websites. Unfortunately, we failed to obtain information on some drugs. Below is the result of we found.
 
 ```{r Comparison articles and data, message=FALSE, warning=FALSE}
 
@@ -812,6 +829,7 @@ DrugsPricesDoc()
 
 ```
 
+Globally we can notice that price of the street sellers are often largely higher than AlphaBay ads. In few cases both prices tend to be similar.
 
 
 ```{r Ass Rules Sellers Category}
