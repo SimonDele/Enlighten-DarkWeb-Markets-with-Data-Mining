@@ -27,14 +27,19 @@
   cat_exp <- str_match(data_drugs$category, regex)
   data_drugs$category <- cat_exp[,3]
   
+  # Get rid of category "Other"
+  matching_vector <- !c( str_detect(data_drugs$category, "Other"))
+  data_drugs <- data_drugs[matching_vector, ]
+  
   #List all the sellers
-  sellers <-summary(data_drugs$seller)
+  sellers <-sort(table(data_drugs$seller), decreasing = TRUE)
   sellers <- sellers[ sellers != "Null"]
+  sellers <- sellers [1:100]
   
   
   #List all categories concerning drugs
   list_category <- table(data_drugs[,"category"])
-  list_cat_drugs <- list_category [ list_category != 0 ]
+  list_cat_drugs <- list_category [ list_category != 0]
   
   
   #Step 1 : initialise a data.frame with the information of the first seller
@@ -102,10 +107,10 @@
                    control = list(verbose=F))
   
   rules.sorted <- sort(rules, by="lift")
-  inspect(rules.sorted[1:13])
+  inspect(rules.sorted)
   
   #Plot graph of rules
-  plot(rules.sorted[3:7], method="graph", control=list(type="items"),main ="Association Rules on the product range of sellers")
+  plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="Association Rules on the product range of sellers")
 
 
 
