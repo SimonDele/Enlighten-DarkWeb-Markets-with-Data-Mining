@@ -3,7 +3,7 @@
 #   Prediction of the country knowing the price and the category
 #-----------------------------------------------------------------------
 
-#data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("alpha.csv"))
 
 library(stringr)
 library(rattle)
@@ -74,7 +74,3 @@ pred <- predict(tree,test,type="class")
 print(conf)
 print(acc)
 
-
-#-------------------------------------------------
-# /!\ To Do : keep only the 100 mains dealers /!\
-#-------------------------------------------------

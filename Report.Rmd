@@ -238,6 +238,11 @@ data <- ComputerReadable()
 
 ```
 
+```{r}
+#write.csv(data, "aplhaClean.csv")
+```
+
+
 # - Statistics
 
 We have perform basics statics in order to discover the data. 
