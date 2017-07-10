@@ -11,7 +11,7 @@ data <- as.data.frame(read.csv("data.csv"))
     #  Initialization
     #-------------------
     
-    country <- "France"
+    country <- "United States"
     
     #---------------------------
     #    Analysis - Exportation
