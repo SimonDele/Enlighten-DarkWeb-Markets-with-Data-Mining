@@ -1,6 +1,6 @@
 #----------------------------------------------------------------------
 #                  Decision tree - CART algorithm
-#   Prediction of the country knowing the seller / price / category
+#   Prediction of the seller knowing the price / category / origin
 #-----------------------------------------------------------------------
 
 #data <- as.data.frame(read.csv("alphaClean.csv"))
@@ -17,45 +17,32 @@ library(RColorBrewer)
 
 # Select all "Drugs & Chemicals" ads
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-drugs.data <- data[matching_vector,]
+dectree.data <- data[matching_vector,]
 
 # Select the column of the data that are interesting for the tree
 # ie removing colunm like "id" or "url" that don't give any informations
-drugs.data <- subset(drugs.data, select=c(origin,category,seller,priceUnitDose))
+dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose))
 # Subset : choose the colunm that you want
 
 # Handling : column categorie
 # Regular expression for spliting the categories
 regex <- "/(.*)/(.*)/(.*)"
-cat <- str_match(drugs.data$category, regex)
-drugs.data$category <- cat[,3] # keep only the second part
+cat <- str_match(dectree.data$category, regex)
+dectree.data$category <- cat[,3] # keep only the second part
 
+Seller <- "klosterbier"
 
-# Handling : seller
-# drugs.data$seller <- as.character(drugs.data$seller)
-tab_sell <- table(drugs.data$seller)
-tab_sell <- sort(tab_sell, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sell <- tab_sell[1:10] # Taking only the most important : main sellers
-
-# Contruction of the matching vector with names of the 100 biggest seller
-matching_vector <- c( str_detect(drugs.data$seller, names(tab_sell)[1]))
-for(i in 2:length(tab_sell)) {
-  matching_vector <- matching_vector | c( str_detect(drugs.data$seller, names(tab_sell)[i]))
-}
-
-# New data keeping only the 100 mains dealers
-dectree.data <- drugs.data[matching_vector,]
-
-
-country <- "United Kingdom"
+# For ex : (10 important dealers)
+# klosterbier, jnenfrancis, rgn, ALaurizen, ROCKETLABS, optiman, 
+# Fapppylicious, GreenLeafLabs, FelixUK, MicroDroper
 
 # Conversion to binary value
-# -> 1 if the origin = country
-# -> 0 if the origin # country
-dectree.data$origin <-c(str_detect(dectree.data$origin, country))
-dectree.data$origin <-gsub(TRUE, 1, dectree.data$origin)
-dectree.data$origin <- gsub(FALSE, 0, dectree.data$origin)
-dectree.data$origin <- as.numeric(dectree.data$origin)
+# -> 1 if the seller = Seller
+# -> 0 if the seller # Seller
+dectree.data$seller <-c(str_detect(dectree.data$seller, Seller))
+dectree.data$seller <-gsub(TRUE, 1, dectree.data$seller)
+dectree.data$seller <- gsub(FALSE, 0, dectree.data$seller)
+dectree.data$seller <- as.numeric(dectree.data$seller)
 
 # Random rows :
 dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
@@ -68,10 +55,12 @@ dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replac
 train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
 
 # Creation of the tree
-tree <- rpart(origin ~.,data=train, method="class",control=rpart.control(cp=0.0001)) 
+tree <- rpart(seller ~.,data=train, method="class") 
 
 # Plot
-fancyRpartPlot(tree)
+#fancyRpartPlot(tree)
+
+fancyRpartPlot(prune(tree,cp=0.1))
 
 #--------------------
 #   Prediction
@@ -86,7 +75,7 @@ pred <- predict(tree,test,type="class")
 # Analysis:
 
 # Comparison between the result and the prediction (prediction in colunm)
-conf <- table(test[,match("origin",names(test))],pred)
+conf <- table(test[,match("seller",names(test))],pred)
 
 # Accurency :
 acc <- sum(diag(conf)) / sum(conf)

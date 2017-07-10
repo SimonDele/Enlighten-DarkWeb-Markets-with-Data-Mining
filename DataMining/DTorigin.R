@@ -5,11 +5,9 @@
 
 #data <- as.data.frame(read.csv("alphaClean.csv"))
 
-#install.packages("RGtk2")
 
 library(stringr)
 library(rattle)
-library(RGtk2)
 library(rpart)
 library(rpart.plot)
 library(RColorBrewer)
@@ -33,7 +31,7 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(dectree.data$category, regex)
 dectree.data$category <- cat[,3] # keep only the second part
 
-country <- "United States"
+country <- "United Kingdom"
 
 # Conversion to binary value
 # -> 1 if the origin = country
@@ -43,6 +41,9 @@ dectree.data$origin <-gsub(TRUE, 1, dectree.data$origin)
 dectree.data$origin <- gsub(FALSE, 0, dectree.data$origin)
 dectree.data$origin <- as.numeric(dectree.data$origin)
 
+# Random rows :
+dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
+
 #---------------------
 #   Decision tree
 #---------------------
@@ -51,7 +52,7 @@ dectree.data$origin <- as.numeric(dectree.data$origin)
 train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
 
 # Creation of the tree
-tree <- rpart(origin ~.,data=train, method="class",control=rpart.control(cp=0.001, minsplit=50))
+tree <- rpart(origin ~.,data=train, method="class",control=rpart.control(cp=0.01))
 
 # Plot
 fancyRpartPlot(tree)
