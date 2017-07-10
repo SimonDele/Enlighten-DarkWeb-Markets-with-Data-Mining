@@ -3,10 +3,13 @@
 #   Prediction of the country knowing the price and the category
 #-----------------------------------------------------------------------
 
-#data <- as.data.frame(read.csv("alpha.csv"))
+#data <- as.data.frame(read.csv("alphaClean.csv"))
+
+#install.packages("RGtk2")
 
 library(stringr)
 library(rattle)
+library(RGtk2)
 library(rpart)
 library(rpart.plot)
 library(RColorBrewer)
@@ -48,10 +51,11 @@ dectree.data$origin <- as.numeric(dectree.data$origin)
 train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
 
 # Creation of the tree
-tree <- rpart(origin ~.,data=train, method="class")
+tree <- rpart(origin ~.,data=train, method="class",control=rpart.control(cp=0.001, minsplit=50))
 
 # Plot
 fancyRpartPlot(tree)
+
 
 #--------------------
 #   Prediction
