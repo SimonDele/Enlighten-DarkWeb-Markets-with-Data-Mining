@@ -7,6 +7,7 @@
 
 library(stringr)
 library(e1071)
+library(arules)
 
 
 #-----------------
@@ -25,16 +26,25 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(bayesian.data$category, regex)
 bayesian.data$category <- cat[,3] # keep only the second part
 
+#Get rid of lines with Null as products_sold value
 bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, "NULL"),]
 
+#Convert products_sold to numeric and discretize it
 bayesian.data$products_sold <- as.numeric(as.character(bayesian.data$products_sold))
-
 bayesian.data$products_sold <- discretize(bayesian.data$products_sold, "frequency", categories = 10)
 
+
+#Given timestamp and sold_since calculate the lifetime of the ad
 bayesian.data$sold_since <-  as.Date(bayesian.data$sold_since)
 bayesian.data$timestamp <-  as.Date(bayesian.data$timestamp)
 
-bayesian.data$timestamp - bayesian.data$sold_since
+bayesian.data$timestamp <- bayesian.data$timestamp - bayesian.data$sold_since
+bayesian.data$timestamp <- as.numeric(bayesian.data$timestamp)
+#names(bayesian.data$timestamp) <- "lifetime"
+bayesian.data <- subset(bayesian.data, select= -c(sold_since))
+
+#Discretize timestamp variable
+bayesian.data$timestamp <- discretize(bayesian.data$timestamp, "frequency", categories = 10)
 
 #---------------------
 #   Bayesian stat
