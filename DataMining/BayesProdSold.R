@@ -1,6 +1,6 @@
 #----------------------------------------------------------------------
 #                  Bayesian Classification - Naive
-#   Prediction of the country knowing the seller / price / category
+#   Prediction of the product_sold knowing the seller / origin / price / category
 #-----------------------------------------------------------------------
 
 #data <- as.data.frame(read.csv("data.csv"))
@@ -13,13 +13,10 @@ library(e1071)
 #   New Data 
 #-----------------
 
-# Select all "Drugs & Chemicals" ads
-matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-bayesian.data <- data[matching_vector,]
 
 # Select the column of the data that are interesting
 # ie removing colunm like "id" or "url" that don't give any informations
-bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose))
+bayesian.data <- subset(data, select=c(origin,category,seller,priceUnitDose, products_sold, sold_since, timestamp ))
 # Subset : choose the colunm that you want
 
 # Handling : column category
@@ -28,16 +25,16 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(bayesian.data$category, regex)
 bayesian.data$category <- cat[,3] # keep only the second part
 
+bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, "NULL"),]
 
-#Get the main countries
-countries <- names(sort(table(bayesian.data$origin), decreasing = TRUE)[1:5])
-#Remove Worldwide if present 
-countries <- countries[!is.element(countries, "Worldwide")]
+bayesian.data$products_sold <- as.numeric(as.character(bayesian.data$products_sold))
 
-#select the lines corresponding to one of the country in countries
-bayesian.data <-subset(bayesian.data, origin %in% countries) 
+bayesian.data$products_sold <- discretize(bayesian.data$products_sold, "frequency", categories = 10)
 
-bayesian.data$origin <- factor(bayesian.data$origin, labels = countries)
+bayesian.data$sold_since <-  as.Date(bayesian.data$sold_since)
+bayesian.data$timestamp <-  as.Date(bayesian.data$timestamp)
+
+bayesian.data$timestamp - bayesian.data$sold_since
 
 #---------------------
 #   Bayesian stat
@@ -49,10 +46,11 @@ bayesian.data <- bayesian.data[sample(nrow(bayesian.data),nrow(bayesian.data),re
 train.data <- bayesian.data[1:floor(nrow(bayesian.data)/2),]
 pred.data <- bayesian.data[(floor(nrow(bayesian.data)/2)+1):nrow(bayesian.data),]
 
-model <- naiveBayes(origin ~ ., data =  train.data)
+model <- naiveBayes(products_sold ~ ., data =  train.data)
+
 
 preds <- predict(model, newdata = pred.data)
-conf_matrix <- table(preds, pred.data$origin)
+conf_matrix <- table(preds, pred.data$products_sold)
 acc <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
 print(conf_matrix)

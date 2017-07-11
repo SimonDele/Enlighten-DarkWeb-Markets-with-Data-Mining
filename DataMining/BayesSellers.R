@@ -1,13 +1,13 @@
 #----------------------------------------------------------------------
 #                  Bayesian Classification - Naive
-#   Prediction of the country knowing the seller / price / category
+#   Prediction of the Seller knowing the origin / price / category / products_sold
 #-----------------------------------------------------------------------
 
 #data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
 library(e1071)
-
+library(arules)
 
 #-----------------
 #   New Data 
@@ -19,7 +19,7 @@ bayesian.data <- data[matching_vector,]
 
 # Select the column of the data that are interesting
 # ie removing colunm like "id" or "url" that don't give any informations
-bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose))
+bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose, products_sold, sold_since ))
 # Subset : choose the colunm that you want
 
 # Handling : column category
@@ -29,15 +29,12 @@ cat <- str_match(bayesian.data$category, regex)
 bayesian.data$category <- cat[,3] # keep only the second part
 
 
-#Get the main countries
-countries <- names(sort(table(bayesian.data$origin), decreasing = TRUE)[1:5])
-#Remove Worldwide if present 
-countries <- countries[!is.element(countries, "Worldwide")]
+sellers <- names(sort(table(bayesian.data$seller), decreasing = TRUE))[1:10]
 
-#select the lines corresponding to one of the country in countries
-bayesian.data <-subset(bayesian.data, origin %in% countries) 
+bayesian.data <-subset(bayesian.data, seller %in% sellers)
 
-bayesian.data$origin <- factor(bayesian.data$origin, labels = countries)
+bayesian.data$seller <- factor(bayesian.data$seller, labels = sellers)
+
 
 #---------------------
 #   Bayesian stat
@@ -49,12 +46,15 @@ bayesian.data <- bayesian.data[sample(nrow(bayesian.data),nrow(bayesian.data),re
 train.data <- bayesian.data[1:floor(nrow(bayesian.data)/2),]
 pred.data <- bayesian.data[(floor(nrow(bayesian.data)/2)+1):nrow(bayesian.data),]
 
-model <- naiveBayes(origin ~ ., data =  train.data)
+model <- naiveBayes(seller ~ ., data =  train.data)
+
 
 preds <- predict(model, newdata = pred.data)
-conf_matrix <- table(preds, pred.data$origin)
+conf_matrix <- table(preds, pred.data$seller)
 acc <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
 print(conf_matrix)
 print(acc)
+
+
 
