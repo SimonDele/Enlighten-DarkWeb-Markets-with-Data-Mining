@@ -5,7 +5,6 @@
 
 #data <- as.data.frame(read.csv("alphaClean.csv"))
 
-
 library(stringr)
 library(rattle)
 library(rpart)
@@ -34,12 +33,9 @@ dectree.data$category <- cat[,3] # keep only the second part
 country <- "United Kingdom"
 
 # Conversion to binary value
-# -> 1 if the origin = country
-# -> 0 if the origin # country
+# -> TRUE if the origin = country
+# -> FALSE if the origin # country
 dectree.data$origin <-c(str_detect(dectree.data$origin, country))
-dectree.data$origin <-gsub(TRUE, 1, dectree.data$origin)
-dectree.data$origin <- gsub(FALSE, 0, dectree.data$origin)
-dectree.data$origin <- as.numeric(dectree.data$origin)
 
 # Random rows :
 dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
