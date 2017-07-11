@@ -21,7 +21,7 @@ dectree.data <- data[matching_vector,]
 
 # Select the column of the data that are interesting for the tree
 # ie removing colunm like "id" or "url" that don't give any informations
-dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose)) # products_sold
+dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose)) 
 # Subset : choose the colunm that you want
 
 # Handling : column categorie
@@ -30,22 +30,22 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(dectree.data$category, regex)
 dectree.data$category <- cat[,3] # keep only the second part
 
+# Handling : country
+tab_coun <- table(dectree.data$origin)
+tab_coun <- sort(tab_coun, decreasing=TRUE)  # Sorting (biggest in first)
+tab_coun <- tab_coun[1:15] # Taking only the most important : main sellers
+name_coun <- names(tab_coun)
+name_coun <- name_coun[!is.element(name_coun, "Worldwide")]
+# New data keeping only the main dealers
+dectree.data <-subset(dectree.data, origin %in% name_coun) 
 
 # Handling : seller
-tab_sell <- table(dectree.data$seller)
-tab_sell <- sort(tab_sell, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sell <- tab_sell[1:10] # Taking only the most important : main sellers
-name_sell <- names(tab_sell)
-# New data keeping only the main dealers
-dectree.data <-subset(dectree.data, seller %in% name_sell) 
-
-
-country <- "United Kingdom"
-
-# Conversion to binary value
-# -> TRUE if the origin = country
-# -> FALSE if the origin # country
-dectree.data$origin <-c(str_detect(dectree.data$origin, country))
+tab_sel <- table(dectree.data$seller)
+tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+tab_sel <- tab_sel[1:7] # Taking only the most important : main sellers
+name_sel <- names(tab_sel)
+# New data keeping only the main sellers
+dectree.data <-subset(dectree.data, seller %in% name_sel) 
 
 # Random rows :
 dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
@@ -54,11 +54,14 @@ dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replac
 #   Decision tree
 #---------------------
 
+# Factor
+dectree.data$origin <- factor(dectree.data$origin)
+
 # Half of the data for making the decision tree
 train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
 
 # Creation of the tree
-tree <- rpart(origin ~.,data=train, method="class",control=rpart.control(cp=0.0001)) 
+tree <- rpart(origin ~.,data=train, method="class") 
 
 # Plot
 fancyRpartPlot(tree)

@@ -30,25 +30,13 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(dectree.data$category, regex)
 dectree.data$category <- cat[,3] # keep only the second part
 
-# Handling : country
-tab_coun <- table(dectree.data$origin)
-tab_coun <- sort(tab_coun, decreasing=TRUE)  # Sorting (biggest in first)
-tab_coun <- tab_coun[1:11] # Taking only the most important : main sellers
-name_coun <- names(tab_coun)
-name_coun <- name_coun[!is.element(name_coun, "Worldwide")]
-# New data keeping only the main country
-dectree.data <-subset(dectree.data, origin %in% name_coun) 
-
-Sel <- "jnenfrancis"
-
-# For ex : (10 important dealers)
-# jnenfrancis, ALaurizen,ROCKETLABS, optiman, Fapppylicious 
-# GreenLeafLabs, FelixUK, ThreeKings, BenzoChems, seedsforeveryone 
-
-# Conversion to binary value
-# -> TRUE if the seller = Seller
-# -> FALSE if the seller # Seller
-dectree.data$seller <-c(str_detect(dectree.data$seller, Sel))
+# Handling : seller
+tab_sel <- table(dectree.data$seller)
+tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+tab_sel <- tab_sel[1:5] # Taking only the most important : main sellers
+name_sel <- names(tab_sel)
+# New data keeping only the main sellers
+dectree.data <-subset(dectree.data, seller %in% name_sel) 
 
 # Random rows :
 dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
@@ -56,6 +44,9 @@ dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replac
 #---------------------
 #   Decision tree
 #---------------------
+
+# Factor
+dectree.data$seller <- factor(dectree.data$seller)
 
 # Half of the data for making the decision tree
 train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
@@ -65,6 +56,7 @@ tree <- rpart(seller ~.,data=train, method="class")
 
 # Plot
 fancyRpartPlot(tree)
+
 
 #--------------------
 #   Prediction
