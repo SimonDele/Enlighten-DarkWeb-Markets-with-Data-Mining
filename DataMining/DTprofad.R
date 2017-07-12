@@ -40,8 +40,9 @@ dectree.data$timestamp <- dectree.data$timestamp - dectree.data$sold_since
 # Put all the result in the column timestamp 
 dectree.data$timestamp <- as.numeric(dectree.data$timestamp)
 # Remove the column sold_since
-dectree.data <- subset(dectree.data, select= -c(sold_since))
-
+#dectree.data <- subset(dectree.data, select= -c(sold_since))
+# 1 day on the market at least
+dectree.data <- dectree.data[which(dectree.data$timestamp > 0),]
 
 
 # products_sold during 1 week
