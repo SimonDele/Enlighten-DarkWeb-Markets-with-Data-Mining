@@ -31,7 +31,7 @@ bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, "NULL"),
 
 #Convert products_sold to numeric and discretize it
 bayesian.data$products_sold <- as.numeric(as.character(bayesian.data$products_sold))
-bayesian.data$products_sold <- discretize(bayesian.data$products_sold, "frequency", categories = 10)
+bayesian.data$products_sold <- discretize(bayesian.data$products_sold, "interval", categories = 10)
 
 
 #Given timestamp and sold_since calculate the lifetime of the ad
