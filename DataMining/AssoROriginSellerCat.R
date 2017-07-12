@@ -2,10 +2,11 @@
 #           Association rules # Apriori algo
 #----------------------------------------------------------
 
-#data <- as.data.frame(read.csv("data.csv"))
+data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
-
+library(arules)
+library(arulesViz)
 
 #Select all ads of "Drugs & Chemicals"
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
@@ -29,3 +30,9 @@ rules <- apriori(asso.data,
 
 rules.sorted <- sort(rules, by="lift")
 inspect(rules.sorted)
+
+#Plot graph of rules
+plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="Association Rules on the category and seller to deduce the country")
+
+
+

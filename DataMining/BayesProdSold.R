@@ -3,7 +3,7 @@
 #   Prediction of the product_sold knowing the seller / origin / price / category
 #-----------------------------------------------------------------------
 
-#data <- as.data.frame(read.csv("data.csv"))
+data <- as.data.frame(read.csv("data.csv"))
 
 library(stringr)
 library(e1071)
