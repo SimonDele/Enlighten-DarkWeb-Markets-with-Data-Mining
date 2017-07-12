@@ -70,11 +70,11 @@ pred <- predict(tree,test,type="class")
 
 # Analysis:
 
-# Comparison between the result and the prediction (prediction in colunm)
-conf <- table(test[,match("seller",names(test))],pred)
-
-# Accurency :
-acc <- sum(diag(conf)) / sum(conf)
+  # Comparison between the result and the prediction (prediction in colunm)
+  conf <- table(test[,match("seller",names(test))],pred)
+  
+  # Accurency :
+  acc <- sum(diag(conf)) / sum(conf)
 
 print(conf)
 print(acc)
