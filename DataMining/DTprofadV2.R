@@ -16,13 +16,9 @@ library(arules)
 #   New Data 
 #-----------------
 
-# Select all "Drugs & Chemicals" ads
-matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-dectree.data <- data[matching_vector,]
-
 # Select the column of the data that are interesting for the tree
 # ie removing colunm like "id" or "url" that don't give any informations
-dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose,timestamp,sold_since,products_sold)) 
+dectree.data <- subset(data, select=c(origin,category,seller,priceUnitDose,timestamp,sold_since,products_sold)) 
 # Subset : choose the colunm that you want
 
 # Handling : categorie
@@ -31,30 +27,22 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(dectree.data$category, regex)
 dectree.data$category <- cat[,3] # keep only the second part
 
-#dectree.data <- dectree.data[which(dectree.data$origin != "Worldwide"),]
-'
-tab_cat <- table(dectree.data$category)
-tab_cat <- sort(tab_cat, decreasing=TRUE)  # Sorting (biggest in first)
-tab_cat <- tab_cat[1:5] # Taking only the most important : main sellers
-name_cat <- names(tab_cat)
-name_cat <- name_cat[!is.element(name_cat, "Other")]
-# New data keeping only the main dealers
-dectree.data <-subset(dectree.data, category %in% name_cat)
-'
+# Handling : products_sold
+dectree.data$products_sold <- gsub(pattern="NULL", replacement="0", dectree.data$products_sold)
+dectree.data$products_sold <- as.numeric(dectree.data$products_sold)
+
+#dectree.data <- dectree.data[which(dectree.data$products_sold >= 50),]
 
 # Handling : seller
 tab_sel <- table(dectree.data$seller)
 tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sel <- tab_sel[1:10] # Taking only the most important : main sellers
+tab_sel <- tab_sel[1:50] # Taking only the most important : main sellers
 name_sel <- names(tab_sel)
 name_sel <- name_sel[!is.element(name_sel, "NULL")]
 # New data keeping only the main sellers
 dectree.data <-subset(dectree.data, seller %in% name_sel)
 
-
-# Handling : products_sold
-dectree.data$products_sold <- gsub(pattern="NULL", replacement="0", dectree.data$products_sold)
-dectree.data$products_sold <- as.numeric(dectree.data$products_sold)
+dectree.data <- dectree.data[which(dectree.data$products_sold >= 10),]
 
 # Handling : timestamp and sold_since -> calculate the lifetime of the ad
 dectree.data$sold_since <-  as.Date(dectree.data$sold_since)
@@ -74,7 +62,7 @@ for(i in 1 : length(dectree.data$products_sold)) {
 dectree.data$ProdSoldPerWeek <- productSoldPerWeek
 
 # Discretize the variable
-dectree.data$ProdSoldPerWeek <- discretize(dectree.data$ProdSoldPerWeek, "frequency", categories = 10)
+dectree.data$ProdSoldPerWeek <- discretize(dectree.data$ProdSoldPerWeek, "frequency", categories = 3)
 
 # Remove the column sold_since
 dectree.data <- subset(dectree.data, select= -c(sold_since,products_sold,timestamp))
