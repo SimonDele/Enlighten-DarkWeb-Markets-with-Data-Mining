@@ -54,6 +54,7 @@ conf_matrix <- table(preds, pred.data$seller)
 acc <- sum(diag(conf_matrix)) / sum(conf_matrix)
 
 print(conf_matrix)
+print("accuracy")
 print(acc)
 
 

@@ -19,7 +19,7 @@ bayesian.data <- data[matching_vector,]
 
 # Select the column of the data that are interesting
 # ie removing colunm like "id" or "url" that don't give any informations
-bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose))
+bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose, sold_since))
 # Subset : choose the colunm that you want
 
 # Handling : column category
@@ -30,7 +30,7 @@ bayesian.data$category <- cat[,3] # keep only the second part
 
 
 #Get the main countries
-countries <- names(sort(table(bayesian.data$origin), decreasing = TRUE)[1:5])
+countries <- names(sort(table(bayesian.data$origin), decreasing = TRUE)[1:10])
 #Remove Worldwide if present 
 countries <- countries[!is.element(countries, "Worldwide")]
 
@@ -38,6 +38,7 @@ countries <- countries[!is.element(countries, "Worldwide")]
 bayesian.data <-subset(bayesian.data, origin %in% countries) 
 
 bayesian.data$origin <- factor(bayesian.data$origin, labels = countries)
+bayesian.data$seller <- factor(bayesian.data$seller)
 
 #---------------------
 #   Bayesian stat
