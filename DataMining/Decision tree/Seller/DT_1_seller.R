@@ -3,7 +3,7 @@
 #   Prediction of the seller knowing the price / category / origin
 #-----------------------------------------------------------------------
 
-#data <- as.data.frame(read.csv("alphaClean.csv"))
+data <- as.data.frame(read.csv("alphaClean.csv"))
 
 library(stringr)
 library(rattle)
