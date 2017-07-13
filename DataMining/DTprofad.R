@@ -3,7 +3,7 @@
 #   Prediction of profitability of an ad knowing the seller / price / category
 #-------------------------------------------------------------------------------
 
-#data <- as.data.frame(read.csv("alphaClean.csv"))
+data <- as.data.frame(read.csv("alphaClean.csv"))
 
 library(stringr)
 library(rattle)
