@@ -20,6 +20,10 @@ mainfont: Arial
 #install.packages("units")
 #install.packages("ggmap")
 #install.packages("plotrix")
+#install.packages("rattle")
+#install.packages("rpart")
+#install.packages("rpart.plot")
+#install.packages("RColorBrewer")
 #install.packages("arules")
 #install.packages("arulesViz")
 #install.packages("e1071")
@@ -34,13 +38,18 @@ library(units)
 library(ggmap)
 library(plotrix)
 
+# Decision Tree
+library(rattle)
+library(rpart)
+library(rpart.plot)
+library(RColorBrewer)
+
 # Association rules
 library(arules)
 library(arulesViz)
 
 # Bayesian classification, naive algorithm
 library(e1071)
-
 
 ```
 
@@ -65,21 +74,22 @@ We have perform basics statics in order to discover the data.
 
 NumberOfAds <- function() {
 
-  #Get rid of unwanted orign like Worldwide and Null which are not relevant
+  # Get rid of unwanted orign like Worldwide and Null which are not relevant
   matching_vector <- c(  !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
   
   sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
   
-  #Bar plot with the total number ofs ads in each country
+  # Bar plot with the total number ofs ads in each country
   
   par(las=1)#display yaxis horizontally
   par(mar=c(6,8,4,3)) #give space for yaxis
   
   barp <- barplot(sumup[1:10], main="Number of ads in the World", xlim= c(0,max(sumup[1:10])+500), xlab="Number of ads",horiz = TRUE,  col = rainbow(10), cex.names = 0.8)
   
-  #ad numbers at the end of each bar
+  # Ad numbers at the end of each bar
   barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black")
   
+  # Frame
   box(which = "outer", lty = "solid")
 
 }
@@ -96,6 +106,57 @@ The bar-chart represents the 10 main dealers in the world regarding the number o
     matching_vector <- c( (str_detect(data$category, drugName)))
     return(matching_vector)
   }
+```
+
+
+```{r}
+
+categ <- function(){
+  
+  cat <- c()
+  
+  for(i in 1:length(data$category)) {
+    cat[i] <- unlist(strsplit(as.character(data$category[i]), "/"))[2]
+    if(is.na(cat[i])) {cat[i] <- "Other Listings"}
+  }
+  
+  tab_cat <- table(cat)
+  #tab_cat <- sort(tab_cat, deacrising=TRUE)
+  
+  radial.pie(tab_cat,labels=names(tab_cat),mar=c(3,0,3,0))
+}
+
+categ()
+
+```
+
+```{r}
+RateDrugAd <- function() {
+
+  NbAd <- nrow(data)
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  drug.data <- data[matching_vector,]
+  
+  NbAdDrug <- nrow(drug.data)
+  
+  rate <- (NbAdDrug/NbAd)*100
+  
+  # Select all "Frau" ads
+  matching_vector <- c( str_detect(data$category, "Fraud"))
+  fraud.data <- data[matching_vector,]
+  
+  NbAdFraud <- nrow(fraud.data)
+  
+  rate2 <- (NbAdFraud/NbAd)*100
+  
+  sprintf("Drugs Market represents %.2f %% of the AlphaBay Market \n Fraud : %.2f %%", rate,rate2)
+  
+}
+
+RateDrugAd()
+
 ```
 
 
@@ -121,7 +182,6 @@ DistributionDrugs <- function() {
   }
   
   freq <- as.numeric(freq)
-  
   res <- data.frame(drugs, freq)
   res <- res[order(res$freq, decreasing = TRUE),]
   
@@ -130,7 +190,6 @@ DistributionDrugs <- function() {
   #----------------------
   
   # 1- Labels :
-  
   # Calculation in percentage
   piepercent<- round(100*res$freq/sum(res$freq), 1)
     # round(a,1) : one digit after the comma
@@ -153,6 +212,7 @@ DistributionDrugs <- function() {
   # 5- Legend :
   legend(x=-2.5,y=-1.1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)
   
+  # Frame
   box(which = "inner", lty = "solid")
 }
 
@@ -172,19 +232,19 @@ At first sight, drugs and chemicals are principle products dealt in the black ma
 
 NumberOfAdsDrugs <- function(){
 
-  #Get rid of unwanted orign like Worldwide and Null which are not relevant
+  # Get rid of unwanted orign like Worldwide and Null which are not relevant
   matching_vector <- c( str_detect(data$category, "Drugs") & !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
   
   sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
   
-  
-  #Bar plot with the total number of ads of Drugs in each country
+  # Bar plot with the total number of ads of Drugs in each country
   par(las=1)#display yaxis horizontally
   par(mar=c(6,8,3,3)) #give space for yaxis
     
   barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Number of ads",xlim = c(0,max(sumup[1:10]+500)),  col = rainbow(10), cex.names = 0.8, horiz = TRUE)
   barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black")
   
+  # Frame
   box(which = "outer", lty = "solid")
 
 }
@@ -203,27 +263,27 @@ At first sight, the chart is similar to the first one. This is coherent, indeed 
 
 MapEurope <- function() {
 
-  #Select the ads about drugs and get rid of the irrelevant orign Worlwide
+  # Select the ads about drugs and get rid of the irrelevant orign Worlwide
   matching_vector <- c( (str_detect(data$category, "Drugs") ) & !str_detect(data$origin, "Worldwide"))
   
   sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
   
-  #read a file containing the latitude and longitude of the "center" of each country
+  # Read a file containing the latitude and longitude of the "center" of each country
   data_country <- read.csv("./Stats/lat_long.csv")
   lat_long <- data.frame(Country = data_country$Country , long=  data_country$Longitude..average., lat=  data_country$Latitude..average.)
   
-  #Create a data.frame with the name of the country and its nb of ads
+  # Create a data.frame with the name of the country and its nb of ads
   v <- data.frame(name= names(sumup) , amount = sumup)
   
-  #Merge v with lat_long in order to have a data with Country/NbofAds/lattitude/longitude
+  # Merge v with lat_long in order to have a data with Country/NbofAds/lattitude/longitude
   data_plot <- merge(v, lat_long,  by.x = "name", by.y = "Country" )
   
-  #Create a map of EUROPE with circles showing the amount of ads
+  # Create a map of EUROPE with circles showing the amount of ads
   map <- get_map(location = 'Europe', zoom =4 )
   mapPoints <- ggmap(map)  + xlab("") + ylab("") + ggtitle("Number of ads of Drugs in the World")+
-    geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(0,14)) 
+    geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(0,13)) 
   
-  #Display
+  # Display
   mapPoints
 
 }
@@ -283,13 +343,11 @@ country_Export <- function() {
   tab <- sort(tab, decreasing = TRUE)  # Sorting (biggest in first) 
   tab <- tab[1:10] # Taking only the most important
   
-  
   #-----------------
   #    Pie Chart     
   #-----------------
   
   # 1- Labels :
-  
   # Calculation in percentage
   piepercent<- round(100*tab/sum(tab), 1)
      # round(a,1) : one digit after the comma
@@ -312,6 +370,7 @@ country_Export <- function() {
   # 5- Legend :
   legend(x=-2.3,y=-1.1,names(piepercent), cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
   
+  # Frame
   box(which = "inner", lty = "solid")
 }
 
@@ -369,13 +428,11 @@ country_Export <- function() {
   tab <- sort(tab, decreasing = TRUE)  # Sorting (biggest in first) 
   tab <- tab[1:10] # Taking only the most important
   
-  
   #-----------------
   #    Pie Chart     
   #-----------------
   
   # 1- Labels :
-  
   # Calculation in percentage
   piepercent<- round(100*tab/sum(tab), 1)
      # round(a,1) : one digit after the comma
@@ -398,6 +455,7 @@ country_Export <- function() {
   # 5- Legend :
   legend(x=-2.3,y=-1.1,names(piepercent), cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
 
+  # Frame
   box(which = "inner", lty = "solid")
   
 }
@@ -492,7 +550,6 @@ Country_Export_Import <- function() {
     par(mfrow = c(1,2))
     
     # 1- Labels :
-    
     # Calculation in percentage
     piepercent <- round(100*tab[,2]/sum(tab[,2]), 1)
     # round(a,1) : one digit after the comma
@@ -509,14 +566,13 @@ Country_Export_Import <- function() {
     
     # 3- Plot :
     pie(piepercent,labels=lab,col=c)
-    mtext("Exportation",cex=1.1)
+    mtext("Exportation",cex=1)
     
     #----------------------------
     #    Pie Chart - Importation     
     #----------------------------
     
     # 1- Labels :
-    
     # Calculation in percentage
     piepercent <- round(100*tab[,3]/sum(tab[,3]), 1)
     # round(a,1) : one digit after the comma
@@ -530,16 +586,17 @@ Country_Export_Import <- function() {
 
     # 2- Plot :
     pie(piepercent, labels=lab, col=c)
-    mtext("Importation",cex=1.1)
+    mtext("Importation",cex=1)
     
     #------------------
     #   General - Plot     
     #-----------------
     
-    par(oma=c(0,0,2,0))
+    par(oma=c(0,0,1.8,0))
     title("France",outer=TRUE)
-    legend(x=-3.9,y=-1.1,tab[,1], cex = 0.8, fill=c,ncol=3,border=NA, xpd=NA)
+    legend(x=-4,y=-1,tab[,1], cex = 0.8, fill=c,ncol=3,border=NA, xpd=NA)
     
+    # Frame
     box(which = "outer", lty = "solid")
     
 }
@@ -571,12 +628,13 @@ DrugsPrices <- function() {
   
   priceDrugs <- priceDrugs[order(priceDrugs$med, decreasing=TRUE), ]
   
-  par(las=1)#display yaxis horizontally
-  par(mar=c(4,8,3,2)) #give space for yaxis
+  par(las=1) # Display yaxis horizontally
+  par(mar=c(4,8,3,2)) # Give space for yaxis
   
   barp <- barplot(priceDrugs$med, main="Average Price of Drugs in the World", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
   barp <- text(y = barp, x = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=4 , cex = 0.8, col= "Black")
   
+  # Frame
   box(which = "outer", lty = "solid")
   
   return (priceDrugs)
@@ -587,7 +645,7 @@ priceDrugs <- DrugsPrices()
 ```
 9. Finally, we were looking to some information  about the price of street sellers for same drugs as above. Thus, we gathered these information in articles and websites. Unfortunately, we failed to obtain information on some drugs. Below is the result of we found.
 
-```{r Comparison articles and data, message=FALSE, warning=FALSE}
+```{r Comparison articles & data, message=FALSE, warning=FALSE}
 
 #-----------------------------------------
 #   Prices find on articles
@@ -606,7 +664,7 @@ DrugsPricesDoc <- function(){
   doc_drugs <- t(data.frame(ref1, ref2, ref3, ref4, ref5))
   colnames(doc_drugs) <- cols
   
-  #calculate the mean price of each drugs find on articles
+  # Calculate the mean price of each drugs find on articles
   price_doc <- c()
   for(i in 1 : length(cols)){
     price_doc[i] <- summary(as.numeric(doc_drugs[,i]))[[4]]
@@ -614,16 +672,16 @@ DrugsPricesDoc <- function(){
   price_doc.data <- data.frame(cols, price_doc)
   
   
-  #merge the previous dataframe which correspond to the mean price of each drugs in the data
+  # Merge the previous dataframe which correspond to the mean price of each drugs in the data
   # with the dataframe created above
   beside_plot <- merge(price_doc.data, priceDrugs, by.x ="cols", by.y ="drugs") 
   
   rownames(beside_plot) <- beside_plot[,1]
   beside_plot <- beside_plot[,-1]
   
-  #Creating the barplot
+  # Creating the barplot
   par(las=1)#display yaxis horizontally
-  par(mar=c(6,8,4,3)) #give space for yaxis
+  par(mar=c(6,8,4,3)) # Give space for yaxis
  
   b <- barplot(rbind(beside_plot[,1], beside_plot[,2]), main="Average price of Drugs", xlim = c(0, 400),
           xlab="Price of Drugs", beside=TRUE, names.arg = rownames(beside_plot), col=1:2, horiz = TRUE, space = c(0,0.4), cex.names = 0.8)
@@ -635,6 +693,7 @@ DrugsPricesDoc <- function(){
   
   legend("topright",lab,fill=1:2, cex=0.8)
   
+  # Frame
   box(which = "outer", lty = "solid")
 }
 
@@ -648,30 +707,195 @@ Globally we can notice that price of the street sellers are often largely higher
 
 Secondly, we have performed some data minig techniques in order to discover hidden rule and correlation in the database and also to predict the value of one variable given other values.
 
+## - Decision tree
+
+```{r DTsellers}
+#----------------------------------------------------------------------
+#                  Decision tree - CART algorithm
+#   Prediction of the seller knowing the price / category / origin
+#                               Plot
+#-----------------------------------------------------------------------
+
+Dtsellers <- function(){  
+
+  #-----------------
+  #   New Data 
+  #-----------------
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  dectree.data <- data[matching_vector,]
+  
+  # Select the column of the data that are interesting for the tree
+  # ie removing colunm like "id" or "url" that don't give any informations
+  dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose))
+  # Subset : choose the colunm that you want
+  
+  # Handling : column categorie
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(dectree.data$category, regex)
+  dectree.data$category <- cat[,3] # keep only the second part
+  
+  # Handling : seller
+  tab_sel <- table(dectree.data$seller)
+  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_sel <- tab_sel[1:5] # Taking only the most important : main sellers
+  name_sel <- names(tab_sel)
+  # New data keeping only the main sellers
+  dectree.data <-subset(dectree.data, seller %in% name_sel) 
+  
+  # Random rows :
+  dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
+  
+  #---------------------
+  #   Decision tree
+  #---------------------
+  
+  # Factor
+  dectree.data$seller <- factor(dectree.data$seller)
+  
+  # Half of the data for making the decision tree
+  train.data <- dectree.data[1:(floor(nrow(dectree.data))/2),]
+  
+  # Creation of the tree
+  tree <- rpart(seller ~.,data=train.data, method="class") 
+  
+  # Plot
+  fancyRpartPlot(tree)
+
+  # Frame
+  box(which = "outer", lty = "solid")
+  
+  #--------------------
+  #   Prediction
+  #--------------------
+  
+  # The other half for the prediction
+  pred.data <- dectree.data[(floor(nrow(dectree.data)/2)+1):nrow(dectree.data),]
+  
+  # Making prediction
+  pred <- predict(tree,pred.data,type="class")
+  
+  # Analysis:
+  
+    # Comparison between the result and the prediction (prediction in colunm)
+    conf <- table(pred.data[,match("seller",names(pred.data))],pred)
+    
+    # Accurency
+    acc <- sum(diag(conf)) / sum(conf)
+    
+  
+  print(conf)
+  sprintf("The accurency is : %.2f %%", acc*100)
+ 
+}
+
+Dtsellers()
+
+```
+
+```{r}
+#----------------------------------------------------------------------
+#                  Decision tree - CART algorithm
+#   Prediction of the seller knowing the price / category / origin
+#                              Results
+#-----------------------------------------------------------------------
+
+Dtsellers2 <- function(){  
+
+  #-----------------
+  #   New Data 
+  #-----------------
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  dectree.data <- data[matching_vector,]
+  
+  # Select the column of the data that are interesting for the tree
+  # ie removing colunm like "id" or "url" that don't give any informations
+  dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose))
+  # Subset : choose the colunm that you want
+  
+  # Handling : column categorie
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(dectree.data$category, regex)
+  dectree.data$category <- cat[,3] # keep only the second part
+  
+  # Handling : seller
+  tab_sel <- table(dectree.data$seller)
+  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_sel <- tab_sel[1:13] # Taking only the most important : main sellers
+  name_sel <- names(tab_sel)
+  # New data keeping only the main sellers
+  dectree.data <-subset(dectree.data, seller %in% name_sel) 
+  
+  # Random rows :
+  dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
+  
+  #---------------------
+  #   Decision tree
+  #---------------------
+  
+  # Factor
+  dectree.data$seller <- factor(dectree.data$seller)
+  
+  # Half of the data for making the decision tree
+  train.data <- dectree.data[1:(floor(nrow(dectree.data))/2),]
+  
+  # Creation of the tree
+  tree <- rpart(seller ~.,data=train.data, method="class") 
+
+  #--------------------
+  #   Prediction
+  #--------------------
+  
+  # The other half for the prediction
+  pred.data <- dectree.data[(floor(nrow(dectree.data)/2)+1):nrow(dectree.data),]
+  
+  # Making prediction
+  pred <- predict(tree,pred.data,type="class")
+  
+  # Analysis:
+  
+    # Comparison between the result and the prediction (prediction in colunm)
+    conf <- table(pred.data[,match("seller",names(pred.data))],pred)
+    
+    # Accurency
+    acc <- sum(diag(conf)) / sum(conf)
+  
+  print(conf)
+  sprintf("The accurency is : %.2f %%", acc*100)
+}
+
+Dtsellers2()
+```
+
+
+
 ## - Association rule
 
 We have wondered if there are links between some drugs. That is to say, if this is possible to cluster some drugs.
 To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of "Drugs & Chemicals". In each cell, value is True or False if the dealer has already sold something in this sub-category.
 Then we have applied Apriori algorithm. We fixed one drug, that must be in the itemset. Here it is Ecstasy. The result can be seen below.
 
-```{r Ass Rules Sellers Category}
+```{r Ass Rules Sellers-Category}
 
- 
 #--------------------------------------------------------
 #       Association Rules - Apriori algorithm     
 #     Guess if this dealer is selling this drugs
 #--------------------------------------------------------
 
-AssoRSellersCat <- function(){  
+AssRSellersCat <- function(){
+  
   #------------------------------
   #  New Data frame for analysis
   #------------------------------
   
-  #Select all ads of "Drugs & Chemicals"
+  # Select all ads of "Drugs & Chemicals"
   matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
   data_drugs <- data[matching_vector, ]
-  
-  #data_drugs$category <- gsub("/Drugs & Chemicals/", "", data_drugs$category)
   
   # Handling of this categories
   # Regular expression for spliting the categories
@@ -683,25 +907,22 @@ AssoRSellersCat <- function(){
   matching_vector <- !c( str_detect(data_drugs$category, "Other"))
   data_drugs <- data_drugs[matching_vector, ]
   
-  #List all the sellers
+  # List all the sellers
   sellers <-sort(table(data_drugs$seller), decreasing = TRUE)
   sellers <- sellers[ sellers != "Null"]
   sellers <- sellers [1:100]
-  
   
   #List all categories concerning drugs
   list_category <- table(data_drugs[,"category"])
   list_cat_drugs <- list_category [ list_category != 0]
   
+# Step 1 : initialise a data.frame with the information of the first seller
   
-  #Step 1 : initialise a data.frame with the information of the first seller
-  
-  #Select all categories of the seller  
+  # Select all categories of the seller  
   matching_vector <- c( str_detect(data$seller, names(sellers)[1]))
   cat_seller <-summary(data.frame(data[matching_vector, "category"]))
   
-  
-  #Loop which creates a boolean vector which tells if the seller sells stuffs in each category 
+  # Loop which creates a boolean vector which tells if the seller sells stuffs in each category 
   bool_cat <-c()
   bool_vec <-c()
   for( i in 1: length(list_cat_drugs)){
@@ -718,15 +939,14 @@ AssoRSellersCat <- function(){
   cat_seller.data <- t(data.frame(bool_cat))
   colnames(cat_seller.data) <- names(list_cat_drugs)
   
-  #Step 2 : Do the same for the other sellers
+#Step 2 : Do the same for the other sellers
   
   for(k in 2 : length(sellers)){
-    #Select all categories of the seller  
+    # Select all categories of the seller  
     matching_vector <- c( str_detect(data$seller, names(sellers)[k]))
     cat_seller <-summary(data.frame(data[matching_vector, "category"]))
     
-  
-    #Loop which creates a boolean vector which tells if the seller sells stuffs in each category 
+    # Loop which creates a boolean vector which tells if the seller sells stuffs in each category 
     bool_cat <-c()
     bool_vec <-c()
     for( i in 1: length(list_cat_drugs)){
@@ -745,14 +965,12 @@ AssoRSellersCat <- function(){
   }
   
   rownames(cat_seller.data)<- names(sellers)
-  
-  
+
   #-------------------------
   #      Ass Rules
   #-------------------------
   
-  
-  #Association Rules with rhs containing "Ecstasy" only
+  # Association Rules with rhs containing "Ecstasy" only
   rules <- apriori(cat_seller.data,
                    parameter = list(minlen=2, supp=0.05, conf=0.8),
                    appearance = list(rhs=c("Ecstasy"),default="lhs"),
@@ -761,47 +979,48 @@ AssoRSellersCat <- function(){
   rules.sorted <- sort(rules, by="lift")
   inspect(rules.sorted, linebreak = TRUE)
   
-  #Plot graph of rules
+  # Plot graph of rules
   plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="")
   mtext("Association Rules on the product range of sellers" , cex = 1.2)
   
+  # Frame
   box(which = "outer", lty = "solid")
 
 }
 
-AssoRSellersCat()
+AssRSellersCat()
 
 ```
 
 The algorithm succeeds to find some rules in the data frame that means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is above 80% that means that if we have the itemset on the left we are almost certain to have the drug on the right. 
 We can interpret from these rules that sellers often deal more than one product. And these products can be clustered. 
 
-```{r}
+```{r Ass Rules Origin}
 #--------------------------------------------------------
 #       Association Rules - Apriori algorithm     
-#     Guess if this dealer is selling this drugs
+#     Guess if United States is the origin of the ad
 #--------------------------------------------------------
 
-AssoROriginSellerCat <- function(){  
+AssROriginSellerCat <- function(){  
   #------------------------------
   #  New Data frame for analysis
   #------------------------------
 
-  #Select all ads of "Drugs & Chemicals"
+  # Select all ads of "Drugs & Chemicals"
   matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
   data_drugs <- data[matching_vector, ]
   
-  #Select some columns
+  # Select some columns
   asso.data <- subset(data_drugs, select = c(origin,category))
   
-  #Get rid of the first part of the category name "/Drugs & Chemicals/"
+  # Get rid of the first part of the category name "/Drugs & Chemicals/"
   asso.data$category <- gsub(pattern = "/Drugs & Chemicals/", replacement = "", asso.data$category)
   
   asso.data$origin <- factor(asso.data$origin)
   asso.data$category <-factor(asso.data$category)
- # asso.data$seller <- factor(asso.data$seller)
+  # asso.data$seller <- factor(asso.data$seller)
   
-  #Association Rules with rhs containing one given country only
+  # Association Rules with rhs containing one given country only
   rules <- apriori(asso.data,
                    parameter = list(minlen=2, supp=0.002, conf=0.5),
                    appearance = list(rhs=c("origin=United States"),default="lhs"),
@@ -810,27 +1029,26 @@ AssoROriginSellerCat <- function(){
   rules.sorted <- sort(rules, by="lift")
   inspect(rules.sorted, linebreak = TRUE)
   
-  #Plot graph of rules
+  # Plot graph of rules
   plot(rules.sorted, method="graph", control=list(type="items"),main ="")
   mtext("Association Rules on the category and seller to deduce the country" , cex = 1.2)
   
+  # Frame
   box(which = "outer", lty = "solid")
-  
 
 }
 
-AssoROriginSellerCat()
-
+AssROriginSellerCat()
 
 ```
 
 
 
-```{r}
-#----------------------------------------------------------------------
-#                  Bayesian Classification - Naive
+```{r Bayesian Sellers}
+#----------------------------------------------------------------------------------
+#                       Bayesian Classification - Naive
 #   Prediction of the Seller knowing the origin / price / category / products_sold
-#-----------------------------------------------------------------------
+#-----------------------------------------------------------------------------------
 
 BayesSellers <- function(){
   #-----------------
@@ -852,14 +1070,12 @@ BayesSellers <- function(){
   cat <- str_match(bayesian.data$category, regex)
   bayesian.data$category <- cat[,3] # keep only the second part
   
-  
   sellers <- names(sort(table(bayesian.data$seller), decreasing = TRUE))[1:10]
   
   bayesian.data <-subset(bayesian.data, seller %in% sellers)
   
   bayesian.data$seller <- factor(bayesian.data$seller, labels = sellers)
-  
-  
+
   #---------------------
   #   Bayesian stat
   #---------------------
@@ -878,8 +1094,7 @@ BayesSellers <- function(){
   acc <- sum(diag(conf_matrix)) / sum(conf_matrix)
   
   print(conf_matrix)
-  print("accuracy")
-  print(acc)
+  sprintf("The accurency is : %.2f %%", acc*100)
 }
 
 BayesSellers()
