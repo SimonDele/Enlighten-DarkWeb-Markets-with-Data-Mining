@@ -5,9 +5,9 @@ computerReadable <- function(database) {
 
 oz_conversion <- 28.3495
     
-#####################################################################
+#--------------------------------------------------------------------
 #                     Handling : Dose and unit
-#####################################################################
+#--------------------------------------------------------------------
 
     # 1- Extraction of characters matching with the dose and unit in the title
 
@@ -81,9 +81,9 @@ for(i in 1:length(database$unit)) {
     }
 } 
 
-#####################################################################
+#-------------------------------------------------------------------
 #                     Handling : Quantity
-#####################################################################
+#-------------------------------------------------------------------
 
     # 1- Extraction of characters matching with the quantity in the title
 
@@ -114,9 +114,9 @@ database$quantity <- gsub(pattern=",", replacement="", database$quantity)
 database$quantity <- as.numeric(database$quantity)
 
 
-#####################################################################
+#--------------------------------------------------------------------
 #                       Handling : Price
-#####################################################################
+#--------------------------------------------------------------------
 
     # 1- column price as numeric :
     
@@ -142,8 +142,6 @@ for(i in 1:length(database$quantity)) {
 #Insertion in the data frame
 database$priceUnit <- price_per_unit
 
-    
-      
   # 3- Price per unit per dose :
   
 # Creation of a new vector with the price per unit per dose
