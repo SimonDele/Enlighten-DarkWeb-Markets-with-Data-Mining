@@ -38,4 +38,4 @@ data <- computerReadable(data)
 #                  exportation of the new data
 #--------------------------------------------------------------------
 
-write.csv(data, "data2.csv")
+write.csv(data, "dataClean.csv")
