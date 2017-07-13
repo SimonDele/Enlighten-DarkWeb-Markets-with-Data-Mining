@@ -249,7 +249,7 @@ data <- ComputerReadable()
 ```
 
 
-# - Statistics
+# - Basic Statistics
 
 We have perform basics statics in order to discover the data. 
 
@@ -843,6 +843,15 @@ DrugsPricesDoc()
 
 Globally we can notice that price of the street sellers are often largely higher than AlphaBay ads. In few cases both prices tend to be similar.
 
+# - Data mining
+
+Secondly, we have performed some data minig techniques in order to discover hidden rule and correlation in the database and also to predict the value of one variable given other values.
+
+## - Association rule
+
+We have wondered if there are links between some drugs. That is to say, if this is possible to cluster some drugs.
+To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of "Drugs & Chemicals". In each cell, value is True or False if the dealer has already sold something in this sub-category.
+Then we have applied Apriori algorithm. We fixed one drug, that must be in the itemset. Here it is Ecstasy. The result can be seen below.
 
 ```{r Ass Rules Sellers Category}
 
@@ -963,6 +972,9 @@ AssoRSellersCat()
 
 ```
 
+The algorithm succeeds to find some rules in the data frame that means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is above 80% that means that if we have the itemset on the left we are almost certain to have the drug on the right. 
+We can interpret from these rules that sellers often deal more than one product. And these products can be clustered. 
+
 ```{r}
 #--------------------------------------------------------
 #       Association Rules - Apriori algorithm     
@@ -1010,6 +1022,8 @@ AssoROriginSellerCat()
 
 
 ```
+
+
 
 ```{r}
 #----------------------------------------------------------------------
