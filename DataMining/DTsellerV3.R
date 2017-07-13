@@ -30,6 +30,8 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(dectree.data$category, regex)
 dectree.data$category <- cat[,3] # keep only the second part
 
+dectree.data <- dectree.data[which(dectree.data$origin != "Worldwide"),]
+
 # Handling : seller
 tab_sel <- table(dectree.data$seller)
 tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
@@ -39,7 +41,9 @@ name_sel[length(name_sel)+1] <- "Other"
 
 dectree.data$seller <- factor(dectree.data$seller, levels = name_sel)
 
-
+for(i in 1:length(dectree.data$seller)) {
+  if(is.na(dectree.data$seller[i])) {dectree.data$seller[i] <- "Other"}
+}
 
 # Random rows :
 dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
