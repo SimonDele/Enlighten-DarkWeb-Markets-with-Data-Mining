@@ -22,9 +22,9 @@ dectree.data <- data[matching_vector,]
 # Select the column of the data that are interesting for the tree
 # ie removing colunm like "id" or "url" that don't give any informations
 dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose))
-# Subset : choose the colunm that you want
+  # Subset : choose the colunm that you want
 
-# Handling : column categorie
+# Handling : categorie
 # Regular expression for spliting the categories
 regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(dectree.data$category, regex)
@@ -33,10 +33,13 @@ dectree.data$category <- cat[,3] # keep only the second part
 # Handling : seller
 tab_sel <- table(dectree.data$seller)
 tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sel <- tab_sel[1:10] # Taking only the most important : main sellers
+tab_sel <- tab_sel[1:5] # Taking only the most important : main sellers
 name_sel <- names(tab_sel)
-# New data keeping only the main sellers
-dectree.data <-subset(dectree.data, seller %in% name_sel) 
+name_sel[length(name_sel)+1] <- "Other"
+
+dectree.data$seller <- factor(dectree.data$seller, levels = name_sel)
+
+
 
 # Random rows :
 dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
@@ -70,11 +73,11 @@ pred <- predict(tree,test,type="class")
 
 # Analysis:
 
-  # Comparison between the result and the prediction (prediction in colunm)
-  conf <- table(test[,match("seller",names(test))],pred)
-  
-  # Accurency :
-  acc <- sum(diag(conf)) / sum(conf)
+# Comparison between the result and the prediction (prediction in colunm)
+conf <- table(test[,match("seller",names(test))],pred)
+
+# Accurency :
+acc <- sum(diag(conf)) / sum(conf)
 
 print(conf)
 print(acc)
