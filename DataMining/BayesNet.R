@@ -1,14 +1,14 @@
 #----------------------------------------------------------------------
-#                  Bayesian Classification - Naive
-#   Prediction of the product_sold knowing the seller / origin / price / category
+#                       Bayesian Network
+#    with seller / origin / price / category / timestamp / sold_since / product_sold
 #-----------------------------------------------------------------------
 
 data <- as.data.frame(read.csv("data.csv"))
 
-library(stringr)
-library(e1071)
-library(arules)
 
+library(arules)
+library(stringr)
+library(bnlearn)
 
 #-----------------
 #   New Data 
@@ -31,7 +31,7 @@ bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, "NULL"),
 
 #Convert products_sold to numeric and discretize it
 bayesian.data$products_sold <- as.numeric(as.character(bayesian.data$products_sold))
-bayesian.data$products_sold <- discretize(bayesian.data$products_sold, "frequency", categories = 10)
+bayesian.data$products_sold <- arules::discretize(bayesian.data$products_sold, method="frequency", categories = 10)
 
 
 #Given timestamp and sold_since calculate the lifetime of the ad
@@ -43,26 +43,23 @@ bayesian.data$timestamp <- as.numeric(bayesian.data$timestamp)
 #names(bayesian.data$timestamp) <- "lifetime"
 bayesian.data <- subset(bayesian.data, select= -c(sold_since))
 
+
 #Discretize timestamp variable
-bayesian.data$timestamp <- discretize(bayesian.data$timestamp, "frequency", categories = 10)
+bayesian.data$timestamp <- arules::discretize(bayesian.data$timestamp, "frequency", categories = 10)
+
+bayesian.data$category <- as.factor(bayesian.data$category)
+bayesian.data$seller <- as.factor(bayesian.data$seller)
+bayesian.data$origin <- as.factor(bayesian.data$origin)
 
 #---------------------
 #   Bayesian stat
 #---------------------
 
-# Random rows :
-bayesian.data <- bayesian.data[sample(nrow(bayesian.data),nrow(bayesian.data),replace=FALSE), ]
+res <- hc(bayesian.data)
+plot(res)
 
-train.data <- bayesian.data[1:floor(nrow(bayesian.data)/2),]
-pred.data <- bayesian.data[(floor(nrow(bayesian.data)/2)+1):nrow(bayesian.data),]
+#res$arcs <- res$arcs[which((res$arcs[,'from'] == "timestamp" & res$arcs[,'to'] == "products_sold")),]
 
-model <- naiveBayes(products_sold ~ ., data =  train.data)
+fittedbn <- bn.fit(res, data = bayesian.data)
 
-
-preds <- predict(model, newdata = pred.data)
-conf_matrix <- table(preds, pred.data$products_sold)
-acc <- sum(diag(conf_matrix)) / sum(conf_matrix)
-
-print(conf_matrix)
-print(acc)
-
+print(fittedbn$products_sold)
