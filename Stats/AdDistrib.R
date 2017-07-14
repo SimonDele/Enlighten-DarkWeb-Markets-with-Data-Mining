@@ -4,7 +4,8 @@
 
 library(plotrix)
 
-data <- as.data.frame(read.csv("alphaClean.csv"))
+
+#data <- as.data.frame(read.csv("alphaClean.csv"))
 
 cat <- c()
 
@@ -14,6 +15,8 @@ for(i in 1:length(data$category)) {
 }
 
 tab_cat <- table(cat)
+tab_cat <- sort(tab_cat, decreasing=TRUE) 
+cat.data <- as.data.frame(tab_cat)
 
-radial.pie(tab_cat,labels=names(tab_cat),mar=c(3,3,3,3),sector.colors=rainbow(length(tab_cat)))
+radial.plot(cat.data$Freq,labels=cat.data$cat,label.prop=1.1,radial.lim=c(0,10000,20000),rp.type="r",start=4,clockwise=TRUE,lwd=4,line.col=rainbow(length(tab_cat)),main="Market distibution")
 

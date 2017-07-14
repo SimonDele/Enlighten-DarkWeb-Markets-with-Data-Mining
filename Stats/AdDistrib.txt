@@ -1,0 +1,2 @@
+Au debut mettre radial.labels=NULL pour voir la "vrai" echelle du graphique
+puis apres mettre dans un vecteur c() les valeur voulu en milliers d'annonces par exemple pour avoir une meilleur visibilite du graphique 

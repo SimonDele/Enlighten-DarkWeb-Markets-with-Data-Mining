@@ -8,6 +8,7 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
+    toc_depth: 4
     toc_float: yes
 bibliography: My_bibliography.bibtex
 ---
@@ -17,11 +18,12 @@ body {text-align: justify}
 
 # - Introduction
 ***
+
 For the past few years, a lot of *web market* has been developed and you can now find or buy items of any kind. However plenty of those marketplace are growing up on the *dark web*. Even if the government attempt to fight against this kind of illegal market, new one resurface or re-migrate frequently. On top of that, currently, we don't know enough of how these websites
 operate
 <br/>  
 This paper present a research carried out on one of the larger marketplace (specially for drugs) on the Internet, the ***AlphaBay Dark Web Market***.  
-Our work consist in analysing this market, its nature, preponderance of items, different country of origin, main sellers ... Thus, over a first phase wee have performed some "Basic Statistics" on the *Data*, in order to discover the marketplace and to point out its trend. Then in section 3, wee present some experimental results of *data mining* and discuss on it.
+Our work consist in analysing this market, its nature, predominance of items, different origin (countires), main sellers ... Thus, over a first phase wee have performed some "Basic Statistics" on the *Data*, in order to discover the marketplace and to point out its trend. Then wee present some experimental results of *data mining* and discuss about it.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -74,14 +76,14 @@ library(e1071)
 data <- as.data.frame(read.csv("../alphaClean.csv"))
 ```
 
-RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.  
-@WinNT
-
 # - Basic Statistics
 ***
-We have perform basics statics in order to discover the data. 
 
-1. First of all, here is a general view of ads distribution in the world.
+## - General distribution
+
+As wee said before wee started our research by performing some basics statics. Let's first analyse the general distibution, trend of the *AlaphaBay Web Market*.
+
+**1. Here is a view of ads distribution in the world.**
 
 ```{r Number of ads}
 #-----------------------------------------------
@@ -113,9 +115,10 @@ NumberOfAds <- function() {
 NumberOfAds()
 
 ```
-The bar-chart represents the 10 main dealers in the world regarding the number of ads. As we can see, US is the biggest dealer far ahead of other. Their number of ads is more than twice as big as the number of the second (UK). Moreover, most of these countries are developed countries, that is to say US and European countries. We can also notice that China and Afghanistan are presents.  
+This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, United States is the biggest dealer far ahead of other. Their number of ads is more than twice as big as the number of the second (United Kingdom).  
+Moreover, wee can notice that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe, but we should not forget that China or Afghanistan are also present.  
 
-2. Now let's see the distribution of ads per category.
+**2. Now let's have a look at the distribution of ads per category.**
 
 ```{r Function Select Drugs}
   selectDrug <- function(drugName){
@@ -130,16 +133,23 @@ The bar-chart represents the 10 main dealers in the world regarding the number o
 categ <- function(){
   
   cat <- c()
-  
+
   for(i in 1:length(data$category)) {
     cat[i] <- unlist(strsplit(as.character(data$category[i]), "/"))[2]
     if(is.na(cat[i])) {cat[i] <- "Other Listings"}
   }
   
   tab_cat <- table(cat)
-  #tab_cat <- sort(tab_cat, deacrising=TRUE)
+  tab_cat <- sort(tab_cat, decreasing=TRUE) 
+  cat.data <- as.data.frame(tab_cat)
   
-  radial.pie(tab_cat,labels=names(tab_cat),mar=c(3,0,3,0))
+  radial.plot(cat.data$Freq,labels=cat.data$cat,label.prop=1.1,rp.type="r",start=5.6,clockwise=TRUE,lwd=4,line.col=rainbow(length(tab_cat)),main="Number of ads per categories",radial.labels=c(5,10,15,20))
+
+  mtext("In thousands ads",side = 4,line=2,las=1,cex=1.08,font=3)
+  
+  # Frame
+  box(which = "inner", lty = "solid")
+  
 }
 
 categ()
@@ -176,8 +186,15 @@ rate <- RateDrugAd()
 
 ```
 
-et la si j'affiche `r rate[1]` % est ce que ca marche `r rate[2]` %
 
+To begin with, wee can note that there is 12 main categories in this web marketplace. At first sight, *"drugs and chemicals"* are the most important item dealt. In fact they represent `r rate[1]` % of the global market.  
+It is also interesting to see that the second most popular item is *"Faud"*, that is to say all the ads regarding impersonation,deception papers and accounts. It represents `r rate[2]` % of the market (wich is very smaller compared with the Drug market). At last we can notice that all the other items (digital product, weapons, jewelry ...)  are under five thousands and represent a small part of the marketplace.
+
+## - Drug Market
+
+The *AlaphaBay Web Market* is well known to be a good place for dealing drugs, and wee can confirm it with our last chart. Therefore let's focus on the druf market.
+
+**1. You can see here the diferent distribution of drugs.**
 
 ```{r Distribution of Drugs}
 #-----------------------------------------------
@@ -238,10 +255,9 @@ DistributionDrugs()
 
 ```
 
-At first sight, drugs and chemicals are principle products dealt in the black market. They represents more than 50% of the global market. It is also interesting to see that the second product that is sold is counterfeit and paper fraud. On top of that, we can notice that a small percentage concern Jewel, Gold and Weapon.  
+Wee can discern diferent type of drugs in the market wich is quite diversified.Nevertheless three main drugs : *Cannabis*, *Opioids* and *Ecstay* cover more than 50 % of the market. The other 50 % is plited by all the other drugs.
 
-
-3. Let's focus on Drugs Market now.
+**2. Distribution of drugs in the world.**
 
 ```{r Number of ads of Drugs}
 #---------------------------------------------
@@ -271,11 +287,11 @@ NumberOfAdsDrugs()
 
 ```
 
+Again wee are ploting the 10 main dealer-countries in the world but this time regarding the number of drugs ads. At first sight, the chart is very similar to the first one. And this is coherent, indeed by comparing the ratio between drugs ads and the total number of ads, we can deduce that they are mainly dealing drugs.  
+This also match with the second chart that show us that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canad*a has been reversed with *China*.  
+But what we can conclude so far is that the market of drugs is gathered in Europe and United States.
 
-At first sight, the chart is similar to the first one. This is coherent, indeed by comparing the ratio between drugs ads and the total number of ads, we can deduced that there are mainly dealing drugs. This also match with the second chart that show us that drugs are the main product in the market. There are few exceptions such as Afghanistan which has been replaced by India and Canada has been reversed with China. Finally, let's note that drugs market is gathered in Europe and United States.
-
-
-4. Take a global view of the drugs market in Europe with the following map.
+**3. Take a global view of the drugs market in Europe with the following map.**
 
 ```{r Europe Map, message=FALSE}
 
@@ -310,12 +326,15 @@ MapEurope()
 
 ```
 
-Circles shows the amount of ads about drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, United Kingdom, Netherlands and Germany.  
+Circles shows the amount of ads about drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, *United Kingdom*, *Netherlands* and *Germany*.
 
+## - Countries Flows
 
-5. The pie chart below represents the repartition of each categories that United Kingdom exports. We focused on the second subcategory which appears to be most the relevant since the first one is too wide and the third one is often "Other".
+Let's now focus more specifically on diferents countries and study its tendency. To do this wee have had a look to the export and import flows of the country.
 
+**1. United Kingdom exportation**
 
+The pie below represents the repartition of each categories that United Kingdom exports. We focused on the second subcategory which appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
 
 ```{r Exportation UK}
 #-----------------------------------------------
@@ -395,11 +414,10 @@ country_Export <- function() {
 country_Export()
 ```
 
-We can notice that most of exportations are drugs. That is not surprising since drugs are the products the most sold. This pie chart show that there is a lot of variety in market. Althought, a huge part concerns "Cannabis & Hashish". We can also notice that Psychedelics and other highly dangerous drugs are significantly present.
+We can notice that most of exports items are drugs. That is not surprising since drugs are the products the most sold as wee saw it before. Once again this pie chart show the diversity of the market. Although, a huge part concerns *"Cannabis & Hashish"* we can notice that *"Psychedelics"* and other highly dangerous drugs are significantly present.  
+We took the example of *United Kingdom* but most of European countries follow the same rules and this confirm what we have conclude in the section before.
 
-We took the example of United Kingdom but most of European countries follow the same rules.
-
-6. Let's have a look at the exportations of China which are of a different kind than United Kingdom :
+**2. Let's have a look at the exportations of Afghanistan which are of a different kind than United Kingdom :**
 
 
 ```{r Exportation China}
@@ -413,7 +431,7 @@ country_Export <- function() {
   #  Initialization
   #-------------------
 
-  country <- "China"
+  country <- "Afghanistan"
   num <- 0
   
   # Importation / Exportation :
@@ -471,7 +489,7 @@ country_Export <- function() {
   pie3D(piepercent,labels = lab,labelcex = 1, main = title ,col=c, theta = 0.9, explode = 0.04)
   
   # 5- Legend :
-  legend(x=-2.3,y=-1.1,names(piepercent), cex = 0.8, fill = c,ncol=4,border=NA, xpd=NA)
+  legend(x=-2,y=-1,names(piepercent), cex = 0.8, fill = c,ncol=3,border=NA, xpd=NA)
 
   # Frame
   box(which = "inner", lty = "solid")
@@ -481,11 +499,9 @@ country_Export <- function() {
 country_Export()
 ```
 
-What is suprising is that, unlike most of countries, China exports more Jewelry than Drugs. Although, drugs are still widely presents. Moreover, we can notice that the category electronics appears.
+What is suprising is that, unlike most of countries, *Afghanistan* don't really exports drugs. In fact most of the product that he is exporting are false identity, deception account... We can also notice that *Afghanistan* is also desling some electronic device or software.
 
-7. Let's compare France exportations with France importations and see if there is a difference between them.
-
-
+**3. Let's compare France export & import flows and see if there is a difference between them.**
 
 ```{r Export / Import FR}
   #-----------------------------------------------
@@ -612,7 +628,7 @@ Country_Export_Import <- function() {
     
     par(oma=c(0,0,1.8,0))
     title("France",outer=TRUE)
-    legend(x=-4,y=-1,tab[,1], cex = 0.8, fill=c,ncol=3,border=NA, xpd=NA)
+    legend(x=-4,y=-1.1,tab[,1], cex = 0.8, fill=c,ncol=3,border=NA, xpd=NA)
     
     # Frame
     box(which = "outer", lty = "solid")
@@ -623,11 +639,16 @@ Country_Export_Import()
     
 ```
 
-It is noticeable that both are different. The part of each category is different and some of them doesn't appear systematicaly in the other pie chart. But we have to moderate our conclusions since most of the value given by the importation variable doesn't target a unique country and we were compelled to ad "Europe" values to our model.
+It is noticeable that both are different. The percentage of each category is different and some of them doesn't appear systematicaly in the other pie chart. However it's obvious that significants drugs that are exports are also imports, and that *France* is importing some drugs that he doesn't have locally.   
+Nevertheless we have to moderate our conclusions since target one particular country reduce significantly the number of informations we have for making statistics.
 
-8. We wondered if products sold in AlphaBay are cheapest than what offer street sellers. Firstly, we calculated the average price in AlphaBay of the most common drugs. We obtain the result below.  
+## - Market prices
 
+After analysing the general trend and flows, on thing that is interesting to analyse is the market prices of course! We wondered if products sold in *AlphaBay* are cheapest than what is offer street sellers. 
 
+**1. Average prices on the *AlphaBay Web Market* **
+
+Firstly, we calculated the average price of the most common drugs and we obtain the result below.  
 
 ```{r Drugs Prices}
 
@@ -649,7 +670,7 @@ DrugsPrices <- function() {
   par(las=1) # Display yaxis horizontally
   par(mar=c(4,8,3,2)) # Give space for yaxis
   
-  barp <- barplot(priceDrugs$med, main="Average Price of Drugs in the World", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
+  barp <- barplot(priceDrugs$med, main="Average Price of Drugs", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
   barp <- text(y = barp, x = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=4 , cex = 0.8, col= "Black")
   
   # Frame
@@ -661,7 +682,11 @@ DrugsPrices <- function() {
 
 priceDrugs <- DrugsPrices()
 ```
-9. Finally, we were looking to some information  about the price of street sellers for same drugs as above. Thus, we gathered these information in articles and websites. Unfortunately, we failed to obtain information on some drugs. Below is the result of we found.
+
+**2. Comparison with the "street"**
+
+Finally, we were looking to some information  about the price of street sellers for same drugs as above. Thus, we gathered these information in articles and websites. Unfortunately, we failed to obtain information on some drugs. Below is the result of we found.
+
 
 ```{r Comparison articles & data, message=FALSE, warning=FALSE}
 
@@ -719,10 +744,15 @@ DrugsPricesDoc()
 
 ```
 
-Globally we can notice that price of the street sellers are often largely higher than AlphaBay ads. In few cases both prices tend to be similar.
+Globally we can notice that price of the street sellers are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.
+
+TO DO : add the reference
+RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.  
+@WinNT
 
 # - Data mining
 ***
+
 Secondly, we have performed some data minig techniques in order to discover hidden rule and correlation in the database and also to predict the value of one variable given other values.
 
 ## - Decision tree
@@ -889,7 +919,6 @@ Dtsellers2 <- function(){
 
 Dtsellers2()
 ```
-
 
 
 ## - Association rule
