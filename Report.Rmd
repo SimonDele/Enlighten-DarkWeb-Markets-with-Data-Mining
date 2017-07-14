@@ -9,14 +9,19 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
-mainfont: Arial
 bibliography: My_bibliography.bibtex
 ---
+<style>
+body {text-align: justify}
+</style>
 
 # - Introduction
-
-For the past few years, a lot of web market has been developed and especially on the *dark web*. Even if the government attempt to fight against this kind of illegal market.  
-This paper
+***
+For the past few years, a lot of *web market* has been developed and you can now find or buy items of any kind. However plenty of those marketplace are growing up on the *dark web*. Even if the government attempt to fight against this kind of illegal market, new one resurface or re-migrate frequently. On top of that, currently, we don't know enough of how these websites
+operate
+<br/>  
+This paper present a research carried out on one of the larger marketplace (specially for drugs) on the Internet, the ***AlphaBay Dark Web Market***.  
+Our work consist in analysing this market, its nature, preponderance of items, different country of origin, main sellers ... Thus, over a first phase wee have performed some "Basic Statistics" on the *Data*, in order to discover the marketplace and to point out its trend. Then in section 3, wee present some experimental results of *data mining* and discuss on it.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -73,7 +78,7 @@ RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.
 @WinNT
 
 # - Basic Statistics
-
+***
 We have perform basics statics in order to discover the data. 
 
 1. First of all, here is a general view of ads distribution in the world.
@@ -144,6 +149,8 @@ categ()
 ```{r}
 RateDrugAd <- function() {
 
+  rate <- c()
+  
   NbAd <- nrow(data)
   
   # Select all "Drugs & Chemicals" ads
@@ -152,7 +159,7 @@ RateDrugAd <- function() {
   
   NbAdDrug <- nrow(drug.data)
   
-  rate <- (NbAdDrug/NbAd)*100
+  rate[1] <- round((NbAdDrug/NbAd)*100,2)
   
   # Select all "Frau" ads
   matching_vector <- c( str_detect(data$category, "Fraud"))
@@ -160,16 +167,16 @@ RateDrugAd <- function() {
   
   NbAdFraud <- nrow(fraud.data)
   
-  rate2 <- (NbAdFraud/NbAd)*100
+  rate[2] <- round((NbAdFraud/NbAd)*100,2)
   
-  sprintf("Drugs Market represents %.2f %% of the AlphaBay Market \n Fraud : %.2f %%", rate,rate2)
-  
+  return(rate)
 }
 
-RateDrugAd()
+rate <- RateDrugAd()
 
 ```
 
+et la si j'affiche `r rate[1]` % est ce que ca marche `r rate[2]` %
 
 
 ```{r Distribution of Drugs}
@@ -715,7 +722,7 @@ DrugsPricesDoc()
 Globally we can notice that price of the street sellers are often largely higher than AlphaBay ads. In few cases both prices tend to be similar.
 
 # - Data mining
-
+***
 Secondly, we have performed some data minig techniques in order to discover hidden rule and correlation in the database and also to predict the value of one variable given other values.
 
 ## - Decision tree
@@ -1113,3 +1120,4 @@ BayesSellers()
 ```
 
 # - References
+***
