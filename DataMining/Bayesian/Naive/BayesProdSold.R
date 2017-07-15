@@ -31,20 +31,20 @@ bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, "NULL"),
 
 #Convert products_sold to numeric and discretize it
 bayesian.data$products_sold <- as.numeric(as.character(bayesian.data$products_sold))
-bayesian.data$products_sold <- discretize(bayesian.data$products_sold, "frequency", categories = 10)
 
 
-#Given timestamp and sold_since calculate the lifetime of the ad
+#Given timestamp and sold_since calculate the profitability of the ad per month
 bayesian.data$sold_since <-  as.Date(bayesian.data$sold_since)
 bayesian.data$timestamp <-  as.Date(bayesian.data$timestamp)
 
 bayesian.data$timestamp <- bayesian.data$timestamp - bayesian.data$sold_since
 bayesian.data$timestamp <- as.numeric(bayesian.data$timestamp)
-#names(bayesian.data$timestamp) <- "lifetime"
-bayesian.data <- subset(bayesian.data, select= -c(sold_since))
+bayesian.data$products_sold <- bayesian.data$products_sold / bayesian.data$timestamp * 30
 
-#Discretize timestamp variable
-bayesian.data$timestamp <- discretize(bayesian.data$timestamp, "frequency", categories = 10)
+bayesian.data$products_sold <- arules::discretize(bayesian.data$products_sold, "frequency", categories = 5)
+
+#names(bayesian.data$timestamp) <- "lifetime"
+bayesian.data <- subset(bayesian.data, select= -c(sold_since, timestamp))
 
 #---------------------
 #   Bayesian stat

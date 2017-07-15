@@ -19,11 +19,11 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now find or buy items of any kind. However plenty of those marketplace are growing up on the *dark web*. Even if the government attempt to fight against this kind of illegal market, new one resurface or re-migrate frequently. On top of that, currently, we don't know enough of how these websites
-operate
+For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new one resurfaces or re-migrates frequently. On top of that, currently, we don't know enough of how these websites
+operate.
 <br/>  
-This paper present a research carried out on one of the larger marketplace (specially for drugs) on the Internet, the ***AlphaBay Dark Web Market***.  
-Our work consist in analysing this market, its nature, predominance of items, different origin (countires), main sellers ... Thus, over a first phase wee have performed some "Basic Statistics" on the *Data*, in order to discover the marketplace and to point out its trend. Then wee present some experimental results of *data mining* and discuss about it.
+This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
+Our work consists in analysing this market, its nature, its predominance of items, its different origins (countries), main sellers, and so on. Thus, during a first phase we perform some "Basic Statistics" on the *Data base*, in order to discover the marketplace and to point out its trend. Then, we present some experimental results of *data mining techniques* to discuss about them.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -81,9 +81,9 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 ## - General distribution
 
-As wee said before wee started our research by performing some basics statics. Let's first analyse the general distibution, trend of the *AlaphaBay Web Market*.
+As we said before, we start by performing some basic statistics. Let's first analyse general distribution and trend of *AlphaBay Web Market*.
 
-**1. Here is a view of ads distribution in the world.**
+**1. Here, global view of ads distribution.**
 
 ```{r Number of ads}
 #-----------------------------------------------
@@ -115,8 +115,8 @@ NumberOfAds <- function() {
 NumberOfAds()
 
 ```
-This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, United States is the biggest dealer far ahead of other. Their number of ads is more than twice as big as the number of the second (United Kingdom).  
-Moreover, wee can notice that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe, but we should not forget that China or Afghanistan are also present.  
+This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, United States are the biggest dealer far ahead of the rest. Their number of ads is more than twice the number of the second one, which is United Kingdom.  
+Moreover, we can notice that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe, but we should not forget that China or Afghanistan are also present.  
 
 **2. Now let's have a look at the distribution of ads per category.**
 
@@ -187,12 +187,12 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, wee can note that there is 12 main categories in this web marketplace. At first sight, *"drugs and chemicals"* are the most important item dealt. In fact they represent `r rate[1]` % of the global market.  
-It is also interesting to see that the second most popular item is *"Faud"*, that is to say all the ads regarding impersonation,deception papers and accounts. It represents `r rate[2]` % of the market (wich is very smaller compared with the Drug market). At last we can notice that all the other items (digital product, weapons, jewelry ...)  are under five thousands and represent a small part of the marketplace.
+To begin with, we can notice that there are 12 main categories in this web marketplace. It appears that *"drugs and chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
+It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, we can notice that all the other items (digital product, weapons, jewelry ...)  represent less than five percent of the marketplace.
 
 ## - Drug Market
 
-The *AlaphaBay Web Market* is well known to be a good place for dealing drugs, and wee can confirm it with our last chart. Therefore let's focus on the druf market.
+*AlphaBay Web Market* is a well known place for dealing drugs. This last chart has proved that. Thus, let's focus on the drug market.
 
 **1. You can see here the diferent distribution of drugs.**
 
