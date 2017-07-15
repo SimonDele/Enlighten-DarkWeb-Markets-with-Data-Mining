@@ -10,6 +10,9 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: yes
+  html_document:
+    toc: yes
+    toc_depth: '4'
 bibliography: My_bibliography.bibtex
 ---
 <style>
@@ -508,6 +511,7 @@ What's suprising is that, unlike most of countries, *Afghanistan* doesn't really
 **3. Let's compare France export & import flows and see if there is a difference between them.**
 
 ```{r Export / Import FR}
+
   #-----------------------------------------------
   #   Importation / Exportation of a country
   #-----------------------------------------------
@@ -927,6 +931,8 @@ Dtsellers2()
 
 ## - Association rules
 
+**1. Clustering of drugs**
+
 We wondered if there were links between some drugs. That is to say, if this is possible to cluster some drugs.
 To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of "Drugs & Chemicals". In each cell, value is True or False if the dealer has already sold something in this sub-category or not.
 Then, we have applied Apriori algorithm. We fixed one drug that must be in the itemset. Here it is Ecstasy. The result can be seen below.
@@ -1043,8 +1049,13 @@ AssRSellersCat()
 
 ```
 
-The algorithm succeeds to find some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right. 
-We can interpret from these rules that sellers often deal more than one product. And these products can be clustered by type. 
+The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right. 
+We can interpret from these rules that sellers often deal more than one product. And these products can be clustered by type.
+
+**2. Rules to determine cateogries of ads coming from United States** 
+
+Secondly, we ran the algorithm with 2 variables : category and origin. Thus, we may be able to make a link with predictions of above decision tree. We fixed one country, here United States. 
+
 
 ```{r Ass Rules Origin}
 #--------------------------------------------------------
@@ -1092,8 +1103,13 @@ AssROriginSellerCat <- function(){
 AssROriginSellerCat()
 
 ```
+The results show that when we have an ad of the categories on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
 
+It is striking to see that Cannabis & Hashish seems to be the main rule. This can be explained by the legalisation of Cannibis in some states. Thus, the sales of these products is easy in United States and may interest people from other countries where they are not legalized. 
 
+## - Bayesian classification
+
+**1. Naive alogrithm** 
 
 ```{r Bayesian Sellers}
 #----------------------------------------------------------------------------------
@@ -1151,8 +1167,9 @@ BayesSellers <- function(){
 BayesSellers()
 
 ```
+**2. Bayesian Neural Network** 
 
-```{r}
+```{r Bayesian Network}
 #----------------------------------------------------------------------
 #                       Bayesian Network
 #    with seller / origin / price / category / timestamp / sold_since / product_sold
