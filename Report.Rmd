@@ -42,6 +42,7 @@ Our work consists in analysing this market, its nature, its predominance of item
 #install.packages("arules")
 #install.packages("arulesViz")
 #install.packages("e1071")
+#install.packages("bnlearn")
 
 # Mamipulation string
 library(stringr)
@@ -65,6 +66,9 @@ library(arulesViz)
 
 # Bayesian classification, naive algorithm
 library(e1071)
+
+# Bayesian Network
+library(bnlearn)
 
 ```
 
@@ -194,7 +198,7 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 *AlphaBay Web Market* is a well known place for dealing drugs. This last chart has proved that. Thus, let's focus on the drug market.
 
-**1. You can see here the diferent distribution of drugs.**
+**1. You can see here the different distributions of drugs.**
 
 ```{r Distribution of Drugs}
 #-----------------------------------------------
@@ -255,9 +259,9 @@ DistributionDrugs()
 
 ```
 
-Wee can discern diferent type of drugs in the market wich is quite diversified.Nevertheless three main drugs : *Cannabis*, *Opioids* and *Ecstay* cover more than 50 % of the market. The other 50 % is plited by all the other drugs.
+We can discern a large range of drugs categories. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover more than 50 % of the market. The remaining is splited by all the other drugs.
 
-**2. Distribution of drugs in the world.**
+**2. World distribution of drugs**
 
 ```{r Number of ads of Drugs}
 #---------------------------------------------
@@ -287,8 +291,8 @@ NumberOfAdsDrugs()
 
 ```
 
-Again wee are ploting the 10 main dealer-countries in the world but this time regarding the number of drugs ads. At first sight, the chart is very similar to the first one. And this is coherent, indeed by comparing the ratio between drugs ads and the total number of ads, we can deduce that they are mainly dealing drugs.  
-This also match with the second chart that show us that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canad*a has been reversed with *China*.  
+Once more, we are plotting the 10 main dealer-countries in the world but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, comparing the ratio between drugs ads and the total number of ads, we deduce that they are mainly dealing drugs.  
+This also matches with the second chart that shows us drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
 But what we can conclude so far is that the market of drugs is gathered in Europe and United States.
 
 **3. Take a global view of the drugs market in Europe with the following map.**
@@ -326,15 +330,15 @@ MapEurope()
 
 ```
 
-Circles shows the amount of ads about drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, *United Kingdom*, *Netherlands* and *Germany*.
+Circles show the amount of ads about drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, *United Kingdom*, *Netherlands* and *Germany*.
 
 ## - Countries Flows
 
-Let's now focus more specifically on diferents countries and study its tendency. To do this wee have had a look to the export and import flows of the country.
+Let's now focus more specifically on different countries and study their trend. To do so, we have had a look to export and import flows of the country.
 
 **1. United Kingdom exportation**
 
-The pie below represents the repartition of each categories that United Kingdom exports. We focused on the second subcategory which appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
+The pie below represents the repartition of each category that United Kingdom exports. We focused on the second subcategory which appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
 
 ```{r Exportation UK}
 #-----------------------------------------------
@@ -414,10 +418,10 @@ country_Export <- function() {
 country_Export()
 ```
 
-We can notice that most of exports items are drugs. That is not surprising since drugs are the products the most sold as wee saw it before. Once again this pie chart show the diversity of the market. Although, a huge part concerns *"Cannabis & Hashish"* we can notice that *"Psychedelics"* and other highly dangerous drugs are significantly present.  
-We took the example of *United Kingdom* but most of European countries follow the same rules and this confirm what we have conclude in the section before.
+Given that most of exported items are drugs, that is not surprising they are the most sold product as we saw it before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, we can notice that *"Psychedelics"* and other highly dangerous drugs are significantly present.  
+We took the example of *United Kingdom* but most of European countries follows the same rules and this confirms our previous assumptions.
 
-**2. Let's have a look at the exportations of Afghanistan which are of a different kind than United Kingdom :**
+**2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
 
 
 ```{r Exportation China}
@@ -499,7 +503,7 @@ country_Export <- function() {
 country_Export()
 ```
 
-What is suprising is that, unlike most of countries, *Afghanistan* don't really exports drugs. In fact most of the product that he is exporting are false identity, deception account... We can also notice that *Afghanistan* is also desling some electronic device or software.
+What's suprising is that, unlike most of countries, *Afghanistan* doesn't really export drugs. Actually, a vast majority of exported products are false identity, deception account... We may undeline that *Afghanistan* is also dealing electronic devices or softwares.
 
 **3. Let's compare France export & import flows and see if there is a difference between them.**
 
@@ -639,16 +643,16 @@ Country_Export_Import()
     
 ```
 
-It is noticeable that both are different. The percentage of each category is different and some of them doesn't appear systematicaly in the other pie chart. However it's obvious that significants drugs that are exports are also imports, and that *France* is importing some drugs that he doesn't have locally.   
-Nevertheless we have to moderate our conclusions since target one particular country reduce significantly the number of informations we have for making statistics.
+It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
+Nevertheless we have to moderate our conclusions since targeting one particular country reduces significantly the number of information we use for statistics.
 
 ## - Market prices
 
-After analysing the general trend and flows, on thing that is interesting to analyse is the market prices of course! We wondered if products sold in *AlphaBay* are cheapest than what is offer street sellers. 
+After analysing general trend and flows, one interesting topic to analyse is market prices. We wondered if sold products in *AlphaBay* are cheaper than in the streets. 
 
 **1. Average prices on the *AlphaBay Web Market* **
 
-Firstly, we calculated the average price of the most common drugs and we obtain the result below.  
+Firstly, we calculated the average price of most common drugs and we obtained the result below.  
 
 ```{r Drugs Prices}
 
@@ -685,7 +689,7 @@ priceDrugs <- DrugsPrices()
 
 **2. Comparison with the "street"**
 
-Finally, we were looking to some information  about the price of street sellers for same drugs as above. Thus, we gathered these information in articles and websites. Unfortunately, we failed to obtain information on some drugs. Below is the result of we found.
+Finally, we were looking to some information about prices of street sellers for same drugs as above. Thus, we gathered data in articles and websites. Unfortunately, we failed to obtain them on some drugs. Below is the result of what we found.
 
 
 ```{r Comparison articles & data, message=FALSE, warning=FALSE}
@@ -744,7 +748,7 @@ DrugsPricesDoc()
 
 ```
 
-Globally we can notice that price of the street sellers are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.
+Globally, it appears that prices of street sellers are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.
 
 TO DO : add the reference
 RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.  
@@ -753,7 +757,7 @@ RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.
 # - Data mining
 ***
 
-Secondly, we have performed some data minig techniques in order to discover hidden rule and correlation in the database and also to predict the value of one variable given other values.
+Secondly, we have performed some data mining techniques in order to discover hidden rules and correlations in the database and also to predict the value of one variable given other values.
 
 ## - Decision tree
 
@@ -921,11 +925,11 @@ Dtsellers2()
 ```
 
 
-## - Association rule
+## - Association rules
 
-We have wondered if there are links between some drugs. That is to say, if this is possible to cluster some drugs.
-To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of "Drugs & Chemicals". In each cell, value is True or False if the dealer has already sold something in this sub-category.
-Then we have applied Apriori algorithm. We fixed one drug, that must be in the itemset. Here it is Ecstasy. The result can be seen below.
+We wondered if there were links between some drugs. That is to say, if this is possible to cluster some drugs.
+To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of "Drugs & Chemicals". In each cell, value is True or False if the dealer has already sold something in this sub-category or not.
+Then, we have applied Apriori algorithm. We fixed one drug that must be in the itemset. Here it is Ecstasy. The result can be seen below.
 
 ```{r Ass Rules Sellers-Category}
 
@@ -1039,8 +1043,8 @@ AssRSellersCat()
 
 ```
 
-The algorithm succeeds to find some rules in the data frame that means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is above 80% that means that if we have the itemset on the left we are almost certain to have the drug on the right. 
-We can interpret from these rules that sellers often deal more than one product. And these products can be clustered. 
+The algorithm succeeds to find some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right. 
+We can interpret from these rules that sellers often deal more than one product. And these products can be clustered by type. 
 
 ```{r Ass Rules Origin}
 #--------------------------------------------------------
@@ -1146,6 +1150,76 @@ BayesSellers <- function(){
 
 BayesSellers()
 
+```
+
+```{r}
+#----------------------------------------------------------------------
+#                       Bayesian Network
+#    with seller / origin / price / category / timestamp / sold_since / product_sold
+#-----------------------------------------------------------------------
+
+BayesNet <- function(){
+  #-----------------
+  #   New Data 
+  #-----------------
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  bayesian.data <- data[matching_vector,]
+  
+  
+  # Select the column of the data that are interesting
+  # ie removing colunm like "id" or "url" that don't give any informations
+  bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose, products_sold, sold_since, timestamp ))
+  # Subset : choose the colunm that you want
+  
+  # Handling : column category
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(bayesian.data$category, regex)
+  bayesian.data$category <- cat[,3] # keep only the second part
+  
+  #Get rid of lines with Null as products_sold value
+  bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, "NULL"),]
+  
+  #Convert products_sold to numeric and discretize it
+  bayesian.data$products_sold <- as.numeric(as.character(bayesian.data$products_sold))
+  
+  #Given timestamp and sold_since calculate the lifetime of the ad
+  bayesian.data$sold_since <-  as.Date(bayesian.data$sold_since)
+  bayesian.data$timestamp <-  as.Date(bayesian.data$timestamp)
+  bayesian.data$timestamp <- bayesian.data$timestamp - bayesian.data$sold_since
+  bayesian.data$timestamp <- as.numeric(bayesian.data$timestamp)
+  
+  #Calculate profitability
+  bayesian.data$products_sold <- bayesian.data$products_sold / bayesian.data$timestamp * 30
+  
+  #Discretize profitability
+  bayesian.data$products_sold <- arules::discretize(bayesian.data$products_sold, method="frequency", categories = 5)
+  
+  bayesian.data <- subset(bayesian.data, select= -c(sold_since, timestamp))
+  
+  #Convert variables to factor
+  bayesian.data$category <- as.factor(bayesian.data$category)
+  bayesian.data$seller <- as.factor(bayesian.data$seller)
+  bayesian.data$origin <- as.factor(bayesian.data$origin)
+  
+  #Get rid of lines with NA as products_sold value
+  bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, NA),]
+  
+  #---------------------
+  #   Bayesian Network
+  #---------------------
+  
+  res <- hc(bayesian.data)
+  plot(res)
+  
+  fittedbn <- bn.fit(res, data = bayesian.data)
+  
+  print(fittedbn$products_sold)
+}
+
+BayesNet()
 ```
 
 # - References
