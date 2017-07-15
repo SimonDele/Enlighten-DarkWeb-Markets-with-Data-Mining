@@ -2,6 +2,9 @@
 title: "Dark Web Market"
 author: "Simon Delecourt & Edouard Donze"
 output:
+  html_document:
+    toc: yes
+    toc_depth: '4'
   html_notebook:
     code_folding: hide
     highlight: pygments
@@ -10,9 +13,6 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: yes
-  html_document:
-    toc: yes
-    toc_depth: '4'
 bibliography: My_bibliography.bibtex
 ---
 <style>
