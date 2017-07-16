@@ -2,9 +2,6 @@
 title: "Dark Web Market"
 author: "Simon Delecourt & Edouard Donze"
 output:
-  html_document:
-    toc: yes
-    toc_depth: '4'
   html_notebook:
     code_folding: hide
     highlight: pygments
@@ -13,6 +10,9 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: yes
+  html_document:
+    toc: yes
+    toc_depth: '4'
 bibliography: My_bibliography.bibtex
 ---
 <style>
@@ -510,7 +510,7 @@ What's suprising is that, unlike most of countries, *Afghanistan* doesn't really
 
 **3. Let's compare France export & import flows and see if there is a difference between them.**
 
-```{r Export / Import FR}
+```{r Export_Import FR}
 
   #-----------------------------------------------
   #   Importation / Exportation of a country
@@ -922,7 +922,7 @@ Dtsellers2 <- function(){
     acc <- sum(diag(conf)) / sum(conf)
   
   print(conf)
-  sprintf("The accurency is : %.2f %%", acc*100)
+  sprintf("The accuracy is : %.2f %%", acc*100)
 }
 
 Dtsellers2()
@@ -1109,7 +1109,11 @@ It is striking to see that Cannabis & Hashish seems to be the main rule. This ca
 
 ## - Bayesian classification
 
+We used Bayesian Classification in the same objective as desicion tree : predicting something.
+
 **1. Naive alogrithm** 
+
+First, we ran Naive algorithm on the data base with by rows ads and by columns origin,category,seller,priceUnitDose, products_sold and sold_since. The aim is to predict who is the seller of each ads.We select only the main sellers because, the remaining just own few ads. We train the algorithm with half of the data and made predictions on other half. Results can be found below.
 
 ```{r Bayesian Sellers}
 #----------------------------------------------------------------------------------
@@ -1158,16 +1162,22 @@ BayesSellers <- function(){
   
   preds <- predict(model, newdata = pred.data)
   conf_matrix <- table(preds, pred.data$seller)
-  acc <- sum(diag(conf_matrix)) / sum(conf_matrix)
+  acc <- sum(diag(conf_matrix)) / sum(conf_matrix)*100
   
   print(conf_matrix)
-  sprintf("The accurency is : %.2f %%", acc*100)
+  sprintf("The accuracy is : %.2f %%", acc)
+  
+  return(acc)
 }
 
-BayesSellers()
+acc <- BayesSellers()
 
 ```
+Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r acc`%. Which is a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers), this algorithm tends to be more accurate than decision trees.
+
 **2. Bayesian Neural Network** 
+
+Secondly, we wanted to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. We ran Bayesian Neural Network algorithm on this ew data and we obtained the results below.
 
 ```{r Bayesian Network}
 #----------------------------------------------------------------------
@@ -1238,6 +1248,8 @@ BayesNet <- function(){
 
 BayesNet()
 ```
+
+Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category have a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
 
 # - References
 ***
