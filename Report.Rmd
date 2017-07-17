@@ -8,7 +8,6 @@ output:
     number_sections: yes
     theme: readable
     toc: yes
-    toc_depth: 4
     toc_float: yes
 bibliography: My_bibliography.bibtex
 ---
@@ -753,7 +752,7 @@ DrugsPricesDoc()
 
 Globally, it appears that prices of street sellers are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.
 
-@Drugwise
+@DrugWise, @tele
 
 # - Data mining
 ***
@@ -1251,3 +1250,4 @@ Neural Network shows that the profitability is conditionnaly dependant to catego
 
 # - References
 ***
+
