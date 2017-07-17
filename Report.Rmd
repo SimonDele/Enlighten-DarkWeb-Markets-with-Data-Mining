@@ -119,7 +119,7 @@ NumberOfAds()
 
 ```
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, United States are the biggest dealer far ahead of the rest. Their number of ads is more than twice the number of the second one, which is United Kingdom.  
-Moreover, we can notice that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe, but we should not forget that China or Afghanistan are also present.  
+Moreover, we can notice that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe, but we should not forget that China or Afghanistan are also present.
 
 **2. Now let's have a look at the distribution of ads per category.**
 
@@ -130,8 +130,10 @@ Moreover, we can notice that most of these countries belong to powerful area, th
   }
 ```
 
-
-```{r}
+```{r Nb ads per categories}
+#-----------------------------------------------
+#      Number of ads per categories
+#-----------------------------------------------
 
 categ <- function(){
   
@@ -159,7 +161,7 @@ categ()
 
 ```
 
-```{r}
+```{r Categories rates}
 RateDrugAd <- function() {
 
   rate <- c()
@@ -190,8 +192,8 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, we can notice that there are 12 main categories in this web marketplace. It appears that *"drugs and chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
-It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, we can notice that all the other items (digital product, weapons, jewelry ...)  represent less than five percent of the marketplace.
+To begin with, we can notice that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
+It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, we can notice that all the other items (digital product, weapons, jewelry ...) represent less than five percent of the marketplace.
 
 ## - Drug Market
 
@@ -291,8 +293,8 @@ NumberOfAdsDrugs()
 ```
 
 Once more, we are plotting the 10 main dealer-countries in the world but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, comparing the ratio between drugs ads and the total number of ads, we deduce that they are mainly dealing drugs.  
-This also matches with the second chart that shows us drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
-But what we can conclude so far is that the market of drugs is gathered in Europe and United States.
+This also matches with the second chart that shows us that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
+But what we can conclude so far is that the market of drugs is gathered in Europe and the north of America.
 
 **3. Take a global view of the drugs market in Europe with the following map.**
 
@@ -417,7 +419,7 @@ country_Export <- function() {
 country_Export()
 ```
 
-Given that most of exported items are drugs, that is not surprising they are the most sold product as we saw it before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, we can notice that *"Psychedelics"* and other highly dangerous drugs are significantly present.  
+Given that most of exported items are drugs, that is not surprising they are the most sold product as we saw it before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, we can notice that *"Stimulants"* and other highly dangerous drugs are significantly present.  
 We took the example of *United Kingdom* but most of European countries follows the same rules and this confirms our previous assumptions.
 
 **2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
@@ -652,7 +654,7 @@ After analysing general trend and flows, one interesting topic to analyse is mar
 
 **1. Average prices on the *AlphaBay Web Market* **
 
-Firstly, we calculated the average price of most common drugs and we obtained the result below.  
+Firstly, we calculated the average price of one gram of the most common drugs and we obtained the result below.
 
 ```{r Drugs Prices}
 
@@ -674,7 +676,7 @@ DrugsPrices <- function() {
   par(las=1) # Display yaxis horizontally
   par(mar=c(4,8,3,2)) # Give space for yaxis
   
-  barp <- barplot(priceDrugs$med, main="Average Price of Drugs", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
+  barp <- barplot(priceDrugs$med, main="Average Price of Drugs per Gram", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
   barp <- text(y = barp, x = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=4 , cex = 0.8, col= "Black")
   
   # Frame
@@ -686,6 +688,7 @@ DrugsPrices <- function() {
 
 priceDrugs <- DrugsPrices()
 ```
+
 
 **2. Comparison with the "street"**
 
@@ -750,9 +753,7 @@ DrugsPricesDoc()
 
 Globally, it appears that prices of street sellers are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.
 
-TO DO : add the reference
-RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.  
-
+@Drugwise
 
 # - Data mining
 ***
