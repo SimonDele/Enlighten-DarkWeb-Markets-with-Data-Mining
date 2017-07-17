@@ -85,7 +85,7 @@ interval$left <- as.numeric(levels(interval$left))
 interval$right <- as.numeric(levels(interval$right))
 
 expectancy <- c()
-#Calculate 
+#Calculate expectancy for each category 
 for(i in 0:length(table(bayesian.data$category))-1){
   left <- 0
   right <- 0
@@ -93,8 +93,9 @@ for(i in 0:length(table(bayesian.data$category))-1){
     left<-left + interval$left[j] * fittedbn$profitability$prob[i*nbCategory + j]
     right<-right + interval$right[j] * fittedbn$profitability$prob[i*nbCategory + j]
   }
-  expectancy[i] <- paste("[", left , "," , right , "]")
-  
+  expectancy[i+1] <- paste("[", round(left,2) , "," , round(right,2) , "]")
+  sprintf("%s expectancy : %s", names(table(bayesian.data$category)), expectancy[i+1] )
 }
+
 
 
