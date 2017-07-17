@@ -10,9 +10,6 @@ output:
     toc: yes
     toc_depth: 4
     toc_float: yes
-  html_document:
-    toc: yes
-    toc_depth: '4'
 bibliography: My_bibliography.bibtex
 ---
 <style>
@@ -22,9 +19,8 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new one resurfaces or re-migrates frequently. On top of that, currently, we don't know enough of how these websites
-operate.
-<br/>  
+For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new one resurfaces or re-migrates frequently. On top of that, currently, we don't know enough of how these websites operate.
+
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
 Our work consists in analysing this market, its nature, its predominance of items, its different origins (countries), main sellers, and so on. Thus, during a first phase we perform some "Basic Statistics" on the *Data base*, in order to discover the marketplace and to point out its trend. Then, we present some experimental results of *data mining techniques* to discuss about them.
 
@@ -178,7 +174,7 @@ RateDrugAd <- function() {
   
   rate[1] <- round((NbAdDrug/NbAd)*100,2)
   
-  # Select all "Frau" ads
+  # Select all "Fraud" ads
   matching_vector <- c( str_detect(data$category, "Fraud"))
   fraud.data <- data[matching_vector,]
   
@@ -321,7 +317,7 @@ MapEurope <- function() {
   
   # Create a map of EUROPE with circles showing the amount of ads
   map <- get_map(location = 'Europe', zoom =4 )
-  mapPoints <- ggmap(map)  + xlab("") + ylab("") + ggtitle("Number of ads of Drugs in the World")+
+  mapPoints <- ggmap(map)  + xlab("") + ylab("") + ggtitle("Number of ads of Drugs in Europe")+
     geom_point(data = data_plot,aes(x =long, y = lat, size =amount)) +scale_size_continuous(limits=c(0,3000),breaks=c(0,500,1000,1500,2000), range = c(0,13)) 
   
   # Display
@@ -756,7 +752,7 @@ Globally, it appears that prices of street sellers are often largely higher than
 
 TO DO : add the reference
 RMarkdown [@baumer2014r] is referenced in the @racine2012rstudio paper.  
-@WinNT
+
 
 # - Data mining
 ***
@@ -1162,22 +1158,22 @@ BayesSellers <- function(){
   
   preds <- predict(model, newdata = pred.data)
   conf_matrix <- table(preds, pred.data$seller)
-  acc <- sum(diag(conf_matrix)) / sum(conf_matrix)*100
+  acc <- round(sum(diag(conf_matrix)) / sum(conf_matrix)*100, 2)
   
   print(conf_matrix)
-  sprintf("The accuracy is : %.2f %%", acc)
+  
   
   return(acc)
 }
 
 acc <- BayesSellers()
-
+sprintf("The accuracy is : %.2f %%", acc)
 ```
 Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r acc`%. Which is a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers), this algorithm tends to be more accurate than decision trees.
 
 **2. Bayesian Neural Network** 
 
-Secondly, we wanted to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. We ran Bayesian Neural Network algorithm on this ew data and we obtained the results below.
+Secondly, we wanted to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. We ran Bayesian Neural Network algorithm on this new data and we obtained the results below.
 
 ```{r Bayesian Network}
 #----------------------------------------------------------------------
@@ -1196,7 +1192,7 @@ BayesNet <- function(){
   
   
   # Select the column of the data that are interesting
-  # ie removing colunm like "id" or "url" that don't give any informations
+  # ie removing colunm like "id" or "url" that don't give any information
   bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose, products_sold, sold_since, timestamp ))
   # Subset : choose the colunm that you want
   
@@ -1220,9 +1216,10 @@ BayesNet <- function(){
   
   #Calculate profitability
   bayesian.data$products_sold <- bayesian.data$products_sold / bayesian.data$timestamp * 30
+  names(bayesian.data)[match("products_sold",names(bayesian.data))] <- "profitability"
   
   #Discretize profitability
-  bayesian.data$products_sold <- arules::discretize(bayesian.data$products_sold, method="frequency", categories = 5)
+  bayesian.data$profitability <- arules::discretize(bayesian.data$profitability, method="frequency", categories = 5)
   
   bayesian.data <- subset(bayesian.data, select= -c(sold_since, timestamp))
   
@@ -1232,7 +1229,7 @@ BayesNet <- function(){
   bayesian.data$origin <- as.factor(bayesian.data$origin)
   
   #Get rid of lines with NA as products_sold value
-  bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, NA),]
+  bayesian.data <- bayesian.data[!is.element(bayesian.data$profitability, NA),]
   
   #---------------------
   #   Bayesian Network
@@ -1243,7 +1240,7 @@ BayesNet <- function(){
   
   fittedbn <- bn.fit(res, data = bayesian.data)
   
-  print(fittedbn$products_sold)
+  print(fittedbn$profitability)
 }
 
 BayesNet()

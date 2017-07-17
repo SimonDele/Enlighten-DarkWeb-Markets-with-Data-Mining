@@ -44,9 +44,10 @@ bayesian.data$timestamp <- as.numeric(bayesian.data$timestamp)
 
 #Calculate profitability
 bayesian.data$products_sold <- bayesian.data$products_sold / bayesian.data$timestamp * 30
+names(bayesian.data)[match("products_sold",names(bayesian.data))] <- "profitability"
 
 #Discretize profitability
-bayesian.data$products_sold <- arules::discretize(bayesian.data$products_sold, method="frequency", categories = 5)
+bayesian.data$profitability <- arules::discretize(bayesian.data$profitability, method="frequency", categories = 5)
 
 bayesian.data <- subset(bayesian.data, select= -c(sold_since, timestamp))
 
@@ -56,7 +57,7 @@ bayesian.data$seller <- as.factor(bayesian.data$seller)
 bayesian.data$origin <- as.factor(bayesian.data$origin)
 
 #Get rid of lines with NA as products_sold value
-bayesian.data <- bayesian.data[!is.element(bayesian.data$products_sold, NA),]
+bayesian.data <- bayesian.data[!is.element(bayesian.data$profitability, NA),]
 
 #---------------------
 #   Bayesian Network
@@ -67,4 +68,4 @@ plot(res)
 
 fittedbn <- bn.fit(res, data = bayesian.data)
 
-print(fittedbn$products_sold)
+print(fittedbn$profitability)
