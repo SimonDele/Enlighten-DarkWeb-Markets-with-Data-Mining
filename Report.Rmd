@@ -78,6 +78,7 @@ library(bnlearn)
 data <- as.data.frame(read.csv("../alphaClean.csv"))
 ```
 
+
 # - Basic Statistics
 ***
 
@@ -750,16 +751,21 @@ DrugsPricesDoc()
 
 ```
 
-Globally, it appears that prices of street sellers are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.
-
-@DrugWise, @tele
+Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar. (Please find in the last section all the sources that we used)
 
 # - Data mining
 ***
 
-Secondly, we have performed some data mining techniques in order to discover hidden rules and correlations in the database and also to predict the value of one variable given other values.
+Secondly, we have performed some data mining techniques in order to discover hidden rules and correlations in the database and also to predict the value of one variable given other values.  
+Please note that for all this part we only focus on the *Drug Market*. 
 
-## - Decision tree
+## - Sellers Predictions 
+
+The first thing we thought about was to guess the seller of an ad. We used therefore different data mining methods, especially *Decision Tree* and *Bayesian classification*.  
+
+We ran algorithm on the database with by rows ads and by columns the origin, category, seller, and price. The aim is to predict who is the seller of each ads. We train the algorithm with half of the data and made predictions on other half. It's also important to stress the fact that we select only the main sellers  ? because, the remaining just own few ads ? in order to reduce the size of the data and boost our performance. Results can be found below.
+
+**1. Decision tree**
 
 ```{r DTsellers}
 #----------------------------------------------------------------------
@@ -837,15 +843,19 @@ Dtsellers <- function(){
     # Accurency
     acc <- sum(diag(conf)) / sum(conf)
     
-  
   print(conf)
-  sprintf("The accurency is : %.2f %%", acc*100)
+  sprintf("The accuracy is : %.2f %%", acc*100)
  
 }
 
 Dtsellers()
 
 ```
+
+explication du tableau, 
+CART Algorithm 
+show the graph
+sur % mais marche bien aussi sur plus ex :
 
 ```{r}
 #----------------------------------------------------------------------
@@ -915,22 +925,97 @@ Dtsellers2 <- function(){
     conf <- table(pred.data[,match("seller",names(pred.data))],pred)
     
     # Accurency
-    acc <- sum(diag(conf)) / sum(conf)
-  
+    acc <- round((sum(diag(conf)) / sum(conf)*100),2)
+    
+  # Display   
+  conf <- data.frame(conf)
+  names(conf) <- c("Sellers","Prediction","Freq")
   print(conf)
-  sprintf("The accuracy is : %.2f %%", acc*100)
+  
+  return(acc)
+  
 }
 
-Dtsellers2()
+acc1 <- Dtsellers2()
+sprintf("The accuracy is : %.2f %%", acc1)
+
 ```
 
+**2. Bayesian classification - Naive alogrithm**
 
-## - Association rules
+We used Bayesian Classification in the same objective as desicion tree,  making predicting.
 
-**1. Clustering of drugs**
+le principe est exatememt le meme blabla ... 
+/!\ subset !!!! 
+-> ici ne mettre que comme moi, mais, remettre un 2eme code en rajoutnt sol_since et products sold pour montrer que s'approche de DT et dire qu'on vera plus tard comment mieux utiliser ces 2 donnees 
+/!\ affichage resultat !!!! 
+
+```{r Bayesian Sellers}
+#----------------------------------------------------------------------------------
+#                       Bayesian Classification - Naive
+#   Prediction of the Seller knowing the origin / price / category / products_sold
+#-----------------------------------------------------------------------------------
+
+BayesSellers <- function(){
+  #-----------------
+  #   New Data 
+  #-----------------
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  bayesian.data <- data[matching_vector,]
+  
+  # Select the column of the data that are interesting
+  # ie removing colunm like "id" or "url" that don't give any informations
+  bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose, sold_since, products_sold))
+  # Subset : choose the colunm that you want
+  
+  # Handling : column category
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(bayesian.data$category, regex)
+  bayesian.data$category <- cat[,3] # keep only the second part
+  
+  sellers <- names(sort(table(bayesian.data$seller), decreasing = TRUE))[1:10]
+  
+  bayesian.data <-subset(bayesian.data, seller %in% sellers)
+  
+  bayesian.data$seller <- factor(bayesian.data$seller, labels = sellers)
+
+  #---------------------
+  #   Bayesian stat
+  #---------------------
+  
+  # Random rows :
+  bayesian.data <- bayesian.data[sample(nrow(bayesian.data),nrow(bayesian.data),replace=FALSE), ]
+  
+  train.data <- bayesian.data[1:floor(nrow(bayesian.data)/2),]
+  pred.data <- bayesian.data[(floor(nrow(bayesian.data)/2)+1):nrow(bayesian.data),]
+  
+  model <- naiveBayes(seller ~ ., data =  train.data)
+  
+  
+  preds <- predict(model, newdata = pred.data)
+  conf_matrix <- table(preds, pred.data$seller)
+  acc <- round(sum(diag(conf_matrix)) / sum(conf_matrix)*100, 2)
+  
+  print(conf_matrix)
+  
+  
+  return(acc)
+}
+
+acc2 <- BayesSellers()
+sprintf("The accuracy is : %.2f %%", acc2)
+```
+Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r acc2` %. Which is a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers), this algorithm tends to be more accurate than decision trees.
+
+## - Clustering of drugs
+
+**Association rules**
 
 We wondered if there were links between some drugs. That is to say, if this is possible to cluster some drugs.
-To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of "Drugs & Chemicals". In each cell, value is True or False if the dealer has already sold something in this sub-category or not.
+To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not.
 Then, we have applied Apriori algorithm. We fixed one drug that must be in the itemset. Here it is Ecstasy. The result can be seen below.
 
 ```{r Ass Rules Sellers-Category}
@@ -1048,6 +1133,8 @@ AssRSellersCat()
 The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right. 
 We can interpret from these rules that sellers often deal more than one product. And these products can be clustered by type.
 
+## - Where did it come from? 
+
 **2. Rules to determine cateogries of ads coming from United States** 
 
 Secondly, we ran the algorithm with 2 variables : category and origin. Thus, we may be able to make a link with predictions of above decision tree. We fixed one country, here United States. 
@@ -1103,75 +1190,7 @@ The results show that when we have an ad of the categories on the left, it is li
 
 It is striking to see that Cannabis & Hashish seems to be the main rule. This can be explained by the legalisation of Cannibis in some states. Thus, the sales of these products is easy in United States and may interest people from other countries where they are not legalized. 
 
-## - Bayesian classification
-
-We used Bayesian Classification in the same objective as desicion tree : predicting something.
-
-**1. Naive alogrithm** 
-
-First, we ran Naive algorithm on the data base with by rows ads and by columns origin,category,seller,priceUnitDose, products_sold and sold_since. The aim is to predict who is the seller of each ads.We select only the main sellers because, the remaining just own few ads. We train the algorithm with half of the data and made predictions on other half. Results can be found below.
-
-```{r Bayesian Sellers}
-#----------------------------------------------------------------------------------
-#                       Bayesian Classification - Naive
-#   Prediction of the Seller knowing the origin / price / category / products_sold
-#-----------------------------------------------------------------------------------
-
-BayesSellers <- function(){
-  #-----------------
-  #   New Data 
-  #-----------------
-  
-  # Select all "Drugs & Chemicals" ads
-  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-  bayesian.data <- data[matching_vector,]
-  
-  # Select the column of the data that are interesting
-  # ie removing colunm like "id" or "url" that don't give any informations
-  bayesian.data <- subset(bayesian.data, select=c(origin,category,seller,priceUnitDose, products_sold, sold_since ))
-  # Subset : choose the colunm that you want
-  
-  # Handling : column category
-  # Regular expression for spliting the categories
-  regex <- "/(.*)/(.*)/(.*)"
-  cat <- str_match(bayesian.data$category, regex)
-  bayesian.data$category <- cat[,3] # keep only the second part
-  
-  sellers <- names(sort(table(bayesian.data$seller), decreasing = TRUE))[1:10]
-  
-  bayesian.data <-subset(bayesian.data, seller %in% sellers)
-  
-  bayesian.data$seller <- factor(bayesian.data$seller, labels = sellers)
-
-  #---------------------
-  #   Bayesian stat
-  #---------------------
-  
-  # Random rows :
-  bayesian.data <- bayesian.data[sample(nrow(bayesian.data),nrow(bayesian.data),replace=FALSE), ]
-  
-  train.data <- bayesian.data[1:floor(nrow(bayesian.data)/2),]
-  pred.data <- bayesian.data[(floor(nrow(bayesian.data)/2)+1):nrow(bayesian.data),]
-  
-  model <- naiveBayes(seller ~ ., data =  train.data)
-  
-  
-  preds <- predict(model, newdata = pred.data)
-  conf_matrix <- table(preds, pred.data$seller)
-  acc <- round(sum(diag(conf_matrix)) / sum(conf_matrix)*100, 2)
-  
-  print(conf_matrix)
-  
-  
-  return(acc)
-}
-
-acc <- BayesSellers()
-sprintf("The accuracy is : %.2f %%", acc)
-```
-Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r acc`%. Which is a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers), this algorithm tends to be more accurate than decision trees.
-
-**2. Bayesian Neural Network** 
+## - Bayesian Neural Network
 
 Secondly, we wanted to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. We ran Bayesian Neural Network algorithm on this new data and we obtained the results below.
 
@@ -1268,7 +1287,6 @@ BayesNet <- function(){
     print(affichage)
   }
 
-
 }
 
 BayesNet()
@@ -1279,3 +1297,7 @@ Neural Network shows that the profitability is conditionnaly dependant to catego
 # - References
 ***
 
+---
+nocite: | 
+  @Rmarkdown, @DrugWise, @tele, @Rehab, @cana, @stu
+...
