@@ -1,5 +1,5 @@
 
-data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("data.csv"))
   
   library(stringr)
 
@@ -11,7 +11,7 @@ data <- as.data.frame(read.csv("data.csv"))
     #  Initialization
     #-------------------
     
-    country <- "United States"
+    country <- "Canada"
     
     #---------------------------
     #    Analysis - Exportation

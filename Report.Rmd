@@ -648,7 +648,7 @@ Country_Export_Import()
 It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
 Nevertheless we have to moderate our conclusions since targeting one particular country reduces significantly the number of information we use for statistics.
 
-## - Market prices
+## - Market Prices
 
 After analysing general trend and flows, one interesting topic to analyse is market prices. We wondered if sold products in *AlphaBay* are cheaper than in the streets. 
 
@@ -756,16 +756,18 @@ Globally, it appears that prices of *street sellers* are often largely higher th
 # - Data mining
 ***
 
-Secondly, we have performed some data mining techniques in order to discover hidden rules and correlations in the database and also to predict the value of one variable given other values.  
+Secondly, we have performed some data mining techniques in order to discover *hidden rules* and *correlations* in the database and also to predict the value of one variable given other values.  
 Please note that for all this part we only focus on *Drug Market*. 
 
 ## - Sellers Predictions 
 
 The first thing we thought about was to guess the seller of an ad. We used therefore different data mining methods, especially *Decision Tree* and *Bayesian classification*.  
 
-We ran algorithm on the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is the seller of each ads. We train the algorithm with half of the data and made predictions on other half. Given that most of the seller own just few ads we have selected only the main ones. Otherwise, data mining techniques will fail in finding rules for them. Results can be found below.
+We ran algorithm on the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is selling each ads. We train the algorithm with half of the data and made predictions on other half. Given that most of the seller own just few ads (occasional advertisements) we have selected only the main ones, whose represent at best the market. Otherwise, data mining techniques will fail in finding rules for them.
 
 **1. Decision tree**
+
+First of all, we try to made prediction with decision tree method. In order to do this we use the *rpart package* which is based on the *CART Alorithm*. Here you can find our prognosis on the five most significant sellers and the related tree.
 
 ```{r DTsellers}
 #----------------------------------------------------------------------
@@ -841,23 +843,85 @@ Dtsellers <- function(){
     conf <- table(pred.data[,match("seller",names(pred.data))],pred)
     
     # Accurency
-    acc <- sum(diag(conf)) / sum(conf)
+    acc <- round((sum(diag(conf)) / sum(conf)*100),2)
     
   print(conf)
-  sprintf("The accuracy is : %.2f %%", acc*100)
- 
+  
+  return(acc)
 }
 
-Dtsellers()
+accDT1 <- Dtsellers()
+sprintf("The accuracy is : %.2f %%", accDT1)
 
 ```
 
-explication du tableau, 
-CART Algorithm 
-show the graph
-sur % mais marche bien aussi sur plus ex :
+It is striking to realise that our prediction is very reliable since the accuracy is `r accDT1` %.  
+In the array you can find in columns our prediction and by rows the real seller. In other words the diagonal shows us the number of correct prediction and all others values are mistakes.  
+The tree enable us to have a good visual aspect on predictions and gives us a lot of essentials informations on this five main sellers.
 
-```{r}
+Besides, with quick basic statistics, it's possible to attest this tree and its branchs, that is to say how it's splited. Indeed let's have a look at this five deallers. This array shows us the main country where they are dealing, the main category that they are selling and the median price of their ads (i.e. 50% of ads are under this price and the other 50% are more expensive).
+
+
+```{r DT Analysis}
+#-------------------------------------------------------------
+#               Statistics fo decision tree
+#-------------------------------------------------------------
+
+DTanalysis <- function() {
+
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  Drug.data <- data[matching_vector,]
+  
+  # Select the column of the data that are interesting for the tree
+  # ie removing colunm like "id" or "url" that don't give any informations
+  Drug.data <- subset(Drug.data, select=c(origin,category,seller,priceUnitDose))
+  # Subset : choose the colunm that you want
+  
+  # Handling : column categorie
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(Drug.data$category, regex)
+  Drug.data$category <- cat[,3] # keep only the second part
+  
+  # Handling : seller
+  tab_sel <- table(Drug.data$seller)
+  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_sel <- tab_sel[1:5] # Taking only the 5 main sellers
+  seller <- names(tab_sel) # Names of the 5 main sellers
+  
+  # Initialization 
+  ori <- c()
+  price <- c()
+  cat <- c()
+  
+  # calculation of informations for each seller
+  for(i in 1:5) {
+    # Select ads from the ieme seller
+    matching_vector <- c( str_detect(Drug.data$seller, seller[i]))
+    sel.data <- Drug.data[matching_vector,]
+    
+    ori[i] <- names(sort(table(sel.data$origin),decreasing=TRUE)[1])  # First country 
+    cat[i] <-names(sort(table(sel.data$category),decreasing=TRUE)[1]) # First category
+    price[i] <- round(summary(sel.data$priceUnitDose)[[3]],2)  # Median price
+  }
+  
+  sel.data <- as.data.frame(seller)
+  sel.data$origin <- ori
+  sel.data$category <- cat
+  sel.data$price <- price
+  
+  print(sel.data)
+}
+
+DTanalysis()
+```
+
+We can easly see that this informations are exactly the one that are in the tree. *jnenfrancis* is guessing with the origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). And for others sellers the algorithm is based on the category *Cannabis & Hashish*.  
+
+We have done here prediction on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plot). However we can make a prognosis with more seller and still have good results. For instance with 10 seller we obtain the results below.
+
+```{r DT Sellers Results}
 #----------------------------------------------------------------------
 #                  Decision tree - CART algorithm
 #   Prediction of the seller knowing the price / category / origin
@@ -941,9 +1005,11 @@ sprintf("The accuracy is : %.2f %%", acc1)
 
 ```
 
+Once more, in this array you can find the number of corrects predictions and mistakes according to the different predicted seller.
+
 **2. Bayesian classification - Naive alogrithm**
 
-We used Bayesian Classification in the same objective as desicion tree,  making predictions. We ran Bayesian Naive Algorithm with the same data and we obtain the results below.
+We used Bayesian Classification in the same objective as desicion tree,  making predictions. Here are results when running *Bayesian Naive Algorithm* with the same data
 
 ```{r Bayes Seller v1, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1007,7 +1073,7 @@ accBayesV1 <- BayesSellersV1()
 sprintf("The accuracy is : %.2f %%", accBayesV1)
 ```
 
-The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. To solve this problem we added new variable to the data which could be relevant like the number of ads already sold and the creation date of the ad.
+The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. However one way to improve the prognosis is to add new variable to the data which could be relevant like the number of ads already sold and the creation date of the ad.
 
 ```{r Bayesian Sellers, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1070,13 +1136,14 @@ BayesSellers <- function(){
 accBayesV2 <- BayesSellers()
 sprintf("The accuracy is : %.2f %%", accBayesV2)
 ```
-Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers), this algorithm tends to be more accurate than decision trees. We will see in the section Prediction of profitability, how to process with creation date of ads and number of sold products.
+Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
+We will see later in the section *Prediction of profitability*, how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
-## - Clustering of drugs - Association Rules
+## - Clustering of drugs
 
-We wondered if there were links between some drugs. That is to say, if this is possible to cluster some drugs.
-To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not.
-Then, we have applied Apriori algorithm. We fixed one drug that must be in the itemset. Here it is Ecstasy. The result can be seen below.
+Secondly, we wondered if there were links between some drugs. That is to say, if this is possible to cluster some drugs.  
+To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not.  
+Then, using *Association Rules* we have applied *Apriori algorithm*. We fixed one drug that must be in the itemset. Here it is Ecstasy and results can be seen below.
 
 ```{r Ass Rules Sellers-Category}
 
@@ -1195,11 +1262,105 @@ AssRSellersCat()
 
 ```
 
-The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right. 
+The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right.  
 We can interpret from these rules that sellers often deal more than one product. And these products can be clustered by type.
 
 
 ## - Prediction of ads origin
+
+```{r}
+#----------------------------------------------------------------------
+#                  Decision tree - CART algorithm
+#   Prediction of the country knowing the seller / price / category
+#-----------------------------------------------------------------------
+
+DTorigin <- function(){
+  
+  #-----------------
+  #   New Data 
+  #-----------------
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  dectree.data <- data[matching_vector,]
+  
+  # Select the column of the data that are interesting for the tree
+  # ie removing colunm like "id" or "url" that don't give any informations
+  dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose)) 
+  # Subset : choose the colunm that you want
+  
+  # Handling : column categorie
+  # Regular expression for spliting the categories
+  regex <- "/(.*)/(.*)/(.*)"
+  cat <- str_match(dectree.data$category, regex)
+  dectree.data$category <- cat[,3] # keep only the second part
+  
+  # Handling : country
+  dectree.data <- dectree.data[which(dectree.data$origin != "Worldwide"),]
+  tab_coun <- table(dectree.data$origin)
+  tab_coun <- sort(tab_coun, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_coun <- tab_coun[1:15] # Taking only the most important : main sellers
+  name_coun <- names(tab_coun)
+  # New data keeping only the main dealers
+  dectree.data <-subset(dectree.data, origin %in% name_coun) 
+  
+  
+  # Handling : seller
+  tab_sel <- table(dectree.data$seller)
+  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_sel <- tab_sel[1:7] # Taking only the most important : main sellers
+  name_sel <- names(tab_sel)
+  # New data keeping only the main sellers
+  dectree.data <-subset(dectree.data, seller %in% name_sel) 
+  
+  # Random rows :
+  dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
+  
+  #---------------------
+  #   Decision tree
+  #---------------------
+  
+  # Factor
+  dectree.data$origin <- factor(dectree.data$origin)
+  
+  # Half of the data for making the decision tree
+  train <- dectree.data[1:(floor(nrow(dectree.data))/2),]
+  
+  # Creation of the tree
+  tree <- rpart(origin ~.,data=train, method="class") 
+  
+  # Plot
+  fancyRpartPlot(tree)
+  
+  # Frame
+  box(which = "outer", lty = "solid")
+  
+  #--------------------
+  #   Prediction
+  #--------------------
+  
+  # The other half for the prediction
+  test <- dectree.data[(floor(nrow(dectree.data)/2)+1):nrow(dectree.data),]
+  
+  # Making prediction
+  pred <- predict(tree,test,type="class")
+  
+  # Analysis:
+  
+  # Comparison between the result and the prediction (prediction in colunm)
+  conf <- table(test[,match("origin",names(test))],pred)
+  
+  # Accurency :
+  acc <- sum(diag(conf)) / sum(conf)
+  
+  print(conf)
+  print(acc)
+}
+
+DTorigin()
+
+```
+
 
 
 **2. Rules to determine cateogries of ads coming from United States** 
