@@ -28,12 +28,14 @@ regex <- "/(.*)/(.*)/(.*)"
 cat <- str_match(bayesian.data$category, regex)
 bayesian.data$category <- cat[,3] # keep only the second part
 
-
 sellers <- names(sort(table(bayesian.data$seller), decreasing = TRUE))[1:10]
 
 bayesian.data <-subset(bayesian.data, seller %in% sellers)
-
 bayesian.data$seller <- factor(bayesian.data$seller, labels = sellers)
+
+# Handling : products_sold
+bayesian.data$products_sold <- gsub(pattern="NULL", replacement="0", bayesian.data$products_sold)
+bayesian.data$products_sold <- as.numeric(bayesian.data$products_sold)
 
 
 #---------------------

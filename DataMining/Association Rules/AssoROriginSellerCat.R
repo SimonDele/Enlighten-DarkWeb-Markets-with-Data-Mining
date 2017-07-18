@@ -12,27 +12,28 @@ library(arulesViz)
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
 data_drugs <- data[matching_vector, ]
 
-#Select some columns
-asso.data <- subset(data_drugs, select = c(origin,category,seller))
 
-#Get rid of the first part of the category name "/Drugs & Chemicals/"
+#Select some columns
+asso.data <- subset(data_drugs, select = c(origin,category))
+
+# Get rid of the first part of the category name "/Drugs & Chemicals/"
 asso.data$category <- gsub(pattern = "/Drugs & Chemicals/", replacement = "", asso.data$category)
 
 asso.data$origin <- factor(asso.data$origin)
 asso.data$category <-factor(asso.data$category)
-asso.data$seller <- factor(asso.data$seller)
 
-#Association Rules with rhs containing "Ecstasy" only
+
+#Association Rules with rhs containing "China" only
 rules <- apriori(asso.data,
-                 parameter = list(minlen=3, supp=0.0005, conf=0.8),
-                 appearance = list(rhs=c("origin=China"),default="lhs"),
+                 parameter = list(minlen=2, supp=0.0005, conf=0.5),
+                 appearance = list(rhs=c("origin=United States"),default="lhs"),
                  control = list(verbose=F))
 
 rules.sorted <- sort(rules, by="lift")
 inspect(rules.sorted)
 
 #Plot graph of rules
-plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="Association Rules on the category and seller to deduce the country")
+plot(rules.sorted, method="graph", control=list(type="items"),main ="Association Rules on the category and seller to deduce the country")
 
 
 

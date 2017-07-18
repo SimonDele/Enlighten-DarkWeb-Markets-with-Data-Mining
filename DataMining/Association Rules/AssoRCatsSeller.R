@@ -102,7 +102,7 @@
   
   #Association Rules with rhs containing "Ecstasy" only
   rules <- apriori(cat_seller.data,
-                   parameter = list(minlen=2, supp=0.05, conf=0.8),
+                   parameter = list(minlen=2, supp=0.05, conf=0.8 ),
                    appearance = list(rhs=c("Ecstasy"),default="lhs"),
                    control = list(verbose=F))
   
