@@ -85,7 +85,11 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 #----------------------------------------------------------
 
 printdata <- function() {
-  print(data[19012:19016,])
+  print.data <- subset (data[19012:19016,], select=-X)
+  for(i in 2:4){
+    print.data[,i] <- as.character(print.data[,i])
+  }
+  print(print.data)
 }
 
 printdata()
