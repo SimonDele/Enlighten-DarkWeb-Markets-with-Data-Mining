@@ -19,6 +19,8 @@ body {text-align: justify}
 
 For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know how these websites operate.
 
+The understanding of such illegal market is crucial to fight it. With information gathered in those websites, it allows to identify which are the most wanted ads for the consumer. It is also possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities. 
+
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
 This market will be analysed. Its nature, its predominance of items, its different countries of origin, main sellers, and so on will also be performed. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
@@ -81,9 +83,9 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 # - Data Retrieval
 ***
 
-Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each rows of the data represent an ad and all the significant information can be find in the differents columns : title, brief, ad, price (in USD $) , url link, seller, payement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each rows of the data represent an ad and all the significant information can be find in the differents columns : title, brief, ad, price (in USD $) , url link, seller, paiement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
 
-Thus the first step was to clean the data (remove character ... ) and made it readable in a computer way.  especially to focus on price because in the title
+Thus, the first step was to clean the data (remove special characters ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Then, with these information, the price of one unit of one dose of the product has been calculated.
 
 Here is what the *database* looks like :
 
