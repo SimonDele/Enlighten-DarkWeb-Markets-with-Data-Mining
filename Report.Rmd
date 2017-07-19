@@ -18,10 +18,10 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new one resurfaces or re-migrates frequently. On top of that, currently, we don't know enough of how these websites operate.
+For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know how these websites operate.
 
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
-Our work consists in analysing this market, its nature, its predominance of items, its different origins (countries), main sellers, and so on. Thus, during a first phase we perform some "Basic Statistics" on the *Data base*, in order to discover the marketplace and to point out its trend. Then, we present some experimental results of *data mining techniques* to discuss about them.
+Our work consists in analysing this market, its nature, its predominance of items, its different origins (countries), main sellers, and so on. Thus, during a first phase we perform some "Basic Statistics" on the *Data base*, in order to discover the marketplace and to point out its trends. Then, we present some experimental results of *data mining techniques* to discuss about them.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -84,7 +84,7 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 ## - General distribution
 
-As we said before, we start by performing some basic statistics. Let's first analyse general distribution and trend of *AlphaBay Web Market*.
+As we said before, we will start by performing some basic statistics. Let's first analyse general distribution and trend of *AlphaBay Web Market*.
 
 **1. Here, global view of ads distribution.**
 
@@ -193,13 +193,13 @@ rate <- RateDrugAd()
 
 
 To begin with, we can notice that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
-It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, we can notice that all the other items (digital product, weapons, jewelry ...) represent less than five percent of the marketplace.
+It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, we can notice that all other items (digital product, weapons, jewelry ...) represent less than five percent of the marketplace.
 
 ## - Drug Market
 
 *AlphaBay Web Market* is a well known place for dealing drugs. This last chart has proved that. Thus, let's focus on the drug market.
 
-**1. You can see here the different distributions of drugs.**
+**1. You can see here distribution of drugs.**
 
 ```{r Distribution of Drugs}
 #-----------------------------------------------
@@ -331,7 +331,7 @@ MapEurope()
 
 ```
 
-Circles show the amount of ads about drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, *United Kingdom*, *Netherlands* and *Germany*.
+Circles show the amount of ads concerning drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, *United Kingdom*, *Netherlands* and *Germany*.
 
 ## - Countries Flows
 
@@ -761,13 +761,13 @@ Please note that for all this part we only focus on *Drug Market*.
 
 ## - Sellers Predictions 
 
-The first thing we thought about was to guess the seller of an ad. We used therefore different data mining methods, especially *Decision Tree* and *Bayesian classification*.  
+The first thing we thought about was to guess the seller of an ad. We used therefore different data mining methods, especially *Decision Tree* and *Bayesian classification*.
 
-We ran algorithm on the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is selling each ads. We train the algorithm with half of the data and made predictions on other half. Given that most of the seller own just few ads (occasional advertisements) we have selected only the main ones, whose represent at best the market. Otherwise, data mining techniques will fail in finding rules for them.
+We ran algorithm on the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is selling each ads. We train the algorithm with half of the data and made predictions on other half. Given that most of sellers own just few ads (occasional advertisements) we have selected only the main ones, which represent at best the market. Otherwise, data mining techniques will fail in finding rules for them.
 
 **1. Decision tree**
 
-First of all, we try to made prediction with decision tree method. In order to do this we use the *rpart package* which is based on the *CART Alorithm*. Here you can find our prognosis on the five most significant sellers and the related tree.
+First of all, we try to make predictions with decision tree method. In order to do this we use the *rpart package* which is based on the *CART Alorithm*. Here you can find our prognosis on the five most significant sellers and the related tree.
 
 ```{r DTsellers}
 #----------------------------------------------------------------------
@@ -856,15 +856,15 @@ sprintf("The accuracy is : %.2f %%", accDT1)
 ```
 
 It is striking to realise that our prediction is very reliable since the accuracy is `r accDT1` %.  
-In the array you can find in columns our prediction and by rows the real seller. In other words the diagonal shows us the number of correct prediction and all others values are mistakes.  
-The tree enable us to have a good visual aspect on predictions and gives us a lot of essentials informations on this five main sellers.
+In the array you can find by columns our predictions and by rows the real sellers. In other words the diagonal shows us the number of correct predictions and all other values are mistakes made by the algortihm.  
+The tree enables us to have a good visual aspect on predictions and gives us a lot of essential information on these five main sellers.
 
-Besides, with quick basic statistics, it's possible to attest this tree and its branchs, that is to say how it's splited. Indeed let's have a look at this five deallers. This array shows us the main country where they are dealing, the main category that they are selling and the median price of their ads (i.e. 50% of ads are under this price and the other 50% are more expensive).
+Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
 
 
 ```{r DT Analysis}
 #-------------------------------------------------------------
-#               Statistics fo decision tree
+#               Statistics for decision tree
 #-------------------------------------------------------------
 
 DTanalysis <- function() {
@@ -917,9 +917,9 @@ DTanalysis <- function() {
 DTanalysis()
 ```
 
-We can easly see that this informations are exactly the one that are in the tree. *jnenfrancis* is guessing with the origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). And for others sellers the algorithm is based on the category *Cannabis & Hashish*.  
+We can easily see that these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
 
-We have done here prediction on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plot). However we can make a prognosis with more seller and still have good results. For instance with 10 seller we obtain the results below.
+We have done here predictions on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, we can make a prognosis with more sellers and still have good results. For instance, with 10 sellers, we obtain the results below.
 
 ```{r DT Sellers Results}
 #----------------------------------------------------------------------
@@ -1005,11 +1005,11 @@ sprintf("The accuracy is : %.2f %%", acc1)
 
 ```
 
-Once more, in this array you can find the number of corrects predictions and mistakes according to the different predicted seller.
+Once more, in this array we can find the number of mistakes and correct predictions.
 
 **2. Bayesian classification - Naive alogrithm**
 
-We used Bayesian Classification in the same objective as desicion tree,  making predictions. Here are results when running *Bayesian Naive Algorithm* with the same data
+We used Bayesian Classification in the same objective as decision tree,  making predictions. Here are results when running *Bayesian Naive Algorithm* with the same data.
 
 ```{r Bayes Seller v1, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1073,7 +1073,7 @@ accBayesV1 <- BayesSellersV1()
 sprintf("The accuracy is : %.2f %%", accBayesV1)
 ```
 
-The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. However one way to improve the prognosis is to add new variable to the data which could be relevant like the number of ads already sold and the creation date of the ad.
+The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. However one way to improve the prognosis is to add new variables to the data which could be relevant like the number of ads already sold and the creation date of the ad.
 
 ```{r Bayesian Sellers, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1268,7 +1268,7 @@ We can interpret from these rules that sellers often deal more than one product.
 
 ## - Prediction of ads origin
 
-```{r}
+```{r DT origin}
 #----------------------------------------------------------------------
 #                  Decision tree - CART algorithm
 #   Prediction of the country knowing the seller / price / category
@@ -1350,7 +1350,7 @@ DTorigin <- function(){
   # Comparison between the result and the prediction (prediction in colunm)
   conf <- table(test[,match("origin",names(test))],pred)
   
-  # Accurency :
+  # Accuracy :
   acc <- sum(diag(conf)) / sum(conf)
   
   print(conf)
