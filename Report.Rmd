@@ -21,7 +21,7 @@ body {text-align: justify}
 For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know how these websites operate.
 
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
-Our work consists in analysing this market, its nature, its predominance of items, its different origins (countries), main sellers, and so on. Thus, during a first phase we perform some "Basic Statistics" on the *Data base*, in order to discover the marketplace and to point out its trends. Then, we present some experimental results of *data mining techniques* to discuss about them.
+This market will be analysed. Its nature, its predominance of items, its different countries of origin, main sellers, and so on will also be performed. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -84,9 +84,9 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 ## - General distribution
 
-As we said before, we will start by performing some basic statistics. Let's first analyse general distribution and trend of *AlphaBay Web Market*.
+As it has been said before, basic statistics will be realized. Let's first analyse general distribution and trend of *AlphaBay Web Market*.
 
-**1. Here, global view of ads distribution.**
+**1. Global view of ads distribution.**
 
 ```{r Number of ads}
 #-----------------------------------------------
@@ -118,10 +118,12 @@ NumberOfAds <- function() {
 NumberOfAds()
 
 ```
-This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, United States are the biggest dealer far ahead of the rest. Their number of ads is more than twice the number of the second one, which is United Kingdom.  
-Moreover, we can notice that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe, but we should not forget that China or Afghanistan are also present.
+This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
+Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
-**2. Now let's have a look at the distribution of ads per category.**
+Now let's have a look at the distribution of ads per category.
+
+**2. Distribution of ads per category.**
 
 ```{r Function Select Drugs}
   selectDrug <- function(drugName){
@@ -192,14 +194,14 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, we can notice that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
-It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, we can notice that all other items (digital product, weapons, jewelry ...) represent less than five percent of the marketplace.
+To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
+It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
 
 ## - Drug Market
 
 *AlphaBay Web Market* is a well known place for dealing drugs. This last chart has proved that. Thus, let's focus on the drug market.
 
-**1. You can see here distribution of drugs.**
+**1. Distribution of drugs.**
 
 ```{r Distribution of Drugs}
 #-----------------------------------------------
@@ -260,7 +262,7 @@ DistributionDrugs()
 
 ```
 
-We can discern a large range of drugs categories. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover more than 50 % of the market. The remaining is splited by all the other drugs.
+A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover more than 50 % of the market. The remaining is splited by all other drugs.
 
 **2. World distribution of drugs**
 
@@ -292,9 +294,9 @@ NumberOfAdsDrugs()
 
 ```
 
-Once more, we are plotting the 10 main dealer-countries in the world but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, comparing the ratio between drugs ads and the total number of ads, we deduce that they are mainly dealing drugs.  
-This also matches with the second chart that shows us that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
-But what we can conclude so far is that the market of drugs is gathered in Europe and the north of America.
+Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.  
+This also matches with the second chart that shows that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
+But so far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
 
 **3. Take a global view of the drugs market in Europe with the following map.**
 
@@ -331,15 +333,15 @@ MapEurope()
 
 ```
 
-Circles show the amount of ads concerning drugs. The map confirms our assumptions that there are a lot of Drug dealers in Europe with, as major dealers countries, *United Kingdom*, *Netherlands* and *Germany*.
+Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.
 
 ## - Countries Flows
 
-Let's now focus more specifically on different countries and study their trend. To do so, we have had a look to export and import flows of the country.
+Let's now focus more specifically on different countries and study their trend. To do so, export and import flows of the country have been investigated.
 
 **1. United Kingdom exportation**
 
-The pie below represents the repartition of each category that United Kingdom exports. We focused on the second subcategory which appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
+The pie below represents the repartition of each category that United Kingdom exports. Only the second subcategory has been kept because it appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
 
 ```{r Exportation UK}
 #-----------------------------------------------
@@ -419,8 +421,8 @@ country_Export <- function() {
 country_Export()
 ```
 
-Given that most of exported items are drugs, that is not surprising they are the most sold product as we saw it before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, we can notice that *"Stimulants"* and other highly dangerous drugs are significantly present.  
-We took the example of *United Kingdom* but most of European countries follows the same rules and this confirms our previous assumptions.
+Given that most of exported items are drugs, that is not surprising that they are the most sold product, as it has been seen before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other highly dangerous drugs are significantly present as we.  
+Most of European countries follows the same rules as *United Kingdom* and this confirms previous assumptions.
 
 **2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
 
@@ -504,7 +506,7 @@ country_Export <- function() {
 country_Export()
 ```
 
-What's suprising is that, unlike most of countries, *Afghanistan* doesn't really export drugs. Actually, a vast majority of exported products are false identity, deception account... We may undeline that *Afghanistan* is also dealing electronic devices or softwares.
+What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
 
 **3. Let's compare France export & import flows and see if there is a difference between them.**
 
@@ -646,15 +648,15 @@ Country_Export_Import()
 ```
 
 It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
-Nevertheless we have to moderate our conclusions since targeting one particular country reduces significantly the number of information we use for statistics.
+Nevertheless these conclusions should be moderated since targeting one particular country reduces significantly the number of information used for statistics.
 
 ## - Market Prices
 
-After analysing general trend and flows, one interesting topic to analyse is market prices. We wondered if sold products in *AlphaBay* are cheaper than in the streets. 
+After analysing general trend and flows, one interesting topic to analyse is market prices. One may ask if sold products in *AlphaBay* are cheaper than in the streets. 
 
 **1. Average prices on the *AlphaBay Web Market* **
 
-Firstly, we calculated the average price of one gram of the most common drugs and we obtained the result below.
+Firstly, the average price of one gram of the most common drugs has been calculated and results below has been obtained.
 
 ```{r Drugs Prices}
 
@@ -692,7 +694,7 @@ priceDrugs <- DrugsPrices()
 
 **2. Comparison with the "street"**
 
-Finally, we were looking to some information about prices of street sellers for same drugs as above. Thus, we gathered data in articles and websites. Unfortunately, we failed to obtain them on some drugs. Below is the result of what we found.
+Finally, some information about prices of street sellers have been collected, for same drugs as above. Thus, prices in articles and websites have been gathered. Unfortunately, values on some drugs are missing. Below are results of these investigations.
 
 
 ```{r Comparison articles & data, message=FALSE, warning=FALSE}
@@ -751,23 +753,25 @@ DrugsPricesDoc()
 
 ```
 
-Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar. (Please find in the last section all references that we used)
+Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar. (Please find in the last section all references used)
 
 # - Data mining
 ***
 
-Secondly, we have performed some data mining techniques in order to discover *hidden rules* and *correlations* in the database and also to predict the value of one variable given other values.  
-Please note that for all this part we only focus on *Drug Market*. 
+Secondly, data mining techniques have been performed in order to discover *hidden rules* and *correlations* in the database. Another goal is to predict the value of one variable given other values.  
+Please note that for all this part the analysis is only on *Drug Market*. 
 
 ## - Sellers Predictions 
 
-The first thing we thought about was to guess the seller of an ad. We used therefore different data mining methods, especially *Decision Tree* and *Bayesian classification*.
+The first thing to wonder is how to guess the seller of an ad. To answer this question, different data mining methods have been used, especially *Decision Tree* and *Bayesian classification*.
 
-We ran algorithm on the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is selling each ads. We train the algorithm with half of the data and made predictions on other half. Given that most of sellers own just few ads (occasional advertisements) we have selected only the main ones, which represent at best the market. Otherwise, data mining techniques will fail in finding rules for them.
+Algorithm has been run on a subset of the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is selling each ads. By training the algorithm on one half of the data, predictions could be made on other half. Given that most of sellers own just few ads (occasional advertisements) only the main ones were selected, which represent at best the market. Otherwise, data mining techniques will fail in finding rules for them. 
+
+To check efficiency of the algorithm a measure of accuracy must be calculated. It is obtain by comparing the prediction of decision tree method with the true value.
 
 **1. Decision tree**
 
-First of all, we try to make predictions with decision tree method. In order to do this we use the *rpart package* which is based on the *CART Alorithm*. Here you can find our prognosis on the five most significant sellers and the related tree.
+Using *rpart package*, which is based on the *CART Alorithm*, a decision tree has been created. Thanks to it, predictions of the seller could be made. Prognoses on the five most significant sellers and the related tree can be found below.
 
 ```{r DTsellers}
 #----------------------------------------------------------------------
@@ -855,9 +859,9 @@ sprintf("The accuracy is : %.2f %%", accDT1)
 
 ```
 
-It is striking to realise that our prediction is very reliable since the accuracy is `r accDT1` %.  
-In the array you can find by columns our predictions and by rows the real sellers. In other words the diagonal shows us the number of correct predictions and all other values are mistakes made by the algortihm.  
-The tree enables us to have a good visual aspect on predictions and gives us a lot of essential information on these five main sellers.
+It is striking to realise that predictions are very reliable since the accuracy is `r accDT1` %.  
+In the array you can find by columns our predictions and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
+The tree enables to have a good visual aspect on predictions and gives a lot of essential information on these five main sellers.
 
 Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
 
@@ -917,9 +921,9 @@ DTanalysis <- function() {
 DTanalysis()
 ```
 
-We can easily see that these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
+Obviously, these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
 
-We have done here predictions on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, we can make a prognosis with more sellers and still have good results. For instance, with 10 sellers, we obtain the results below.
+Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, a prognosis with more sellers can be made and there are still good results. For instance, with 10 sellers, the results below are obtained.
 
 ```{r DT Sellers Results}
 #----------------------------------------------------------------------
@@ -1005,11 +1009,11 @@ sprintf("The accuracy is : %.2f %%", acc1)
 
 ```
 
-Once more, in this array we can find the number of mistakes and correct predictions.
+Once more, this array presents the number of mistakes and correct predictions.
 
 **2. Bayesian classification - Naive alogrithm**
 
-We used Bayesian Classification in the same objective as decision tree,  making predictions. Here are results when running *Bayesian Naive Algorithm* with the same data.
+Bayesian Classification has been used in the same objective as decision tree,  making predictions. Here are results when running *Bayesian Naive Algorithm* with the same data.
 
 ```{r Bayes Seller v1, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1136,14 +1140,14 @@ BayesSellers <- function(){
 accBayesV2 <- BayesSellers()
 sprintf("The accuracy is : %.2f %%", accBayesV2)
 ```
-Results show that the algorithm succeeds in predicting most of the sellers. Actually the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
-We will see later in the section *Prediction of profitability*, how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
+Results show that the algorithm succeeds in predicting most of the sellers. Therefore, the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
+Later in the section *Prediction of profitability* , it will be discussed how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
 ## - Clustering of drugs
 
-Secondly, we wondered if there were links between some drugs. That is to say, if this is possible to cluster some drugs.  
-To do so, firstly, we have created a new data frame with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not.  
-Then, using *Association Rules* we have applied *Apriori algorithm*. We fixed one drug that must be in the itemset. Here it is Ecstasy and results can be seen below.
+Secondly, one can wonder if there were links between some drugs. That is to say, if this is possible to cluster some drugs.  
+To do so, firstly, a new data frame has been created with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not.  
+Then, *Apriori algorithm* of *Association Rules* has been used. One drug has been selected that must be in the itemset. Here it is Ecstasy and results can be seen below.
 
 ```{r Ass Rules Sellers-Category}
 
@@ -1262,8 +1266,8 @@ AssRSellersCat()
 
 ```
 
-The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if we have the itemset on the left we are most likely to have the drug on the right.  
-We can interpret from these rules that sellers often deal more than one product. And these products can be clustered by type.
+The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if there is the itemset on the left we are most likely to have the drug on the right.  
+These rules can be interpreted as follows : sellers often deal more than one product. And these products can be clustered by type.
 
 
 ## - Prediction of ads origin
@@ -1365,7 +1369,7 @@ DTorigin()
 
 **2. Rules to determine cateogries of ads coming from United States** 
 
-Secondly, we ran the algorithm with 2 variables : category and origin. Thus, we may be able to make a link with predictions of above decision tree. We fixed one country, here United States. 
+Secondly, the algorithm has been run with 2 variables : category and origin. Thus, one may be able to make a link with predictions of above decision tree. One country has been fixed, here United States. 
 
 
 ```{r Ass Rules Origin}
@@ -1423,15 +1427,13 @@ AssROriginSellerCat <- function(){
 AssROriginSellerCat()
 
 ```
-The results show that when we have an ad of the categories on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
+The results show that when there is an ad of the category on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
 
 It is striking to see that Cannabis & Hashish seems to be the main rule. This can be explained by the legalisation of Cannibis in some states. Thus, the sales of these products is easy in United States and may interest people from other countries where they are not legalized. 
 
 ## - Prediction of ads profitability
 
-In this part we used a Bayesian Neural Network.
-
-Secondly, we wanted to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. We ran Bayesian Neural Network algorithm on this new data and we obtained the results below.
+Secondly, it worths to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. Bayesian Neural Network algorithm has beed accomplished on this new data and the results obtained are below.
 
 ```{r Bayesian Network}
 #----------------------------------------------------------------------
