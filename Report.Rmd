@@ -9,7 +9,6 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
-bibliography: My_bibliography.bibtex
 ---
 <style>
 body {text-align: justify}
@@ -79,13 +78,22 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 ```
 
+# - Data Retrieval
+***
+
+Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each rows of the data represent an ad and all the significant information can be find in the differents columns : title, brief, ad, price (in USD $) , url link, seller, payement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+
+Thus the first step was to clean the data (remove character ... ) and made it readable in a computer way.  especially to focus on price because in the title
+
+Here is what the *database* looks like :
+
 ```{r print data}
 #----------------------------------------------------------
 #               Display of the data :
 #----------------------------------------------------------
 
 printdata <- function() {
-  print.data <- subset (data[19012:19016,], select=-X)
+  print.data <- subset (data[19014:19016,], select=-X)
   for(i in 2:4){
     print.data[,i] <- as.character(print.data[,i])
   }
@@ -102,7 +110,7 @@ printdata()
 
 ## - General distribution
 
-As it has been said before, basic statistics will be realized. Let's first analyse general distribution and trend of *AlphaBay Web Market*.
+As it has been said before, basic statistics have been first realized. Let's see the general distribution and trend of *AlphaBay Web Market*.
 
 **1. Global view of ads distribution.**
 
@@ -315,6 +323,7 @@ NumberOfAdsDrugs()
 Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.  
 This also matches with the second chart that shows that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
 But so far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
+
 
 **3. Take a global view of the drugs market in Europe with the following map.**
 
@@ -771,7 +780,7 @@ DrugsPricesDoc()
 
 ```
 
-Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar. (Please find in the last section all references used)
+Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : [1],[2],[3],[4],[5])
 
 # - Data mining
 ***
@@ -1451,6 +1460,8 @@ It is striking to see that Cannabis & Hashish seems to be the main rule. This ca
 
 ## - Prediction of ads profitability
 
+text {#anchor}
+
 Secondly, it worths to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. Bayesian Neural Network algorithm has beed accomplished on this new data and the results obtained are below.
 
 ```{r Bayesian Network}
@@ -1554,10 +1565,18 @@ BayesNet()
 
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
 
+
 # - References
 ***
 
----
-nocite: | 
-  @Rmarkdown, @DrugWise, @tele, @Rehab, @cana, @stu
-...
+[1]  "Canada.com - What Illegal Drugs Cost on the Street Around the World." Retrieved: July 2017. [Online]    Available: http://o.canada.com/business/interactive-what-illegal-drugs-cost-on-the-street-around-the-world.
+
+[2] "DrugWise - How Much Do Drugs Cost?" Retrieved: July 2017. [Online] Available: http://www.drugwise.org.uk/how-much-do-drugs-cost/.
+
+[3] "RehabCenters.net - the Average Cost of Illegal Street Drugs." Retrieved: July 2017. [Online] Available: http://www.rehabcenter.net/the-average-cost-of-illegal-drugs-on-the-street/.
+
+[4] "The Student Pocket Guide - Facts About Drugs." Retrieved: July 2017. [Online] Available: http://www.thestudentpocketguide.com/2012/01/student-life/health-and-relationships/facts-about-drugs/.
+
+[5] "The Telegraph - the Cost of Street Drugs in Britain." Retrieved: July 2017. [Online] Available: http://www.telegraph.co.uk/news/uknews/crime/11346133/The-cost-of-street-drugs-in-Britain.html.
+
+[6] "R Markdown from R Studio - R Markdown Tutorial." Retrieved: June 2017. [Online] Available: http://rmarkdown.rstudio.com/lesson-1.html.
