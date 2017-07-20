@@ -20,11 +20,11 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know how these websites operate.
+For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently [add reference to our paper and to some of the papers referenced on the history]. On top of that, currently, we don't really know in detail how these websites operate.
 
-The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allows to identify which are the most wanted ads for the consumer, its country of origin or its destination. Therefore it is possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities. 
+The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allows to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities [reference]. 
 
-This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
+This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  [update with notes on the fact that the marketplace is not up any more]
 This market will be analysed. Its nature, its different countries of origin, main sellers, predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
 
@@ -86,9 +86,9 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 # - Data Retrieval
 ***
 
-Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD $) , url link, seller, paiement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD) , url link, seller, payment, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
 
-Thus, the first step was to clean the data (Remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed at the beginning this information were not given distinctly. Therfore an important work has been done on it in order to make analyses easier. Thus, with these information, the price of one unit of one dose (1 gram) of the product has been calculated.
+Thus, the first step was to clean the data (Remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. Thus, with these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
 
 Here is what the *Database* looks like :
 
@@ -150,7 +150,7 @@ NumberOfAds()
 
 ```
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
-Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
+Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe [powerful makes sense to the layman but not in academia; compare with g20 or g7 or whatever you want]. However, other countries such as *China* and *Afghanistan* are also present. 
 
 
 **2. Now let's have a look at the distribution of ads per category.**
@@ -224,14 +224,18 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  It is not suprising since in some countries, such as the *United States*, *United Kingdom* and some country of Europe, it is difficult to be provided in some Drugs. Indeed, these countries have strict rules over the consumption of Drugs.  However, currently a debate is raising concerning the legalisation of some Drugs such as *Cannabis* in many countries. Moreover, at the rate things are going, consumer will probably have other ways for buying drugs, that's why providing information over the current market seems necessary. 
+To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
+
+//
+It is not suprising since in some countries, such as the *United Kingdom* and some country of Europe, it is difficult to be provided in some Drugs [refer to logistics and legql framework; please do not up "legqlisation" with "no prosecution"]. Indeed, these countries have strict rules over the consumption of Drugs.  However, currently a debate is raising concerning the legalisation of some Drugs such as *Cannabis* in many countries. Moreover, at the rate things are going, consumer will probably have other ways for buying drugs, that's why providing information over the current market seems necessary. 
+//
 
 It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
 
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs. This last chart has proved that. Thus, let's focus on the drug market.
+*AlphaBay Web Market* is a well known place for dealing drugs [use google trends to compare most popular existing qand past markets + google "hits" on the keyword]. This last chart has proved that. Thus, let's focus on the drug market.
 
 **1. Distribution of drugs.**
 
@@ -294,7 +298,7 @@ DistributionDrugs()
 
 ```
 
-A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found*. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raised the issue of how some of them are prescripted. May be some countries should re-think their stance over prescription of some drugs. 
+A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription [what about so,e examples on legal production]. 
 The *remaining* of the market is splited by all other drugs.
 
 **2. World distribution of drugs**
@@ -1565,7 +1569,7 @@ BayesNet <- function(){
 
   # Frame
   box(which = "outer", lty = "solid")
-  mtext("Dependency between informations" , cex = 1.2,side = 1)
+  mtext("Conditional dependency between variables" , cex = 1.2,side = 1)
   
 }
 
