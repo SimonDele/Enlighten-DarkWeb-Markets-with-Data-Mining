@@ -83,7 +83,7 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 # - Data Retrieval
 ***
 
-Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each rows of the data represent an ad and all the significant information can be find in the differents columns : title, brief, ad, price (in USD $) , url link, seller, paiement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, brief, ad, price (in USD $) , url link, seller, paiement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
 
 Thus, the first step was to clean the data (remove special characters ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Then, with these information, the price of one unit of one dose of the product has been calculated.
 
@@ -222,8 +222,10 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
+To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  It is not suprising since in some countries, such as the United States, United Kingdom and some country of Europe, it is difficult to be provided in some Drugs. Indeed, these countries have strict rules over the consumption of Drugs.  However, currently a debate is raising concerning the legalisation of some Drugs such as Cannabis in many countries. Moreover, at the rate things are going, consumer will probably have other ways for buying drugs, that's why providing information over the current market seems necessary. 
+
 It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
+
 
 ## - Drug Market
 
@@ -290,7 +292,8 @@ DistributionDrugs()
 
 ```
 
-A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover more than 50 % of the market. The remaining is splited by all other drugs.
+A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found*. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raised the issue of how some of them are prescripted. May be some countries should re-think their stance over prescription of some drugs. 
+The *remaining* of the market is splited by all other drugs.
 
 **2. World distribution of drugs**
 
