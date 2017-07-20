@@ -9,7 +9,10 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
+bibliography: My_bibliography.bibtex
+csl: elsevier-vancouver.csl
 ---
+
 <style>
 body {text-align: justify}
 </style>
@@ -17,12 +20,12 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *dark web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know how these websites operate.
+For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know how these websites operate.
 
-The understanding of such illegal market is crucial to fight it. With information gathered in those websites, it allows to identify which are the most wanted ads for the consumer. It is also possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities. 
+The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allows to identify which are the most wanted ads for the consumer, its country of origin or its destination. Therefore it is possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities. 
 
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  
-This market will be analysed. Its nature, its predominance of items, its different countries of origin, main sellers, and so on will also be performed. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
+This market will be analysed. Its nature, its different countries of origin, main sellers, predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -83,11 +86,11 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 # - Data Retrieval
 ***
 
-Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, brief, ad, price (in USD $) , url link, seller, paiement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD $) , url link, seller, paiement, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
 
-Thus, the first step was to clean the data (remove special characters ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Then, with these information, the price of one unit of one dose of the product has been calculated.
+Thus, the first step was to clean the data (Remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed at the beginning this information were not given distinctly. Therfore an important work has been done on it in order to make analyses easier. Thus, with these information, the price of one unit of one dose (1 gram) of the product has been calculated.
 
-Here is what the *database* looks like :
+Here is what the *Database* looks like :
 
 ```{r print data}
 #----------------------------------------------------------
@@ -149,9 +152,8 @@ NumberOfAds()
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
 Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
-Now let's have a look at the distribution of ads per category.
 
-**2. Distribution of ads per category.**
+**2. Now let's have a look at the distribution of ads per category.**
 
 ```{r Function Select Drugs}
   selectDrug <- function(drugName){
@@ -222,7 +224,7 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  It is not suprising since in some countries, such as the United States, United Kingdom and some country of Europe, it is difficult to be provided in some Drugs. Indeed, these countries have strict rules over the consumption of Drugs.  However, currently a debate is raising concerning the legalisation of some Drugs such as Cannabis in many countries. Moreover, at the rate things are going, consumer will probably have other ways for buying drugs, that's why providing information over the current market seems necessary. 
+To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  It is not suprising since in some countries, such as the *United States*, *United Kingdom* and some country of Europe, it is difficult to be provided in some Drugs. Indeed, these countries have strict rules over the consumption of Drugs.  However, currently a debate is raising concerning the legalisation of some Drugs such as *Cannabis* in many countries. Moreover, at the rate things are going, consumer will probably have other ways for buying drugs, that's why providing information over the current market seems necessary. 
 
 It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market, which is smaller than the Drug market. Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
 
@@ -538,7 +540,7 @@ country_Export <- function() {
 country_Export()
 ```
 
-What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
+What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay Market*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
 
 **3. Let's compare France export & import flows and see if there is a difference between them.**
 
@@ -785,7 +787,7 @@ DrugsPricesDoc()
 
 ```
 
-Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : [1],[2],[3],[4],[5])
+Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : @DrugWise, @tele, @Rehab, @cana, @stu)
 
 # - Data mining
 ***
@@ -1465,8 +1467,6 @@ It is striking to see that Cannabis & Hashish seems to be the main rule. This ca
 
 ## - Prediction of ads profitability
 
-text {#anchor}
-
 Secondly, it worths to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. Bayesian Neural Network algorithm has beed accomplished on this new data and the results obtained are below.
 
 ```{r Bayesian Network}
@@ -1563,6 +1563,10 @@ BayesNet <- function(){
     print(affichage)
   }
 
+  # Frame
+  box(which = "outer", lty = "solid")
+  mtext("Dependency between informations" , cex = 1.2,side = 1)
+  
 }
 
 BayesNet()
@@ -1574,14 +1578,8 @@ Neural Network shows that the profitability is conditionnaly dependant to catego
 # - References
 ***
 
-[1]  "Canada.com - What Illegal Drugs Cost on the Street Around the World." Retrieved: July 2017. [Online]    Available: http://o.canada.com/business/interactive-what-illegal-drugs-cost-on-the-street-around-the-world.
+---
+nocite: | 
+  @*
+...
 
-[2] "DrugWise - How Much Do Drugs Cost?" Retrieved: July 2017. [Online] Available: http://www.drugwise.org.uk/how-much-do-drugs-cost/.
-
-[3] "RehabCenters.net - the Average Cost of Illegal Street Drugs." Retrieved: July 2017. [Online] Available: http://www.rehabcenter.net/the-average-cost-of-illegal-drugs-on-the-street/.
-
-[4] "The Student Pocket Guide - Facts About Drugs." Retrieved: July 2017. [Online] Available: http://www.thestudentpocketguide.com/2012/01/student-life/health-and-relationships/facts-about-drugs/.
-
-[5] "The Telegraph - the Cost of Street Drugs in Britain." Retrieved: July 2017. [Online] Available: http://www.telegraph.co.uk/news/uknews/crime/11346133/The-cost-of-street-drugs-in-Britain.html.
-
-[6] "R Markdown from R Studio - R Markdown Tutorial." Retrieved: June 2017. [Online] Available: http://rmarkdown.rstudio.com/lesson-1.html.
