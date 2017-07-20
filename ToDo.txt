@@ -1,0 +1,20 @@
+
+- Introduction : AlphaBay shut down 
+- Introduction : Link sur l'article qui parle des recherche sur Dark market
+
+- 1er graph : titre -> country seller
+- 1er graph + 3eme : legend en pourcentage
+
+- Google trends
+
+- Drug : legal / prosecute / death penalty ... 
+
+- Map : Naval trafic / Altlamtic coast 
+
+- Graphique avec prix : preciser Median price
+
+- Weight loss : study ...
+
+- Etude des mots et du texte pour reconnaître des seller
+
+- Analyse du market sur le long terme (grace a sold_since)
