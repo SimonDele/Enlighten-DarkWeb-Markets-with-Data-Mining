@@ -151,6 +151,8 @@ NumberOfAds()
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
 Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe [powerful makes sense to the layman but not in academia; compare with g20 or g7 or whatever you want]. However, other countries such as *China* and *Afghanistan* are also present. 
 
+![](.\Images\AlphaBayWorld.jpg)
+
 
 **2. Now let's have a look at the distribution of ads per category.**
 
