@@ -153,6 +153,16 @@ Moreover, it is noticeable that most of these countries belong to powerful area,
 
 ![](.\Images\AlphaBayWorld.jpg)
 
+@GTWorld
+
+![](.\Images\AlphaBayEvolution.jpg)
+@GTWorld
+
+![](.\Images\AlphaBayComparison.jpg)
+@GTComp
+Blue = AlphaBay
+Red = Dream Market
+
 
 **2. Now let's have a look at the distribution of ads per category.**
 
