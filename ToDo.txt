@@ -2,9 +2,6 @@
 - Introduction : AlphaBay shut down 
 - Introduction : Link sur l'article qui parle des recherche sur Dark market
 
-- 1er graph : titre -> country seller
-- 1er graph + 3eme : legend en pourcentage
-
 - Google trends
 
 - Drug : legal / prosecute / death penalty ... 

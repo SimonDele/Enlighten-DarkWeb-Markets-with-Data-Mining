@@ -20,9 +20,17 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently [add reference to our paper and to some of the papers referenced on the history]. On top of that, currently, we don't really know in detail how these websites operate.
+For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
 
-The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allows to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities [reference]. 
+//
+(For some more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW)
+//
+
+The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allows to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities.
+
+//
+[reference]. 
+//
 
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  [update with notes on the fact that the marketplace is not up any more]
 This market will be analysed. Its nature, its different countries of origin, main sellers, predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
@@ -118,6 +126,7 @@ As it has been said before, basic statistics have been first realized. Let's see
 
 **1. Global view of ads distribution.**
 
+
 ```{r Number of ads}
 #-----------------------------------------------
 #      Number of ads in the world
@@ -127,18 +136,28 @@ NumberOfAds <- function() {
 
   # Get rid of unwanted orign like Worldwide and Null which are not relevant
   matching_vector <- c(  !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
-  
-  sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
+
+  sumup <- sort(table(data[matching_vector, "origin"]), decreasing=TRUE)
   
   # Bar plot with the total number ofs ads in each country
   
   par(las=1)#display yaxis horizontally
-  par(mar=c(6,8,4,3)) #give space for yaxis
+  par(mar=c(5,6.5,4,0.5)) #give space for yaxis
   
-  barp <- barplot(sumup[1:10], main="Number of ads in the World", xlim= c(0,max(sumup[1:10])+500), xlab="Number of ads",horiz = TRUE,  col = rainbow(10), cex.names = 0.8)
+  barp <- barplot(sumup[1:10], main="Main dealer-countries", xlim= c(0,max(sumup[1:10])+500), xlab="Number of ads",horiz = TRUE,  col = rainbow(10), cex.names = 0.8)
   
-  # Ad numbers at the end of each bar
-  barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black")
+  # Labels
+  # Calculation in percentage
+  sumuppercent<- round(100*(sumup/sum(sumup)), 1)
+    # round(a,1) : one digit after the comma
+  
+  lab <- c()
+  
+  for(i in 1:length(sumuppercent)) {
+    lab[i] <- paste(sumuppercent[[i]], "%", sep=" ")
+  }
+  
+  barp <- text(y = barp, x = sumup[1:10], label = lab[1:10], pos=4 , cex = 0.8, col= "black")
   
   # Frame
   box(which = "outer", lty = "solid")
@@ -149,19 +168,17 @@ NumberOfAds()
 
 ```
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
-Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe [powerful makes sense to the layman but not in academia; compare with g20 or g7 or whatever you want]. However, other countries such as *China* and *Afghanistan* are also present. 
+Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
-![](.\Images\AlphaBayWorld.jpg)
+// ->
+Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And the other one are located in influential area where ? j'arrive pas a trouver mes mots dsl ^^ genre des zones ou il ya beaucoup de flux quoi, beaucoup d'echange, d activite...
+//
 
-@GTWorld
+//
+Furthermore an interesting thing to point out is that the first four countries are exactly the one where the word *"AlaphaBay"* is the most researched on *Google* @GTWorld.
 
-![](.\Images\AlphaBayEvolution.jpg)
-@GTWorld
-
-![](.\Images\AlphaBayComparison.jpg)
-@GTComp
-Blue = AlphaBay
-Red = Dream Market
+![](.\Images\AlphaBayWorld.jpg)  
+//
 
 
 **2. Now let's have a look at the distribution of ads per category.**
@@ -246,7 +263,17 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs [use google trends to compare most popular existing qand past markets + google "hits" on the keyword]. This last chart has proved that. Thus, let's focus on the drug market.
+*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. 
+
+//
+And moreover, its reputation can be reflected by looking at *Google* statistics @GTComp.
+![](.\Images\AlphaBayComparison.jpg)
+
+You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Market from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
+
+//
+
+Thus, let's focus on the drug market.
 
 **1. Distribution of drugs.**
 
@@ -309,7 +336,10 @@ DistributionDrugs()
 
 ```
 
-A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription [what about so,e examples on legal production]. 
+A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription  
+//
+[what about so,e examples on legal production]. 
+//  
 The *remaining* of the market is splited by all other drugs.
 
 **2. World distribution of drugs**
@@ -324,14 +354,25 @@ NumberOfAdsDrugs <- function(){
   # Get rid of unwanted orign like Worldwide and Null which are not relevant
   matching_vector <- c( str_detect(data$category, "Drugs") & !str_detect(data$origin, "Worldwide") & !str_detect(data$origin, "NULL"))
   
-  sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
+  sumup <- sort(table(data[matching_vector, "origin"]), decreasing=TRUE)
   
   # Bar plot with the total number of ads of Drugs in each country
   par(las=1)#display yaxis horizontally
-  par(mar=c(6,8,3,3)) #give space for yaxis
+  par(mar=c(5,6.5,4,0.5)) #give space for yaxis
     
   barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Number of ads",xlim = c(0,max(sumup[1:10]+500)),  col = rainbow(10), cex.names = 0.8, horiz = TRUE)
-  barp <- text(y = barp, x = sumup[1:10], label = sumup[1:10], pos=4 , cex = 0.8, col= "black")
+  
+  # Calculation in percentage
+  sumuppercent<- round(100*(sumup/sum(sumup)), 1)
+    # round(a,1) : one digit after the comma
+  
+  lab <- c()
+  
+  for(i in 1:length(sumuppercent)) {
+    lab[i] <- paste(sumuppercent[[i]], "%", sep=" ")
+  }
+  
+  barp <- text(y = barp, x = sumup[1:10], label = lab[1:10], pos=4 , cex = 0.8, col= "black")
   
   # Frame
   box(which = "outer", lty = "solid")
@@ -383,6 +424,12 @@ MapEurope()
 ```
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.
+
+//
+Atlantic Coast 
+country with huge harbour and important merchant shipping
+East : not a lot of activities 
+//
 
 ## - Countries Flows
 
@@ -1339,7 +1386,7 @@ DTorigin <- function(){
   
   # Select the column of the data that are interesting for the tree
   # ie removing colunm like "id" or "url" that don't give any informations
-  dectree.data <- subset(dectree.data, select=c(origin,category,seller,priceUnitDose)) 
+  dectree.data <- subset(dectree.data, select=c(origin,category,priceUnitDose)) 
   # Subset : choose the colunm that you want
   
   # Handling : column categorie
@@ -1352,20 +1399,12 @@ DTorigin <- function(){
   dectree.data <- dectree.data[which(dectree.data$origin != "Worldwide"),]
   tab_coun <- table(dectree.data$origin)
   tab_coun <- sort(tab_coun, decreasing=TRUE)  # Sorting (biggest in first)
-  tab_coun <- tab_coun[1:15] # Taking only the most important : main sellers
+  tab_coun <- tab_coun[1:5] # Taking only the most important : main sellers
   name_coun <- names(tab_coun)
   # New data keeping only the main dealers
   dectree.data <-subset(dectree.data, origin %in% name_coun) 
   
-  
-  # Handling : seller
-  tab_sel <- table(dectree.data$seller)
-  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-  tab_sel <- tab_sel[1:7] # Taking only the most important : main sellers
-  name_sel <- names(tab_sel)
-  # New data keeping only the main sellers
-  dectree.data <-subset(dectree.data, seller %in% name_sel) 
-  
+ 
   # Random rows :
   dectree.data <- dectree.data[sample(nrow(dectree.data),nrow(dectree.data),replace=FALSE), ]
   
