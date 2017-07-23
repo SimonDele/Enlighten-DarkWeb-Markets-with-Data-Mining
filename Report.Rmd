@@ -20,20 +20,23 @@ body {text-align: justify}
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
+For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
 
 //
 (For some more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW)
 //
 
-The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allows to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities.
-
 //
 [reference]. 
 //
 
-This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***.  [update with notes on the fact that the marketplace is not up any more]
-This market will be analysed. Its nature, its different countries of origin, main sellers, predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
+This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***. This web Market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. Therefore, during our research, AlphaBay and Hansa, another dark web market, have been shut down on July 4, 2017 as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
+
+According to US Attorney General Jeff Sessions the aim of this action was to caution criminals from thinking that they could evade prosecution by using the dark web. However, it is widely believed that other web markets will take the place of AlphaBay. By the way, the popularity of AlphaBay can be explained by the shut down of Silk Road on 2013 since it has been launched on september 2014.
+
+The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allow to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities.
+
+This market will be analysed. Its nature, its different countries of origin, its main sellers, its predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -171,7 +174,7 @@ This bar-chart represents the 10 main countries in the world regarding the numbe
 Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
 // ->
-Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And the other one are located in influential area where ? j'arrive pas a trouver mes mots dsl ^^ genre des zones ou il ya beaucoup de flux quoi, beaucoup d'echange, d activite...
+Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where ?? a lot of trade are made with G7 countries ?? j'arrive pas a trouver mes mots dsl ^^ genre des zones ou il ya beaucoup de flux quoi, beaucoup d'echange, d activite...
 //
 
 //
@@ -424,11 +427,8 @@ MapEurope()
 ```
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.
-
 //
-Atlantic Coast 
-country with huge harbour and important merchant shipping
-East : not a lot of activities 
+It appears that most of these countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. At the opposite on the East part there are not a lot of activities. Thus, we could think that most of products are exported by boat. 
 //
 
 ## - Countries Flows
