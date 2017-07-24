@@ -23,18 +23,18 @@ body {text-align: justify}
 For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
 
 //
-(For some more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW)
+(For more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW)
 //
 
 //
 [reference]. 
 //
 
-This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***. This web Market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. Therefore, during our research, AlphaBay and Hansa, another dark web market, have been shut down on July 4, 2017 as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
+This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***. This web Market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. Therefore, during our research, AlphaBay and Hansa, another dark web market, have been shut down on July, 2017 as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
 
 According to US Attorney General Jeff Sessions the aim of this action was to caution criminals from thinking that they could evade prosecution by using the dark web. However, it is widely believed that other web markets will take the place of AlphaBay. By the way, the popularity of AlphaBay can be explained by the shut down of Silk Road on 2013 since it has been launched on september 2014.
 
-The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allow to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help the police to identify recurrent sellers with various hidden identities.
+The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allow to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help governmental agencies to identify recurrent sellers with various hidden identities.
 
 This market will be analysed. Its nature, its different countries of origin, its main sellers, its predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
@@ -173,15 +173,11 @@ NumberOfAds()
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
 Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
-// ->
-Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where ?? a lot of trade are made with G7 countries ?? j'arrive pas a trouver mes mots dsl ^^ genre des zones ou il ya beaucoup de flux quoi, beaucoup d'echange, d activite...
-//
+Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where a lot of trade are made with other countries.
 
-//
-Furthermore an interesting thing to point out is that the first four countries are exactly the one where the word *"AlaphaBay"* is the most researched on *Google* @GTWorld.
+Furthermore an interesting thing to point out is that the first four countries are exactly the one where the word *"AlphaBay"* is the most researched on *Google* @GTWorld.
 
 ![](.\Images\AlphaBayWorld.jpg)  
-//
 
 
 **2. Now let's have a look at the distribution of ads per category.**
@@ -266,15 +262,11 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. 
-
-//
-And moreover, its reputation can be reflected by looking at *Google* statistics @GTComp.
+*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google* statistics @GTComp.  
 ![](.\Images\AlphaBayComparison.jpg)
 
 You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Market from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
 
-//
 
 Thus, let's focus on the drug market.
 
@@ -426,10 +418,9 @@ MapEurope()
 
 ```
 
-Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.
-//
+Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
+
 It appears that most of these countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. At the opposite on the East part there are not a lot of activities. Thus, we could think that most of products are exported by boat. 
-//
 
 ## - Countries Flows
 
@@ -1592,7 +1583,9 @@ BayesNet <- function(){
   
   fittedbn <- bn.fit(res, data = bayesian.data)
   
-  print(fittedbn$profitability)
+  prob.data <- data.frame(fittedbn$profitability$prob)
+  colnames(prob.data) <- c("Profitability", "Category", "Probability")
+  print(prob.data)
   
   #Handling interval
   interv <- levels(bayesian.data$profitability)
@@ -1604,6 +1597,7 @@ BayesNet <- function(){
   interval$right <- as.numeric(levels(interval$right))
   
   expectancy <- c()
+
   #Calculate expectancy for each category 
   for(i in 0:(length(table(bayesian.data$category))-1)){
     left <- 0
@@ -1613,9 +1607,10 @@ BayesNet <- function(){
       right<-right + interval$right[j] * fittedbn$profitability$prob[i*nbCategory + j]
     }
     expectancy[i+1] <- paste("[", round(left,2) , "," , round(right,2) , "]")
-    affichage <-paste(names(table(bayesian.data$category))[i+1],"expectancy :", expectancy[i+1])
-    print(affichage)
   }
+  affichage <-data.frame(names(table(bayesian.data$category)),expectancy)
+  colnames(affichage) <- c("Category", "Expectancy")
+  print(affichage)
 
   # Frame
   box(which = "outer", lty = "solid")
@@ -1627,6 +1622,7 @@ BayesNet()
 ```
 
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
+Furthermore, expectancy of each event profitability X given category Y has been calculated. Thus, we can find the most profitable products to sold. Apparently it seems to be presciption, steroid and opioids. May be they are more profitable because they are not "common products" (and still wanted) contrary to Cannabis or Cocaine which can be found more easily on the street. 
 
 
 # - References
