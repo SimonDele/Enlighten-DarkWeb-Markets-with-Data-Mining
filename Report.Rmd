@@ -331,7 +331,7 @@ DistributionDrugs()
 
 ```
 
-A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstay* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription  
+A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription  
 //
 [what about so,e examples on legal production]. 
 //  
