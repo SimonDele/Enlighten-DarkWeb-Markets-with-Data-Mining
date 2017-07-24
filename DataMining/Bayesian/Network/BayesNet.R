@@ -3,7 +3,7 @@
 #    with seller / origin / price / category / timestamp / sold_since / product_sold
 #-----------------------------------------------------------------------
 
-data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("data.csv"))
 
 
 library(arules)
@@ -73,7 +73,7 @@ plot(res)
 
 #Conditionnal probability
 fittedbn <- bn.fit(res, data = bayesian.data)
-print(fittedbn$profitability)
+print(fittedbn$profitability$prob)
 
 #Handling interval
 interv <- levels(bayesian.data$profitability)
