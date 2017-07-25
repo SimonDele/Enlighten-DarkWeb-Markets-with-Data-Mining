@@ -293,7 +293,7 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google* statistics @GTComp.  
+*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google statistics* @GTComp.  
 ![](.\Images\AlphaBayComparison.jpg)
 
 ```{r echo=FALSE}
@@ -1022,8 +1022,8 @@ sprintf("The accuracy is : %.2f %%", ResultDT1[1])
 ```
 
 It is striking to realise that predictions are very reliable since the accuracy is very high.  
-In the array you can find by columns our predictions and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
-The tree enables to have a good visual aspect on predictions and gives a lot of essential information on these five main sellers.
+In the array you can find by columns our Prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
+The tree enables to have a good visual aspect on it and gives a lot of essential information on these five main sellers.
 
 Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
 
@@ -1088,7 +1088,7 @@ compTab <- TableCaption(compTab, "Seller Analyses")
 
 Obviously, these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
 
-Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, a prognosis with more sellers can be made and there are still good results. For instance, with 10 sellers, the results below are obtained.
+Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, prognoses with more sellers can be made and with still a good accuracy. For instance, with 10 sellers, the results below are obtained.
 
 ```{r DT Sellers Results}
 #----------------------------------------------------------------------
@@ -1461,15 +1461,24 @@ compCap <- figureCaption(compCap, "Drugs links")
 ```
 
 The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if there is the itemset on the left we are most likely to have the drug on the right.  
+
 These rules can be interpreted as follows : sellers often deal more than one product. And these products can be clustered by type.
 
 
 ## - Prediction of ads origin
 
+//
+After trying to make predictions on the seller (cf Section 4.1), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
+
+**1. Decision tree**
+
+Looking at prices and categories, a Decision Tree have been created in order to predict the origin. In the same way the algorithm has been trained on one half of the data, and predictions made on the other half.
+//
+
 ```{r DT origin}
 #----------------------------------------------------------------------
 #                  Decision tree - CART algorithm
-#   Prediction of the country knowing the seller / price / category
+#   Prediction of the country knowing the  price / category
 #-----------------------------------------------------------------------
 
 DTorigin <- function(){
@@ -1541,7 +1550,7 @@ DTorigin <- function(){
   conf <- table(test[,match("origin",names(test))],pred)
   
   # Accuracy :
-  acc <- sum(diag(conf)) / sum(conf)
+  acc <- round((sum(diag(conf)) / sum(conf)*100),2)
   
   print(conf) 
   cat("\n")
@@ -1560,13 +1569,14 @@ ResultDT2 <- DTorigin()
 compTab <- ResultDT2[2]
 ```
 
-
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Origin Decision Tree")
 ```
+//
+Results doesn't seem to be very good, the acuracy is `r ResultDT2[1]` % wich is lower than what we have previously with this kind of methods. It turns out that without the Seller, which give a lot information on the origin, prognoses are not very working and interesting.  
 
-`r ResultDT2[1]` %
-
+Let's see if correlation can be find between categories and origins.
+//
 
 **2. Rules to determine cateogries of ads coming from United States** 
 
@@ -1634,7 +1644,6 @@ compTab <- AssROriginSellerCat()
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Rules origin")
 ```
-
 The results show that when there is an ad of the category on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
 
 It is striking to see that Cannabis & Hashish seems to be the main rule. This can be explained by the legalisation of Cannibis in some states. Thus, the sales of these products is easy in United States and may interest people from other countries where they are not legalized. 
