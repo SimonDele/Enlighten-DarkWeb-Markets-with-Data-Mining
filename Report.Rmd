@@ -29,6 +29,17 @@ figureCaption <- function(compCap, txt){
 }
 ```
 
+```{r Table Caption, echo=FALSE}
+compTab <- 0
+
+TableCaption <- function(compTab, txt){
+  compTab <- compTab+1
+  TabCap <- paste("Table", compTab, sep=" ")
+  TabCap <- paste(TabCap, txt, sep=" - ")
+  cat(TabCap)
+  return(compTab)
+}
+```
 
 # - Introduction
 ***
@@ -124,6 +135,9 @@ printdata <- function() {
 printdata()
 
 ```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Database Sample")
+```
 
 # - Basic Statistics
 ***
@@ -177,8 +191,7 @@ NumberOfAds()
 ```
 
 ```{r echo=FALSE}
-a <- "Figure 1 - 10 Main Dealer-countries"
-cat(a)
+compCap <- figureCaption(compCap, "10 Main Dealer Countries")
 ```
 
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
@@ -190,6 +203,9 @@ Furthermore an interesting thing to point out is that the first four countries a
 
 ![](.\Images\AlphaBayWorld.jpg)  
 
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "AlphaBay Google Researchs in the World")
+```
 
 **2. Now let's have a look at the distribution of ads per category.**
 
@@ -230,6 +246,10 @@ categ <- function(){
 categ()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Distribution of the Market")
+```
+
 
 ```{r Categories rates}
 RateDrugAd <- function() {
@@ -275,6 +295,10 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 *AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google* statistics @GTComp.  
 ![](.\Images\AlphaBayComparison.jpg)
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google research")
+```
 
 You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Market from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
 
@@ -341,6 +365,9 @@ DistributionDrugs <- function() {
 DistributionDrugs()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Drug Distribution")
+```
 
 A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription  
 //
@@ -388,6 +415,9 @@ NumberOfAdsDrugs <- function(){
 NumberOfAdsDrugs()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "10 Main Drug Dealer Countries")
+```
 
 Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.  
 This also matches with the second chart that shows that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
@@ -427,6 +457,9 @@ MapEurope <- function() {
 
 MapEurope()
 
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "European Drug Dealer")
 ```
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
@@ -518,6 +551,9 @@ country_Export <- function() {
 
 country_Export()
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "United Kingdom exportation")
+```
 
 Given that most of exported items are drugs, that is not surprising that they are the most sold product, as it has been seen before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other highly dangerous drugs are significantly present as we.  
 Most of European countries follows the same rules as *United Kingdom* and this confirms previous assumptions.
@@ -525,7 +561,7 @@ Most of European countries follows the same rules as *United Kingdom* and this c
 **2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
 
 
-```{r Exportation China}
+```{r Exportation Afghanistan}
 #-----------------------------------------------
 #   Importation / Exportation of a country
 #-----------------------------------------------
@@ -602,6 +638,9 @@ country_Export <- function() {
 }
 
 country_Export()
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Afghanistan exportation")
 ```
 
 What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay Market*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
@@ -742,7 +781,9 @@ Country_Export_Import <- function() {
 }
 
 Country_Export_Import()
-    
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "France exportation and importation")
 ```
 
 It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
@@ -788,7 +829,9 @@ DrugsPrices <- function() {
 
 priceDrugs <- DrugsPrices()
 ```
-
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Drugs Prices")
+```
 
 **2. Comparison with the "street"**
 
@@ -849,6 +892,9 @@ DrugsPricesDoc <- function(){
 
 DrugsPricesDoc()
 
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Comparison of Prices")
 ```
 
 Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : @DrugWise, @tele, @Rehab, @cana, @stu)
@@ -946,18 +992,30 @@ Dtsellers <- function(){
     
     # Accurency
     acc <- round((sum(diag(conf)) / sum(conf)*100),2)
-    
-  print(conf)
   
-  return(acc)
+  print(conf) 
+  cat("\n")
+  cat("       ")
+  compTab <- TableCaption(compTab, "Sellers Prediction / Decision Tree method")
+  
+  Result <- c(acc,compTab)
+  
+  return(Result)
 }
 
-accDT1 <- Dtsellers()
-sprintf("The accuracy is : %.2f %%", accDT1)
+#accDTseller 
+ResultDT1 <- Dtsellers()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Seller Decision Tree")
+```
 
-It is striking to realise that predictions are very reliable since the accuracy is `r accDT1` %.  
+```{r}
+sprintf("The accuracy is : %.2f %%", ResultDT1[1])
+```
+
+It is striking to realise that predictions are very reliable since the accuracy is very high.  
 In the array you can find by columns our predictions and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
 The tree enables to have a good visual aspect on predictions and gives a lot of essential information on these five main sellers.
 
@@ -1017,6 +1075,9 @@ DTanalysis <- function() {
 }
 
 DTanalysis()
+```
+```{r echo=FALSE}
+compTab <- TableCaption(ResultDT1[2], "Seller Analyses")
 ```
 
 Obviously, these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
@@ -1103,8 +1164,13 @@ Dtsellers2 <- function(){
 }
 
 acc1 <- Dtsellers2()
-sprintf("The accuracy is : %.2f %%", acc1)
+```
 
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Decision Tree method")
+```
+```{r}
+sprintf("The accuracy is : %.2f %%", acc1)
 ```
 
 Once more, this array presents the number of mistakes and correct predictions.
@@ -1172,8 +1238,15 @@ BayesSellersV1 <- function(){
 }
 
 accBayesV1 <- BayesSellersV1()
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
+```
+
+```{r}
 sprintf("The accuracy is : %.2f %%", accBayesV1)
 ```
+
 
 The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. However one way to improve the prognosis is to add new variables to the data which could be relevant like the number of ads already sold and the creation date of the ad.
 
@@ -1236,8 +1309,16 @@ BayesSellers <- function(){
 }
 
 accBayesV2 <- BayesSellers()
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
+```
+
+```{r}
 sprintf("The accuracy is : %.2f %%", accBayesV2)
 ```
+
+
 Results show that the algorithm succeeds in predicting most of the sellers. Therefore, the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
 Later in the section *Prediction of profitability* , it will be discussed how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
@@ -1363,6 +1444,9 @@ AssRSellersCat <- function(){
 AssRSellersCat()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Drugs links")
+```
 
 The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if there is the itemset on the left we are most likely to have the drug on the right.  
 These rules can be interpreted as follows : sellers often deal more than one product. And these products can be clustered by type.
@@ -1454,7 +1538,9 @@ DTorigin <- function(){
 DTorigin()
 
 ```
-
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Origin Decision Tree")
+```
 
 
 **2. Rules to determine cateogries of ads coming from United States** 
@@ -1517,6 +1603,10 @@ AssROriginSellerCat <- function(){
 AssROriginSellerCat()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Rules on origin")
+```
+
 The results show that when there is an ad of the category on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
 
 It is striking to see that Cannabis & Hashish seems to be the main rule. This can be explained by the legalisation of Cannibis in some states. Thus, the sales of these products is easy in United States and may interest people from other countries where they are not legalized. 
@@ -1631,8 +1721,12 @@ BayesNet <- function(){
 
 BayesNet()
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Variable Dependencies")
+```
 
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
+
 Furthermore, expectancy of each event profitability X given category Y has been calculated. Thus, we can find the most profitable products to sold. Apparently it seems to be presciption, steroid and opioids. May be they are more profitable because they are not "common products" (and still wanted) contrary to Cannabis or Cocaine which can be found more easily on the street. 
 
 
