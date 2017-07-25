@@ -464,7 +464,9 @@ compCap <- figureCaption(compCap, "European Drug Dealer")
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
 
-It appears that most of these countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. At the opposite on the East part there are not a lot of activities. Thus, we could think that most of products are exported by boat. 
+//
+It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry a large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat bewteen countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
+//
 
 ## - Countries Flows
 
