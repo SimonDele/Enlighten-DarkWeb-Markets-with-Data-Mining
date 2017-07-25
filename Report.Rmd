@@ -17,10 +17,23 @@ csl: elsevier-vancouver.csl
 body {text-align: justify}
 </style>
 
+```{r Figure Caption, echo=FALSE}
+compCap <- 0
+
+figureCaption <- function(compCap, txt){
+  compCap <- compCap+1
+  figCap <- paste("Figure", compCap, sep=" ")
+  figCap <- paste(figCap, txt, sep=" - ")
+  cat(figCap)
+  return(compCap)
+}
+```
+
+
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate.For more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW. You will qlso find in this paper an analysis of *Agora Market*. 
+For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate.For more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW. You will also find in this paper an analysis of *Agora Market*. 
 
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***. This web Market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. Therefore, during our research, AlphaBay and Hansa, another dark web market, have been shut down on July, 2017 as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
 
@@ -162,6 +175,12 @@ NumberOfAds <- function() {
 NumberOfAds()
 
 ```
+
+```{r echo=FALSE}
+a <- "Figure 1 - 10 Main Dealer-countries"
+cat(a)
+```
+
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
 Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
