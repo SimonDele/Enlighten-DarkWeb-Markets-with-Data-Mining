@@ -970,7 +970,7 @@ Dtsellers <- function(){
   tree <- rpart(seller ~.,data=train.data, method="class") 
   
   # Plot
-  fancyRpartPlot(tree)
+  fancyRpartPlot(tree, sub="")
 
   # Frame
   box(which = "outer", lty = "solid")
@@ -1005,13 +1005,17 @@ Dtsellers <- function(){
 
 #accDTseller 
 ResultDT1 <- Dtsellers()
-
 ```
+
+```{r echo=FALSE}
+compTab <- ResultDT1[2]
+```
+
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Seller Decision Tree")
 ```
 
-```{r}
+```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", ResultDT1[1])
 ```
 
@@ -1077,7 +1081,7 @@ DTanalysis <- function() {
 DTanalysis()
 ```
 ```{r echo=FALSE}
-compTab <- TableCaption(ResultDT1[2], "Seller Analyses")
+compTab <- TableCaption(compTab, "Seller Analyses")
 ```
 
 Obviously, these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
@@ -1169,7 +1173,7 @@ acc1 <- Dtsellers2()
 ```{r echo=FALSE}
 compTab <- TableCaption(compTab, "Sellers Prediction / Decision Tree method")
 ```
-```{r}
+```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", acc1)
 ```
 
@@ -1243,7 +1247,7 @@ accBayesV1 <- BayesSellersV1()
 compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
 ```
 
-```{r}
+```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", accBayesV1)
 ```
 
@@ -1314,7 +1318,7 @@ accBayesV2 <- BayesSellers()
 compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
 ```
 
-```{r}
+```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", accBayesV2)
 ```
 
@@ -1432,6 +1436,10 @@ AssRSellersCat <- function(){
   
   inspect(rules.sorted, linebreak = TRUE)
   
+  cat("\n")
+  cat("                      ")
+  compTab <- TableCaption(compTab, "Drugs links")
+  
   # Plot graph of rules
   plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="")
   mtext("Association Rules on the product range of sellers" , cex = 1.2)
@@ -1439,9 +1447,11 @@ AssRSellersCat <- function(){
   # Frame
   box(which = "outer", lty = "solid")
 
+  return(compTab)
+  
 }
 
-AssRSellersCat()
+compTab <- AssRSellersCat()
 
 ```
 ```{r echo=FALSE}
@@ -1508,7 +1518,7 @@ DTorigin <- function(){
   tree <- rpart(origin ~.,data=train, method="class") 
   
   # Plot
-  fancyRpartPlot(tree)
+  fancyRpartPlot(tree, sub="")
   
   # Frame
   box(which = "outer", lty = "solid")
@@ -1531,16 +1541,29 @@ DTorigin <- function(){
   # Accuracy :
   acc <- sum(diag(conf)) / sum(conf)
   
-  print(conf)
-  print(acc)
+  print(conf) 
+  cat("\n")
+  cat("           ")
+  compTab <- TableCaption(compTab, "Origins Prediction / Decision Tree method")
+  
+  Result <- c(acc,compTab)
+  
+  return(Result)
 }
 
-DTorigin()
-
+ResultDT2 <- DTorigin()
 ```
+
+```{r echo=FALSE}
+compTab <- ResultDT2[2]
+```
+
+
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Origin Decision Tree")
 ```
+
+`r ResultDT2[1]` %
 
 
 **2. Rules to determine cateogries of ads coming from United States** 
@@ -1587,9 +1610,11 @@ AssROriginSellerCat <- function(){
   rules.sorted@quality$confidence <- round(rules.sorted@quality$confidence, 2)
   rules.sorted@quality$lift <- round(rules.sorted@quality$lift, 2)
   
-  
-  
   inspect(rules.sorted)
+  
+  cat("\n")
+  cat("               ")
+  compTab <- TableCaption(compTab, "Origin Prediction / Association Rules")
   
   # Plot graph of rules
   plot(rules.sorted, method="graph", control=list(type="items"),main ="")
@@ -1598,13 +1623,14 @@ AssROriginSellerCat <- function(){
   # Frame
   box(which = "outer", lty = "solid")
 
+  return(compTab)
 }
 
-AssROriginSellerCat()
+compTab <- AssROriginSellerCat()
 
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Rules on origin")
+compCap <- figureCaption(compCap, "Rules origin")
 ```
 
 The results show that when there is an ad of the category on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
@@ -1688,6 +1714,8 @@ BayesNet <- function(){
   colnames(prob.data) <- c("Profitability", "Category", "Probability")
   print(prob.data)
   
+  compTab <- TableCaption(compTab, "Categories Profitability")
+  
   #Handling interval
   interv <- levels(bayesian.data$profitability)
   interv <- unlist(strsplit(interv, ","))
@@ -1712,14 +1740,18 @@ BayesNet <- function(){
   affichage <-data.frame(names(table(bayesian.data$category)),expectancy)
   colnames(affichage) <- c("Category", "Expectancy")
   print(affichage)
+  
+  compTab <- TableCaption(compTab, "Categories Expectancy")
 
   # Frame
   box(which = "outer", lty = "solid")
   mtext("Conditional dependency between variables" , cex = 1.2,side = 1)
   
+  return(compTab)
+  
 }
 
-BayesNet()
+compTab <- BayesNet()
 ```
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Variable Dependencies")
