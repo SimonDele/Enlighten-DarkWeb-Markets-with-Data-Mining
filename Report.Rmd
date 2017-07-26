@@ -195,7 +195,6 @@ compCap <- figureCaption(compCap, "10 Main Dealer Countries")
 ```
 
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
-Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
 Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where a lot of trade are made with other countries.
 
@@ -294,16 +293,14 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 ## - Drug Market
 
 *AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google statistics* @GTComp.  
+
 ![](.\Images\AlphaBayComparison.jpg)
 
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google research")
 ```
 
-You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Market from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
-
-
-Thus, let's focus on the drug market.
+You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Market from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace. Thus, let's focus on the drug market.
 
 **1. Distribution of drugs.**
 
@@ -419,8 +416,10 @@ NumberOfAdsDrugs()
 compCap <- figureCaption(compCap, "10 Main Drug Dealer Countries")
 ```
 
-Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.  
+Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.
+
 This also matches with the second chart that shows that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
+
 But so far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
 
 
@@ -557,7 +556,8 @@ country_Export()
 compCap <- figureCaption(compCap, "United Kingdom exportation")
 ```
 
-Given that most of exported items are drugs, that is not surprising that they are the most sold product, as it has been seen before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other highly dangerous drugs are significantly present as we.  
+Given that most of exported items are drugs, that is not surprising that they are the most sold product, as it has been seen before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other highly dangerous drugs are significantly present as we. 
+
 Most of European countries follows the same rules as *United Kingdom* and this confirms previous assumptions.
 
 **2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
@@ -789,6 +789,7 @@ compCap <- figureCaption(compCap, "France exportation and importation")
 ```
 
 It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
+
 Nevertheless these conclusions should be moderated since targeting one particular country reduces significantly the number of information used for statistics.
 
 ## - Market Prices
@@ -1022,7 +1023,8 @@ sprintf("The accuracy is : %.2f %%", ResultDT1[1])
 ```
 
 It is striking to realise that predictions are very reliable since the accuracy is very high.  
-In the array you can find by columns our Prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
+
+In the *Table 2* you can find by columns our Prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
 The tree enables to have a good visual aspect on it and gives a lot of essential information on these five main sellers.
 
 Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
@@ -1326,13 +1328,14 @@ sprintf("The accuracy is : %.2f %%", accBayesV2)
 
 
 Results show that the algorithm succeeds in predicting most of the sellers. Therefore, the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
+
 Later in the section *Prediction of profitability* , it will be discussed how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
 ## - Clustering of drugs
 
 Secondly, one can wonder if there were links between some drugs. That is to say, if this is possible to cluster some drugs.  
-To do so, firstly, a new data frame has been created with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not.  
-Then, *Apriori algorithm* of *Association Rules* has been used. One drug has been selected that must be in the itemset. Here it is Ecstasy and results can be seen below.
+
+To do so, firstly, a new data frame has been created with by rows sellers and by columns different sub-categories of *"Drugs & Chemicals"*. In each cell, value is True or False if the dealer has already sold something in this sub-category or not. Then, *Apriori algorithm* of *Association Rules* has been used. One drug has been selected that must be in the itemset. Here it is Ecstasy and results can be seen below.
 
 ```{r Ass Rules Sellers-Category}
 
