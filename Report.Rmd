@@ -17,26 +17,42 @@ csl: elsevier-vancouver.csl
 body {text-align: justify}
 </style>
 
+```{r Figure Caption, echo=FALSE}
+compCap <- 0
+
+figureCaption <- function(compCap, txt){
+  compCap <- compCap+1
+  figCap <- paste("Figure", compCap, sep=" ")
+  figCap <- paste(figCap, txt, sep=" - ")
+  cat(figCap)
+  return(compCap)
+}
+```
+
+```{r Table Caption, echo=FALSE}
+compTab <- 0
+
+TableCaption <- function(compTab, txt){
+  compTab <- compTab+1
+  TabCap <- paste("Table", compTab, sep=" ")
+  TabCap <- paste(TabCap, txt, sep=" - ")
+  cat(TabCap)
+  return(compTab)
+}
+```
+
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
-
-//
-(For more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW)
-//
-
-//
-[reference]. 
-//
+For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate.For more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW. You will also find in this paper an analysis of *Agora Market*. 
 
 This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***. This web Market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. Therefore, during our research, AlphaBay and Hansa, another dark web market, have been shut down on July, 2017 as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
 
-According to US Attorney General Jeff Sessions the aim of this action was to caution criminals from thinking that they could evade prosecution by using the dark web. However, it is widely believed that other web markets will take the place of AlphaBay. By the way, the popularity of AlphaBay can be explained by the shut down of Silk Road on 2013 since it has been launched on september 2014.
+According to US Attorney General Jeff Sessions the aim of this action was to caution criminals from thinking that they could evade prosecution by using the dark web. However, it is widely believed that other web markets will take the place of *AlphaBay*. By the way, the popularity of AlphaBay can be explained by the shut down of *Silk Road 2.0* on 2013 since it has been launched on september 2014.
 
 The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allow to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help governmental agencies to identify recurrent sellers with various hidden identities.
 
-This market will be analysed. Its nature, its different countries of origin, its main sellers, its predominance of items and so on will be investigated. Thus, during a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
+Thus AlphaBay market will be analysed. Its nature, its different countries of origin, its main sellers, its predominance of items and so on will be investigated. During a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -99,7 +115,7 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD) , url link, seller, payment, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
 
-Thus, the first step was to clean the data (Remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. Thus, with these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
+Thus, the first step was to clean the data (remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. With these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
 
 Here is what the *Database* looks like :
 
@@ -119,13 +135,16 @@ printdata <- function() {
 printdata()
 
 ```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Database Sample")
+```
 
 # - Basic Statistics
 ***
 
 ## - General distribution
 
-As it has been said before, basic statistics have been first realized. Let's see the general distribution and trend of *AlphaBay Web Market*.
+As it has been said before, basic statistics have been first realized. Let's see the general distribution and trend of the market.
 
 **1. Global view of ads distribution.**
 
@@ -170,6 +189,11 @@ NumberOfAds <- function() {
 NumberOfAds()
 
 ```
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "10 Main Dealer Countries")
+```
+
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
 Moreover, it is noticeable that most of these countries belong to powerful area, that is to say countries from the north of America or from Europe. However, other countries such as *China* and *Afghanistan* are also present. 
 
@@ -179,6 +203,9 @@ Furthermore an interesting thing to point out is that the first four countries a
 
 ![](.\Images\AlphaBayWorld.jpg)  
 
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "AlphaBay Google Researchs in the World")
+```
 
 **2. Now let's have a look at the distribution of ads per category.**
 
@@ -219,6 +246,10 @@ categ <- function(){
 categ()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Distribution of the Market")
+```
+
 
 ```{r Categories rates}
 RateDrugAd <- function() {
@@ -262,8 +293,12 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google* statistics @GTComp.  
+*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google statistics* @GTComp.  
 ![](.\Images\AlphaBayComparison.jpg)
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google research")
+```
 
 You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Market from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
 
@@ -330,6 +365,9 @@ DistributionDrugs <- function() {
 DistributionDrugs()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Drug Distribution")
+```
 
 A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription  
 //
@@ -377,6 +415,9 @@ NumberOfAdsDrugs <- function(){
 NumberOfAdsDrugs()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "10 Main Drug Dealer Countries")
+```
 
 Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.  
 This also matches with the second chart that shows that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
@@ -417,10 +458,15 @@ MapEurope <- function() {
 MapEurope()
 
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "European Drug Dealer")
+```
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
 
-It appears that most of these countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. At the opposite on the East part there are not a lot of activities. Thus, we could think that most of products are exported by boat. 
+//
+It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry a large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat bewteen countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
+//
 
 ## - Countries Flows
 
@@ -507,6 +553,9 @@ country_Export <- function() {
 
 country_Export()
 ```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "United Kingdom exportation")
+```
 
 Given that most of exported items are drugs, that is not surprising that they are the most sold product, as it has been seen before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other highly dangerous drugs are significantly present as we.  
 Most of European countries follows the same rules as *United Kingdom* and this confirms previous assumptions.
@@ -514,7 +563,7 @@ Most of European countries follows the same rules as *United Kingdom* and this c
 **2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
 
 
-```{r Exportation China}
+```{r Exportation Afghanistan}
 #-----------------------------------------------
 #   Importation / Exportation of a country
 #-----------------------------------------------
@@ -591,6 +640,9 @@ country_Export <- function() {
 }
 
 country_Export()
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Afghanistan exportation")
 ```
 
 What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay Market*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
@@ -731,7 +783,9 @@ Country_Export_Import <- function() {
 }
 
 Country_Export_Import()
-    
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "France exportation and importation")
 ```
 
 It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
@@ -777,7 +831,9 @@ DrugsPrices <- function() {
 
 priceDrugs <- DrugsPrices()
 ```
-
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Drugs Prices")
+```
 
 **2. Comparison with the "street"**
 
@@ -838,6 +894,9 @@ DrugsPricesDoc <- function(){
 
 DrugsPricesDoc()
 
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Comparison of Prices")
 ```
 
 Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : @DrugWise, @tele, @Rehab, @cana, @stu)
@@ -913,7 +972,7 @@ Dtsellers <- function(){
   tree <- rpart(seller ~.,data=train.data, method="class") 
   
   # Plot
-  fancyRpartPlot(tree)
+  fancyRpartPlot(tree, sub="")
 
   # Frame
   box(which = "outer", lty = "solid")
@@ -935,20 +994,36 @@ Dtsellers <- function(){
     
     # Accurency
     acc <- round((sum(diag(conf)) / sum(conf)*100),2)
-    
-  print(conf)
   
-  return(acc)
+  print(conf) 
+  cat("\n")
+  cat("       ")
+  compTab <- TableCaption(compTab, "Sellers Prediction / Decision Tree method")
+  
+  Result <- c(acc,compTab)
+  
+  return(Result)
 }
 
-accDT1 <- Dtsellers()
-sprintf("The accuracy is : %.2f %%", accDT1)
-
+#accDTseller 
+ResultDT1 <- Dtsellers()
 ```
 
-It is striking to realise that predictions are very reliable since the accuracy is `r accDT1` %.  
-In the array you can find by columns our predictions and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
-The tree enables to have a good visual aspect on predictions and gives a lot of essential information on these five main sellers.
+```{r echo=FALSE}
+compTab <- ResultDT1[2]
+```
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Seller Decision Tree")
+```
+
+```{r echo=FALSE}
+sprintf("The accuracy is : %.2f %%", ResultDT1[1])
+```
+
+It is striking to realise that predictions are very reliable since the accuracy is very high.  
+In the array you can find by columns our Prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
+The tree enables to have a good visual aspect on it and gives a lot of essential information on these five main sellers.
 
 Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
 
@@ -1007,10 +1082,13 @@ DTanalysis <- function() {
 
 DTanalysis()
 ```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Seller Analyses")
+```
 
 Obviously, these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
 
-Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, a prognosis with more sellers can be made and there are still good results. For instance, with 10 sellers, the results below are obtained.
+Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, prognoses with more sellers can be made and with still a good accuracy. For instance, with 10 sellers, the results below are obtained.
 
 ```{r DT Sellers Results}
 #----------------------------------------------------------------------
@@ -1092,8 +1170,13 @@ Dtsellers2 <- function(){
 }
 
 acc1 <- Dtsellers2()
-sprintf("The accuracy is : %.2f %%", acc1)
+```
 
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Decision Tree method")
+```
+```{r echo=FALSE}
+sprintf("The accuracy is : %.2f %%", acc1)
 ```
 
 Once more, this array presents the number of mistakes and correct predictions.
@@ -1161,8 +1244,15 @@ BayesSellersV1 <- function(){
 }
 
 accBayesV1 <- BayesSellersV1()
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
+```
+
+```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", accBayesV1)
 ```
+
 
 The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. However one way to improve the prognosis is to add new variables to the data which could be relevant like the number of ads already sold and the creation date of the ad.
 
@@ -1225,8 +1315,16 @@ BayesSellers <- function(){
 }
 
 accBayesV2 <- BayesSellers()
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
+```
+
+```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", accBayesV2)
 ```
+
+
 Results show that the algorithm succeeds in predicting most of the sellers. Therefore, the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
 Later in the section *Prediction of profitability* , it will be discussed how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
@@ -1340,6 +1438,10 @@ AssRSellersCat <- function(){
   
   inspect(rules.sorted, linebreak = TRUE)
   
+  cat("\n")
+  cat("                      ")
+  compTab <- TableCaption(compTab, "Drugs links")
+  
   # Plot graph of rules
   plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="")
   mtext("Association Rules on the product range of sellers" , cex = 1.2)
@@ -1347,22 +1449,36 @@ AssRSellersCat <- function(){
   # Frame
   box(which = "outer", lty = "solid")
 
+  return(compTab)
+  
 }
 
-AssRSellersCat()
+compTab <- AssRSellersCat()
 
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Drugs links")
 ```
 
 The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if there is the itemset on the left we are most likely to have the drug on the right.  
+
 These rules can be interpreted as follows : sellers often deal more than one product. And these products can be clustered by type.
 
 
 ## - Prediction of ads origin
 
+//
+After trying to make predictions on the seller (cf Section 4.1), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
+
+**1. Decision tree**
+
+Looking at prices and categories, a Decision Tree have been created in order to predict the origin. In the same way the algorithm has been trained on one half of the data, and predictions made on the other half.
+//
+
 ```{r DT origin}
 #----------------------------------------------------------------------
 #                  Decision tree - CART algorithm
-#   Prediction of the country knowing the seller / price / category
+#   Prediction of the country knowing the  price / category
 #-----------------------------------------------------------------------
 
 DTorigin <- function(){
@@ -1413,7 +1529,7 @@ DTorigin <- function(){
   tree <- rpart(origin ~.,data=train, method="class") 
   
   # Plot
-  fancyRpartPlot(tree)
+  fancyRpartPlot(tree, sub="")
   
   # Frame
   box(which = "outer", lty = "solid")
@@ -1434,17 +1550,33 @@ DTorigin <- function(){
   conf <- table(test[,match("origin",names(test))],pred)
   
   # Accuracy :
-  acc <- sum(diag(conf)) / sum(conf)
+  acc <- round((sum(diag(conf)) / sum(conf)*100),2)
   
-  print(conf)
-  print(acc)
+  print(conf) 
+  cat("\n")
+  cat("           ")
+  compTab <- TableCaption(compTab, "Origins Prediction / Decision Tree method")
+  
+  Result <- c(acc,compTab)
+  
+  return(Result)
 }
 
-DTorigin()
-
+ResultDT2 <- DTorigin()
 ```
 
+```{r echo=FALSE}
+compTab <- ResultDT2[2]
+```
 
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Origin Decision Tree")
+```
+//
+Results doesn't seem to be very good, the acuracy is `r ResultDT2[1]` % wich is lower than what we have previously with this kind of methods. It turns out that without the Seller, which give a lot information on the origin, prognoses are not very working and interesting.  
+
+Let's see if correlation can be find between categories and origins.
+//
 
 **2. Rules to determine cateogries of ads coming from United States** 
 
@@ -1490,9 +1622,11 @@ AssROriginSellerCat <- function(){
   rules.sorted@quality$confidence <- round(rules.sorted@quality$confidence, 2)
   rules.sorted@quality$lift <- round(rules.sorted@quality$lift, 2)
   
-  
-  
   inspect(rules.sorted)
+  
+  cat("\n")
+  cat("               ")
+  compTab <- TableCaption(compTab, "Origin Prediction / Association Rules")
   
   # Plot graph of rules
   plot(rules.sorted, method="graph", control=list(type="items"),main ="")
@@ -1501,10 +1635,14 @@ AssROriginSellerCat <- function(){
   # Frame
   box(which = "outer", lty = "solid")
 
+  return(compTab)
 }
 
-AssROriginSellerCat()
+compTab <- AssROriginSellerCat()
 
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Rules origin")
 ```
 The results show that when there is an ad of the category on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
 
@@ -1514,7 +1652,7 @@ It is striking to see that Cannabis & Hashish seems to be the main rule. This ca
 
 Secondly, it worths to predict the profitability of an ad. That is to say, given an ad to predict if it will be sold a lot or not. Each ad have information on the category, origin, seller, price and a rate of profitability. This rate is caculated by dividing the number of product sold by the current lifetime of the ad and by times 30 to have a number of ads sold monthly. Bayesian Neural Network algorithm has beed accomplished on this new data and the results obtained are below.
 
-```{r Bayesian Network}
+```{r Bayesian Network, rows.print = 5}
 #----------------------------------------------------------------------
 #                       Bayesian Network
 #    with seller / origin / price / category / timestamp / sold_since / product_sold
@@ -1587,6 +1725,8 @@ BayesNet <- function(){
   colnames(prob.data) <- c("Profitability", "Category", "Probability")
   print(prob.data)
   
+  compTab <- TableCaption(compTab, "Categories Profitability")
+  
   #Handling interval
   interv <- levels(bayesian.data$profitability)
   interv <- unlist(strsplit(interv, ","))
@@ -1611,17 +1751,25 @@ BayesNet <- function(){
   affichage <-data.frame(names(table(bayesian.data$category)),expectancy)
   colnames(affichage) <- c("Category", "Expectancy")
   print(affichage)
+  
+  compTab <- TableCaption(compTab, "Categories Expectancy")
 
   # Frame
   box(which = "outer", lty = "solid")
   mtext("Conditional dependency between variables" , cex = 1.2,side = 1)
   
+  return(compTab)
+  
 }
 
-BayesNet()
+compTab <- BayesNet()
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Variable Dependencies")
 ```
 
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
+
 Furthermore, expectancy of each event profitability X given category Y has been calculated. Thus, we can find the most profitable products to sold. Apparently it seems to be presciption, steroid and opioids. May be they are more profitable because they are not "common products" (and still wanted) contrary to Cannabis or Cocaine which can be found more easily on the street. 
 
 
