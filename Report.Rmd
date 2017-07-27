@@ -41,6 +41,8 @@ TableCaption <- function(compTab, txt){
 }
 ```
 
+![](.\Images\wordsCloud.png)  
+
 # - Introduction
 ***
 
@@ -125,7 +127,7 @@ Here is what the *Database* looks like :
 #----------------------------------------------------------
 
 printdata <- function() {
-  print.data <- subset (data[19014:19016,], select=-X)
+  print.data <- subset (data[19409:19411,], select=-X)
   for(i in 2:4){
     print.data[,i] <- as.character(print.data[,i])
   }
@@ -353,7 +355,7 @@ DistributionDrugs <- function() {
   pie3D(piepercent,labels = lab,labelcex = 1, main = title ,col=c, theta = 0.9, explode = 0.04)
   
   # 5- Legend :
-  legend(x=-2.5,y=-1.1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)
+  legend(x=-2.3,y=-1.1,res$drugs, cex = 0.9, fill = c,ncol=5,border=NA, xpd=NA)
   
   # Frame
   box(which = "inner", lty = "solid")
