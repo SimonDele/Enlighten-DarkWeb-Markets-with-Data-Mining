@@ -1,5 +1,5 @@
 #------------------------------------------------------------
-#                 Evolution of the Market
+#                Product Sold In 201X
 #------------------------------------------------------------
 
 data <- as.data.frame(read.csv("alphaClean.csv"))
@@ -125,10 +125,3 @@ SumProd <- c(sum(Evo.data$ProdSold2015), sum(Evo.data$ProdSold2016), sum(Evo.dat
 barplot(SumProd)
 #SumProd <- as.data.frame(SumProd)
 #rownames(SumProd) <- c("2015", "2016", "2017")
-
-data$sold_since <-  as.Date(data$sold_since)
-ad2015 <- nrow(data[which(year(data$sold_since) == 2015),])
-ad2016 <- nrow(data[which(year(data$sold_since) == 2016),])
-ad2017 <- nrow(data[which(year(data$sold_since) == 2017),])
-
-#Evo.data <- Evo.data[which(month(Evo.data$sold_since) >= 5),]
