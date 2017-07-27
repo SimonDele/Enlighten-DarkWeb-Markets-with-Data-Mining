@@ -166,7 +166,7 @@ NumberOfAds <- function() {
   par(las=1)#display yaxis horizontally
   par(mar=c(5,6.5,4,0.5)) #give space for yaxis
   
-  barp <- barplot(sumup[1:10], main="Main dealer-countries", xlim= c(0,max(sumup[1:10])+500), xlab="Number of ads",horiz = TRUE,  col = rainbow(10), cex.names = 0.8)
+  barp <- barplot(sumup[1:10], main="Main dealer-countries", xlim= c(0,max(sumup[1:10])+1000), xlab="Number of ads",horiz = TRUE,  col = rainbow(10), cex.names = 0.8)
   
   # Labels
   # Calculation in percentage
@@ -390,7 +390,7 @@ NumberOfAdsDrugs <- function(){
   par(las=1)#display yaxis horizontally
   par(mar=c(5,6.5,4,0.5)) #give space for yaxis
     
-  barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Number of ads",xlim = c(0,max(sumup[1:10]+500)),  col = rainbow(10), cex.names = 0.8, horiz = TRUE)
+  barp <- barplot(sumup[1:10], main="Number of ads of Drugs in the World", xlab="Number of ads",xlim = c(0,max(sumup[1:10]+1000)),  col = rainbow(10), cex.names = 0.8, horiz = TRUE)
   
   # Calculation in percentage
   sumuppercent<- round(100*(sumup/sum(sumup)), 1)
