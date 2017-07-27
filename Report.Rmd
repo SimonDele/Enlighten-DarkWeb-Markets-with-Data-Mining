@@ -463,9 +463,8 @@ compCap <- figureCaption(compCap, "European Drug Dealer")
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
 
-//
-It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry a large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat bewteen countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
-//
+It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat between countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
+
 
 ## - Countries Flows
 
@@ -1470,13 +1469,11 @@ These rules can be interpreted as follows : sellers often deal more than one pro
 
 ## - Prediction of ads origin
 
-//
 After trying to make predictions on the seller (cf Section 4.1), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
 
 **1. Decision tree**
 
 Looking at prices and categories, a Decision Tree have been created in order to predict the origin. In the same way the algorithm has been trained on one half of the data, and predictions made on the other half.
-//
 
 ```{r DT origin}
 #----------------------------------------------------------------------
@@ -1576,9 +1573,9 @@ compTab <- ResultDT2[2]
 compCap <- figureCaption(compCap, "Origin Decision Tree")
 ```
 //
-Results doesn't seem to be very good, the acuracy is `r ResultDT2[1]` % wich is lower than what we have previously with this kind of methods. It turns out that without the Seller, which give a lot information on the origin, prognoses are not very working and interesting.  
+Results don't seem to be very good, the accuracy is `r ResultDT2[1]` % which is lower than previously. It turns out that without the Seller, which give a lot information on the origin, prognoses are not very reliable.  
 
-Let's see if correlation can be find between categories and origins.
+Let's see if correlations can be found between categories and origins.
 //
 
 **2. Rules to determine cateogries of ads coming from United States** 
