@@ -2,9 +2,10 @@
 #       Words analysis
 #-----------------------------------------------
 
-#data <- as.data.frame(read.csv("../alphaClean.csv"))
+data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 library(stringr)
+library(wordcloud)
 
 # Pick up every words in column category and title
 
@@ -38,7 +39,7 @@ tableWords <- tableWords[!str_detect(tableWords$words, "^[0-9.,]*$"),]
 
 #Removing small frequences
 
-tableWords <- tableWords[which(tableWords$Freq > nrow(data)/5000), ]
+tableWords <- tableWords[which(tableWords$Freq > nrow(data)/500), ]
 
 #Removing "number + unit"
 
@@ -60,3 +61,6 @@ tableWords <- tableWords[toRemove,]
 
 # Removing all words containing less than 2 letters
 tableWords <- tableWords[str_count(tableWords[,1], "")>2,]
+
+
+wordcloud(tableWords$words, tableWords$Freq, min.freq = tableWords$Freq[100], colors=brewer.pal(6,"Dark2"))
