@@ -6,6 +6,7 @@ data <- as.data.frame(read.csv("alphaClean.csv"))
 
 library(stringr)
 library(wordcloud)
+library(tm)
 
 # Pick up every words in column category and title
 
@@ -63,4 +64,4 @@ tableWords <- tableWords[toRemove,]
 tableWords <- tableWords[str_count(tableWords[,1], "")>2,]
 
 
-wordcloud(tableWords$words, tableWords$Freq, min.freq = tableWords$Freq[100], colors=brewer.pal(6,"Dark2"))
+wordcloud(tableWords$words, tableWords$Freq, rot.per = 0.2, min.freq = tableWords$Freq[100], colors=brewer.pal(6,"Dark2"))

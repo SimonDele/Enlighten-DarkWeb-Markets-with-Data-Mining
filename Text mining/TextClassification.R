@@ -12,7 +12,7 @@ library(class)
 library(caret)
 library(stringr)
 
-data <- as.data.frame(read.csv("alphaClean.csv"))
+#data <- as.data.frame(read.csv("alphaClean.csv"))
 
 # Select all "Drugs & Chemicals" ads
 matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
@@ -50,7 +50,7 @@ corpus.data <- t(corpus.data)
 corpus.data <- cbind(corpus.data, as.character(new.data$seller))
 corpus.data <- as.data.frame(corpus.data)
 #names(corpus.data)[ncol(corpus.data)-1] <- "toDelete" #number of factor
-names(corpus.data)[ncol(corpus.data)] <- "seller"
+names(corpus.data)[ncol(corpus.data)] <- "s"
 #corpus.data <- subset(corpus.data, select = -c(V233)) 
 #corpus.data <- subset(corpus.data, select = -c(toDelete))  
 #colnames(corpus.data)[ncol(corpus.data)] <- 'seller'
@@ -64,7 +64,7 @@ train <- as.data.frame(train)
 
 
 #model
-fit <- train(s ~ ., data = train, method = 'bayesglm')
+#fit <- train(s ~ ., data = train, method = 'bayesglm')
 
 #test data
 test <- corpus.data[(round(nrow(corpus.data)*0.75,0)+1): nrow(corpus.data),]
@@ -76,7 +76,7 @@ pred <- predict(fit, newdata = test)
 # Comparison between the result and the prediction (prediction in colunm)
 conf <- table(test[,match("s",names(test))],pred)
 
-# Accurency :
+# Accuracy :
 acc <- sum(diag(conf)) / sum(conf)
 
 print(conf)
