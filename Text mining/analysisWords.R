@@ -31,7 +31,7 @@ tableWords <- as.data.frame(tableWords)
 tableWords$words <- as.character(tableWords$words)
 
 # Removing conjonction, preposition, ??numbers??
-commonWords <- read.csv("./UEL-project/More Stats/5000CommonWords.csv")
+commonWords <- read.csv("./UEL-project/Data Mining/5000CommonWords.csv")
 commonWords <- as.vector(commonWords$Word)
 commonWords <- str_trim(commonWords)
 tableWords <-subset(tableWords, !( words %in% commonWords))

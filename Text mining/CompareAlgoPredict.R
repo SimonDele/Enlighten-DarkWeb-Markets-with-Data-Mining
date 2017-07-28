@@ -2,6 +2,9 @@
 #             Algo to predict sellers given words from their text
 #-----------------------------------------------------------------------
 
+
+#https://journal.r-project.org/archive/2013/RJ-2013-001/RJ-2013-001.pdf
+
 #install.packages("RTextTools")
 #install.packages("ipred")
 #install.packages("tree")
