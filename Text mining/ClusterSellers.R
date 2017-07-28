@@ -1,24 +1,12 @@
 #----------------------------------------------------------------------
-#             Algo to predict sellers given words from their text
+#           Predict if one person is hidden behind 2 identities
 #-----------------------------------------------------------------------
-
-#install.packages("RTextTools")
-#install.packages("ipred")
-#install.packages("tree")
-#install.packages("randomForest")
-#install.packages("caTools")
-#install.packages("nnet")
 
 
 library(RTextTools)
 library(tm)
 library(stringr)
 
-#library(ipred)
-#library(tree)
-#library(randomForest)
-#library(caTools)
-#library(nnet)
 
 #data <- as.data.frame(read.csv("alphaClean.csv"))
 
@@ -34,11 +22,13 @@ new.data <- new.data[sample(nrow(new.data),nrow(new.data),replace=FALSE), ]
 # Handling : seller
 tab_sel <- table(new.data$seller)
 tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sel <- tab_sel[1:50] # Taking only the most important : main sellers
+#tab_sel <- tab_sel[(tab_sel >15)] # Taking only the most important : main sellers
 name_sel <- names(tab_sel)
 
 # New data keeping only the main sellers
-new.data <-subset(new.data, seller %in% name_sel) 
+#new.data <-subset(new.data, seller %in% name_sel) 
+colSeller <- new.data$seller
+new.data$seller <- new.data$seller == "Fapppylicious"
 
 new.data$seller <- factor(new.data$seller)
 
@@ -51,27 +41,19 @@ container <- create_container(doc_matrix, new.data$seller, trainSize=1:round(0.7
 
 
 SVM <- train_model(container,"SVM")
-#MAXENT <- train_model(container,"MAXENT")
-#SLDA <- train_model(container,"SLDA")
-#BOOSTING <- train_model(container,"BOOSTING")
-#BAGGING <- train_model(container,"BAGGING")
-#RF <- train_model(container,"RF")
-#NNET <- train_model(container,"NNET")
-#TREE <- train_model(container,"TREE")
+
 
 SVM_CLASSIFY <- classify_model(container, SVM)
-#MAXENT_CLASSIFY <- classify_model(container, MAXENT)
-#SLDA_CLASSIFY <- classify_model(container, SLDA)
-#BOOSTING_CLASSIFY <- classify_model(container, BOOSTING)
-#BAGGING_CLASSIFY <- classify_model(container, BAGGING)
-#RF_CLASSIFY <- classify_model(container, RF)
-#NNET_CLASSIFY <- classify_model(container, NNET)
-#TREE_CLASSIFY <- classify_model(container, TREE)
+
 
 
 test <- new.data[round(0.75*nrow(new.data)+1,0):nrow(new.data),]
+colSeller.test <- colSeller[round(0.75*nrow(new.data)+1,0):nrow(new.data)]
 # Comparison between the result and the prediction (prediction in colunm)
 conf <- table(test[,match("seller",names(test))],SVM_CLASSIFY$SVM_LABEL)
+
+erreur <- colSeller.test[(test[,match("seller",names(test))] != SVM_CLASSIFY$SVM_LABEL)]
+
 
 # Accuracy :
 acc <- sum(diag(conf)) / sum(conf)

@@ -1,3 +1,8 @@
+#----------------------------------------------------------------------
+#                  Table of more frequent words
+#                          WordsCloud
+#-----------------------------------------------------------------------
+
 #install.packages("tm")
 #install.packages("plyr")
 #install.packages("class")
