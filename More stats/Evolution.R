@@ -4,13 +4,16 @@
 
 data <- as.data.frame(read.csv("alphaClean.csv"))
 
+#install.packages("lubridate")
+#install.packages("dygraphs")
+#install.packages("zoo")
+#install.packages("forecast")
+
 library(stringr)
 library(lubridate)
 library(dygraphs)
-library(xts)
 library(zoo)
 library(forecast)
-
 
 #-----------------
 #   New Data 
@@ -44,13 +47,13 @@ Evo.data$Time <- as.yearmon(Evo.data$Time)
 # frequency=12 i.e. monthly observations ((1=annual, 4=quartly)
 Evo <- ts(Evo.data$Ads, start=Evo.data$Time[1], frequency=12)
 
-# Prediction until Dec 2017 :
+# Prediction to Dec 2017 :
   # Analyse 
 fit <- HoltWinters(Evo)
   # Prediction 
   # n.ahead : predict next six month with a confidence of 0.95
   # Prediction.interval : up and low prediction
-pred <- predict(fit, n.ahead=6,prediction.interval=TRUE,level=0.95)
+pred <- predict(fit, n.ahead=6,prediction.interval=TRUE,level=0.75)
 
 # Merge 
 all <- cbind(Evo,pred)
@@ -60,12 +63,17 @@ dygraph(all, main = "Evolution of the Market", ylab = "Number of Ads") %>%
   dySeries("Evo", label = "Number of Ads") %>%
   dySeries(c("pred.lwr", "pred.fit", "pred.upr"), label = "Prediction") %>%
   dyOptions(drawPoints=TRUE, pointSize=2) %>%
-  dyHighlight(highlightCircleSize=6) %>%
+  dyHighlight(highlightCircleSize=5) %>%
   dyEvent("2017-06-01", "Shut-Down", labelLoc = "bottom") %>%
   dyRangeSelector
 
+data$sold_since <- as.Date(data$sold_since)
+ad2015 <- nrow(data[which(year(data$sold_since) == 2015),])
+ad2016 <- nrow(data[which(year(data$sold_since) == 2016),])
+ad2017 <- nrow(data[which(year(data$sold_since) == 2017),])
 
-#ad2015 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2015),])
-#ad2016 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2016),])
-#ad2017 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2017),])
-#Evo.data <- Evo.data[which(month(Evo.data$sold_since) == 5),]
+Number_of_Ads <- c(ad2015,ad2016,ad2017)
+Time <- c("2015","2016","2017")
+
+NbAds <- as.data.frame(Number_of_Ads,Time)
+NbAds <- t(NbAds)
