@@ -41,7 +41,7 @@ TableCaption <- function(compTab, txt){
 }
 ```
 
-![](.\Images\wordsCloud.png)  
+![](..\Images\wordsCloud.png)  
 
 # - Introduction
 ***
@@ -108,7 +108,7 @@ library(bnlearn)
 #               Importation of the data :
 #----------------------------------------------------------
 
-data <- as.data.frame(read.csv("../alphaClean.csv"))
+data <- as.data.frame(read.csv("../../alphaClean.csv"))
 
 ```
 
@@ -221,7 +221,7 @@ Moreover, it is noticeable that most of these countries are  economically powerf
 
 Furthermore an interesting thing to point out is that the first four countries are exactly the one where the word *"AlphaBay"* is the most researched on *Google* @GTWorld.
 
-![](.\Images\AlphaBayWorld.jpg)  
+![](..\Images\AlphaBayWorld.jpg)  
 
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "AlphaBay world Google researches")
@@ -311,7 +311,7 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 *AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google statistics* @GTComp.  
 
-![](.\Images\AlphaBayComparison.jpg)
+![](..\Images\AlphaBayComparison.jpg)
 
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
@@ -452,7 +452,7 @@ MapEurope <- function() {
   sumup <- sort(summary(data[matching_vector, "origin"]), decreasing=TRUE)
   
   # Read a file containing the latitude and longitude of the "center" of each country
-  data_country <- read.csv("./Stats/lat_long.csv")
+  data_country <- read.csv("../Stats/lat_long.csv")
   lat_long <- data.frame(Country = data_country$Country , long=  data_country$Longitude..average., lat=  data_country$Latitude..average.)
   
   # Create a data.frame with the name of the country and its nb of ads
