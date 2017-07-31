@@ -1,6 +1,7 @@
 ---
 title: "Dark Web Market"
 author: "Simon Delecourt & Edouard Donze"
+csl: elsevier-vancouver.csl
 output:
   html_notebook:
     code_folding: hide
@@ -9,8 +10,11 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
 bibliography: My_bibliography.bibtex
-csl: elsevier-vancouver.csl
 ---
 
 <style>
@@ -464,7 +468,7 @@ Circles show the amount of ads concerning drugs. The map confirms previous assum
 It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat between countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
 
 
-## - Countries Flows
+## - Product Flow By Country
 
 Let's now focus more specifically on different countries and study their trend. To do so, export and import flows of the country have been investigated.
 

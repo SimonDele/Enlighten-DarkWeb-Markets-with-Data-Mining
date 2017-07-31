@@ -2,7 +2,7 @@
 #                Evolution of the market
 #------------------------------------------------------------
 
-data <- as.data.frame(read.csv("alphaClean.csv"))
+#data <- as.data.frame(read.csv("alphaClean.csv"))
 
 #install.packages("lubridate")
 #install.packages("dygraphs")
