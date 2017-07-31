@@ -2,7 +2,11 @@
 #       Words analysis
 #-----------------------------------------------
 
+<<<<<<< HEAD:More stats/analysisWords.R
+#data <- as.data.frame(read.csv("alphaClean.csv"))
+=======
 data <- as.data.frame(read.csv("alphaClean.csv"))
+>>>>>>> fbecac5e50de9ac80711ed0110f6122d224b69da:Text mining/analysisWords.R
 
 library(stringr)
 library(wordcloud)
@@ -31,7 +35,11 @@ tableWords <- as.data.frame(tableWords)
 tableWords$words <- as.character(tableWords$words)
 
 # Removing conjonction, preposition, ??numbers??
+<<<<<<< HEAD:More stats/analysisWords.R
+commonWords <- read.csv("./UEL-project/More Stats/5000CommonWords.csv")
+=======
 commonWords <- read.csv("./UEL-project/Data Mining/5000CommonWords.csv")
+>>>>>>> fbecac5e50de9ac80711ed0110f6122d224b69da:Text mining/analysisWords.R
 commonWords <- as.vector(commonWords$Word)
 commonWords <- str_trim(commonWords)
 tableWords <-subset(tableWords, !( words %in% commonWords))
