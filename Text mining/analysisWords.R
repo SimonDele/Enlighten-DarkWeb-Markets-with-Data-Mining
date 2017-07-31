@@ -2,11 +2,8 @@
 #       Words analysis
 #-----------------------------------------------
 
-<<<<<<< HEAD:More stats/analysisWords.R
+
 #data <- as.data.frame(read.csv("alphaClean.csv"))
-=======
-data <- as.data.frame(read.csv("alphaClean.csv"))
->>>>>>> fbecac5e50de9ac80711ed0110f6122d224b69da:Text mining/analysisWords.R
 
 library(stringr)
 library(wordcloud)
@@ -22,11 +19,6 @@ cat <- str_match(data$category, regex)
 words.cat.vector <- c(cat[,3], cat[,4])
 words.cat.vector <- unlist(str_split(words.cat.vector, boundary("word")))
 
-#words.cat.list <- str_split(data$category, "/")
-#word.cat.vector <- as.vector(unlist(words.cat.list))
-
-#word.cat.vector <- sort(table(word.cat.vector), decreasing = TRUE)
-
 words <- c(unlist(words.title.list), str_to_lower(words.cat.vector))
 
 # calculate occurences
@@ -35,11 +27,8 @@ tableWords <- as.data.frame(tableWords)
 tableWords$words <- as.character(tableWords$words)
 
 # Removing conjonction, preposition, ??numbers??
-<<<<<<< HEAD:More stats/analysisWords.R
-commonWords <- read.csv("./UEL-project/More Stats/5000CommonWords.csv")
-=======
-commonWords <- read.csv("./UEL-project/Data Mining/5000CommonWords.csv")
->>>>>>> fbecac5e50de9ac80711ed0110f6122d224b69da:Text mining/analysisWords.R
+commonWords <- read.csv("./UEL-project/Text mining/5000CommonWords.csv")
+
 commonWords <- as.vector(commonWords$Word)
 commonWords <- str_trim(commonWords)
 tableWords <-subset(tableWords, !( words %in% commonWords))
