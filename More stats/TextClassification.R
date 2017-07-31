@@ -50,7 +50,7 @@ corpus.data <- t(corpus.data)
 corpus.data <- cbind(corpus.data, as.character(new.data$seller))
 corpus.data <- as.data.frame(corpus.data)
 #names(corpus.data)[ncol(corpus.data)-1] <- "toDelete" #number of factor
-names(corpus.data)[ncol(corpus.data)] <- "seller"
+names(corpus.data)[ncol(corpus.data)] <- "s"
 #corpus.data <- subset(corpus.data, select = -c(V233)) 
 #corpus.data <- subset(corpus.data, select = -c(toDelete))  
 #colnames(corpus.data)[ncol(corpus.data)] <- 'seller'
