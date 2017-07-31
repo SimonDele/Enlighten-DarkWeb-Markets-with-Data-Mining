@@ -1,5 +1,5 @@
 ---
-title: "Dark Web Market"
+title: "Data Mining - Dark Web Market"
 author: "Simon Delecourt & Edouard Donze"
 csl: elsevier-vancouver.csl
 output:
@@ -111,6 +111,27 @@ library(bnlearn)
 data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 ```
+
+
+# - Technical Implementation
+***
+
+## - Code Repository
+
+All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [www.rstudio.com](www.rstudio.com)
+
+## - Chosen Technologies
+
+### - R / RStudio 
+
+### - RMarkdown Notebooks
+
+
+This is the representation of the technical implementation taking place during this project:
+
+
+
+
 
 # - Data Retrieval
 ***
