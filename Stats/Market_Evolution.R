@@ -32,6 +32,16 @@ Evo.data$sold_since <-  as.Date(Evo.data$sold_since)
 # Remove ads from 2014 (only 10)
 Evo.data <- Evo.data[which(year(Evo.data$sold_since) > 2014),]
 
+# Counting the Ads
+ad2015 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2015),])
+ad2016 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2016),])
+ad2017 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2017),])
+
+Number_of_Ads <- c(ad2015,ad2016,ad2017)
+Time <- c("2015","2016","2017")
+
+NbAds <- as.data.frame(Number_of_Ads,Time)
+
 # Month
 Evo.data$sold_since <- as.yearmon(Evo.data$sold_since)
 
@@ -67,13 +77,3 @@ dygraph(all, main = "Evolution of the Market", ylab = "Number of Ads") %>%
   dyEvent("2017-06-01", "Shut-Down", labelLoc = "bottom") %>%
   dyRangeSelector
 
-data$sold_since <- as.Date(data$sold_since)
-ad2015 <- nrow(data[which(year(data$sold_since) == 2015),])
-ad2016 <- nrow(data[which(year(data$sold_since) == 2016),])
-ad2017 <- nrow(data[which(year(data$sold_since) == 2017),])
-
-Number_of_Ads <- c(ad2015,ad2016,ad2017)
-Time <- c("2015","2016","2017")
-
-NbAds <- as.data.frame(Number_of_Ads,Time)
-NbAds <- t(NbAds)

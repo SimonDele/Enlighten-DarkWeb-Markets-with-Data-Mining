@@ -123,8 +123,8 @@
     #   General - Plot     
     #-----------------
     
-    par(oma=c(0,0,1,0))
-    title("France",outer=TRUE)
-    legend(x=-4.3,y=-1,tab[,1], cex = 0.8, fill=c,ncol=4,border=NA, xpd=NA)
+    par(oma=c(0,0,1.8,0))
+    title(country,outer=TRUE)
+    legend(x=-4.5,y=-1,tab[,1], cex = 0.8, fill=c,ncol=3,border=NA, xpd=NA)
     
     

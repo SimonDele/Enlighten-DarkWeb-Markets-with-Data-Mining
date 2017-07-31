@@ -5,7 +5,7 @@
 library(plotrix)
 
 
-data <- as.data.frame(read.csv("alphaClean.csv"))
+#data <- as.data.frame(read.csv("alphaClean.csv"))
 
 cat <- c()
 

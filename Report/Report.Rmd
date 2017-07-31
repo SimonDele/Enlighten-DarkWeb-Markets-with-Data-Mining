@@ -74,12 +74,24 @@ Thus AlphaBay market will be analysed. Its nature, its different countries of or
 #install.packages("arulesViz")
 #install.packages("e1071")
 #install.packages("bnlearn")
+#install.packages("lubridate")
+#install.packages("dygraphs")
+#install.packages("zoo")
+#install.packages("forecast")
 
 # Mamipulation string
 library(stringr)
 
 # Using unit
 library(units)
+
+# Mamipulation Date
+library(lubridate)
+library(zoo)
+library(forecast)
+
+# dynamic Plot
+library(dygraphs)
 
 # Plot a map
 library(ggmap)
@@ -130,6 +142,105 @@ All the code is publicly available in the Github project *"Data Mining - Dark We
 This is the representation of the technical implementation taking place during this project:
 
 # - AlphaBay Market
+***
+
+Its reputation can be reflected by looking at *Google statistics* @GTComp.  
+
+![](..\Images\AlphaBayComparison.jpg)
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
+```
+
+You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Markets from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
+
+```{r Evolution of the market}
+#------------------------------------------------------------
+#                Evolution of the market
+#------------------------------------------------------------
+
+Evolution <- function() {
+
+  #-----------------
+  #   New Data 
+  #-----------------
+  
+  # Select the column of the data that are interesting 
+  Evo.data <- subset(data, select=c(category,sold_since))
+    # Subset : choose the colunm that you want
+  
+  # Remove ads with no informations
+  Evo.data <- Evo.data[which(Evo.data$sold_since != "NULL"),]
+  
+  # Formatting
+  Evo.data$sold_since <-  as.Date(Evo.data$sold_since)
+  
+  # Remove ads from 2014 (only 10)
+  Evo.data <- Evo.data[which(year(Evo.data$sold_since) > 2014),]
+  
+  # Counting the Ads
+  ad2015 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2015),])
+  ad2016 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2016),])
+  ad2017 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2017),])
+  Number_of_Ads <- c(ad2015,ad2016,ad2017)
+  Time <- c("2015","2016","2017")
+  NbAds <- as.data.frame(Number_of_Ads,Time)
+  print(NbAds)
+  
+  # Month
+  Evo.data$sold_since <- as.yearmon(Evo.data$sold_since)
+  
+  # Calculating the number od ads per Month
+  tab_Evo <- table(Evo.data$sold_since)
+  Evo.data <- as.data.frame(tab_Evo)
+  colnames(Evo.data) <- c("Time","Ads")
+  Evo.data <- Evo.data[1:(length(Evo.data$Time)-1),]
+  Evo.data$Time <- as.yearmon(Evo.data$Time)
+  
+  # Time series object :
+  # start: from the first date that we have 
+  # frequency=12 i.e. monthly observations ((1=annual, 4=quartly)
+  Evo <- ts(Evo.data$Ads, start=Evo.data$Time[1], frequency=12)
+  
+  # Prediction to Dec 2017 :
+    # Analyse 
+  fit <- HoltWinters(Evo)
+    # Prediction 
+    # n.ahead : predict next six month with a confidence of 0.95
+    # Prediction.interval : up and low prediction
+  pred <- predict(fit, n.ahead=6,prediction.interval=TRUE,level=0.75)
+  
+  # Merge 
+  all <- cbind(Evo,pred)
+  
+  # Ploting
+  plot <- dygraph(all, main = "Evolution of the Market", ylab = "Number of Ads") %>%
+            dySeries("Evo", label = "Number of Ads") %>%
+            dySeries(c("pred.lwr", "pred.fit", "pred.upr"), label = "Prediction") %>%
+            dyOptions(drawPoints=TRUE, pointSize=2) %>%
+            dyHighlight(highlightCircleSize=5) %>%
+            dyEvent("2017-06-01", "Shut-Down", labelLoc = "bottom") %>%
+            dyRangeSelector
+  
+  return(plot)
+  
+}
+
+plot <- Evolution()
+
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Number of ads per year")
+```
+
+
+```{r Plot display, echo=FALSE,fig.width=7.5,fig.height=4}
+plot
+```
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Evolution of AlphaBay Web Market")
+```
 
 # - Data Retrieval
 ***
@@ -309,15 +420,7 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Moreover, its reputation can be reflected by looking at *Google statistics* @GTComp.  
-
-![](..\Images\AlphaBayComparison.jpg)
-
-```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
-```
-
-You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Markets from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace. Thus, let's focus on the drug market.
+*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Thus, let's focus on the drug market.
 
 **1. Distribution of drugs.**
 
