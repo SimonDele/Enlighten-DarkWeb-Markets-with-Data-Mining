@@ -193,7 +193,7 @@ NumberOfAds()
 ```
 
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "10 Main Dealer Countries")
+compCap <- figureCaption(compCap, "Main Dealer Countries")
 ```
 
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
@@ -205,7 +205,7 @@ Furthermore an interesting thing to point out is that the first four countries a
 ![](.\Images\AlphaBayWorld.jpg)  
 
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "AlphaBay Google Researchs in the World")
+compCap <- figureCaption(compCap, "AlphaBay world Google researches")
 ```
 
 **2. Now let's have a look at the distribution of ads per category.**
@@ -295,7 +295,7 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 ![](.\Images\AlphaBayComparison.jpg)
 
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google research")
+compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
 ```
 
 You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Markets from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace. Thus, let's focus on the drug market.
@@ -411,7 +411,7 @@ NumberOfAdsDrugs()
 
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "10 Main Drug Dealer Countries")
+compCap <- figureCaption(compCap, "Main drug dealer countries")
 ```
 
 Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.
@@ -456,7 +456,7 @@ MapEurope()
 
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "European Drug Dealer")
+compCap <- figureCaption(compCap, "European Drug Dealers")
 ```
 
 Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
@@ -830,7 +830,7 @@ DrugsPrices <- function() {
 priceDrugs <- DrugsPrices()
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Drugs Prices")
+compCap <- figureCaption(compCap, "AlphaBay Drug Prices")
 ```
 
 **2. Comparison with the "street"**
@@ -894,7 +894,7 @@ DrugsPricesDoc()
 
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Comparison of Prices")
+compCap <- figureCaption(compCap, "Comparison of Prices between AlphaBay and Street")
 ```
 
 Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : @DrugWise, @tele, @Rehab, @cana, @stu)
@@ -1012,7 +1012,7 @@ compTab <- ResultDT1[2]
 ```
 
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Seller Decision Tree")
+compCap <- figureCaption(compCap, "Seller prediction / Decision Tree")
 ```
 
 ```{r echo=FALSE}
@@ -1245,7 +1245,7 @@ BayesSellersV1 <- function(){
 accBayesV1 <- BayesSellersV1()
 ```
 ```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
+compTab <- TableCaption(compTab, "Sellers Prediction / Naive Bayesian Classification")
 ```
 
 ```{r echo=FALSE}
@@ -1316,7 +1316,7 @@ BayesSellers <- function(){
 accBayesV2 <- BayesSellers()
 ```
 ```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Sellers Prediction / Bayesian Classification")
+compTab <- TableCaption(compTab, "Sellers Prediction / Naive Bayesian Classification")
 ```
 
 ```{r echo=FALSE}
@@ -1439,8 +1439,8 @@ AssRSellersCat <- function(){
   inspect(rules.sorted, linebreak = TRUE)
   
   cat("\n")
-  cat("                      ")
-  compTab <- TableCaption(compTab, "Drugs links")
+  cat("             ")
+  compTab <- TableCaption(compTab, "Cluster of drugs / Association Rules")
   
   # Plot graph of rules
   plot(rules.sorted[1:5], method="graph", control=list(type="items"),main ="")
@@ -1457,7 +1457,7 @@ compTab <- AssRSellersCat()
 
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Drugs links")
+compCap <- figureCaption(compCap, "Cluster of drugs / Association Rules")
 ```
 
 The algorithm succeeds in finding some rules in the data frame. That means that some drugs can effectively be clustered. The support is between 5% and 15% so it is frequent to have these itemsets. Moreover the confidence is more than 80%. In other words, if there is the itemset on the left we are most likely to have the drug on the right.  
@@ -1467,7 +1467,7 @@ These rules can be interpreted as follows : sellers often deal more than one pro
 
 ## - Prediction of ads origin
 
-After trying to make predictions on the seller (cf Section 4.1), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
+After trying to make predictions on the seller (cf. [- Sellers Predictions]), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
 
 **1. Decision tree**
 
@@ -1568,13 +1568,13 @@ compTab <- ResultDT2[2]
 ```
 
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Origin Decision Tree")
+compCap <- figureCaption(compCap, "Origins prediction / Decision Tree")
 ```
-//
+
 Results don't seem to be very good, the accuracy is `r ResultDT2[1]` % which is lower than previously. It turns out that without the Seller, which give a lot information on the origin, prognoses are not very reliable.  
 
 Let's see if correlations can be found between categories and origins.
-//
+
 
 **2. Rules to determine cateogries of ads coming from United States** 
 
@@ -1640,7 +1640,7 @@ compTab <- AssROriginSellerCat()
 
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Rules origin")
+compCap <- figureCaption(compCap, "Origin Prediction / Association Rules")
 ```
 The results show that when there is an ad of the category on the left, it is likely to come from United States with a confidence higher than 50%. Thus, ads from United States are often on Cannabis & Hashish, this can be easily confirmed by plotting a pie chart of United States exportations, as in the section before. 
 
@@ -1750,7 +1750,7 @@ BayesNet <- function(){
   colnames(affichage) <- c("Category", "Expectancy")
   print(affichage)
   
-  compTab <- TableCaption(compTab, "Categories Expectancy")
+  compTab <- TableCaption(compTab, "Expectancies of category Profitability")
 
   # Frame
   box(which = "outer", lty = "solid")
@@ -1763,7 +1763,7 @@ BayesNet <- function(){
 compTab <- BayesNet()
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Variable Dependencies")
+compCap <- figureCaption(compCap, "Variable Dependencies / Bayesian Neural Network")
 ```
 
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
