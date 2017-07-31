@@ -8,6 +8,9 @@ library(stringr)
 library(lubridate)
 library(dygraphs)
 library(xts)
+library(zoo)
+library(forecast)
+
 
 #-----------------
 #   New Data 
@@ -26,28 +29,41 @@ Evo.data$sold_since <-  as.Date(Evo.data$sold_since)
 # Remove ads from 2014 (only 10)
 Evo.data <- Evo.data[which(year(Evo.data$sold_since) > 2014),]
 
+# Month
+Evo.data$sold_since <- as.yearmon(Evo.data$sold_since)
+
+# Calculating the number od ads per Month
 tab_Evo <- table(Evo.data$sold_since)
-evo.data <- as.data.frame(tab_Evo)
-evo.data$Var1 <- as.Date(evo.data$Var1)
-evo.data <- as.xts(evo.data)
+Evo.data <- as.data.frame(tab_Evo)
+colnames(Evo.data) <- c("Time","Ads")
+Evo.data <- Evo.data[1:(length(Evo.data$Time)-1),]
+Evo.data$Time <- as.yearmon(Evo.data$Time)
 
-xts2 <- xts(x=evo.data$Freq, order.by=evo.data$Var1)
+# Time series object :
+# start: from the first date that we have 
+# frequency=12 i.e. monthly observations ((1=annual, 4=quartly)
+Evo <- ts(Evo.data$Ads, start=Evo.data$Time[1], frequency=12)
 
-plot(tab_Evo)
+# Prediction until Dec 2017 :
+  # Analyse 
+fit <- HoltWinters(Evo)
+  # Prediction 
+  # n.ahead : predict next six month with a confidence of 0.95
+  # Prediction.interval : up and low prediction
+pred <- predict(fit, n.ahead=6,prediction.interval=TRUE,level=0.95)
 
-a <- c()
+# Merge 
+all <- cbind(Evo,pred)
 
-for(i in 1:5) {
-  a[i] <- xts(tab_Evo[i])
-}
+# Ploting
+dygraph(all, main = "Evolution of the Market", ylab = "Number of Ads") %>%
+  dySeries("Evo", label = "Number of Ads") %>%
+  dySeries(c("pred.lwr", "pred.fit", "pred.upr"), label = "Prediction") %>%
+  dyOptions(drawPoints=TRUE, pointSize=2) %>%
+  dyHighlight(highlightCircleSize=6) %>%
+  dyEvent("2017-06-01", "Shut-Down", labelLoc = "bottom") %>%
+  dyRangeSelector
 
-data <- rnorm(5)
-dates <- seq(as.Date("2017-05-01"), length=5, by="days")
-xts2 <- xts(x=data, order.by=dates)
-
-
-
-dygraph(xts2)
 
 #ad2015 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2015),])
 #ad2016 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2016),])
