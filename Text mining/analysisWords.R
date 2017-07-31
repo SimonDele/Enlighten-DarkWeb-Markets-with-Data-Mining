@@ -9,6 +9,7 @@ library(stringr)
 library(wordcloud)
 library(tm)
 
+
 # Pick up every words in column category and title
 
 words.title.list <- str_split(data$title, boundary("word"))
