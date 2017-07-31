@@ -129,9 +129,7 @@ All the code is publicly available in the Github project *"Data Mining - Dark We
 
 This is the representation of the technical implementation taking place during this project:
 
-
-
-
+# - AlphaBay Market
 
 # - Data Retrieval
 ***
