@@ -118,7 +118,7 @@ data <- as.data.frame(read.csv("../alphaClean.csv"))
 
 ## - Code Repository
 
-All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [www.rstudio.com](www.rstudio.com)
+All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [https://github.com/SimonDele/Data-Ming-Dark-Web-Market](https://github.com/SimonDele/Data-Ming-Dark-Web-Market)
 
 ## - Chosen Technologies
 
