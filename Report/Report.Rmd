@@ -1485,6 +1485,91 @@ Results show that the algorithm succeeds in predicting most of the sellers. Ther
 
 Later in the section *Prediction of profitability* , it will be discussed how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
+**3. Text Mining** 
+
+One last method, but not least : Text mining. This is a fashion method since with the power of our computer, we are now able to perform wide analyses on *text data*. It can be used for text classification (determinating the topic, the tone, etc...), but here it will be used for predicting who has written the text (i.e sellers).
+
+The main interest comparing to previous methods is that it is only based on the words used by the sellers. Thus, it is possible to identify the seller according to his *writting style* in other type websites, such as Social Network. What previous methods can not do because they are trained with variables specific to AlphaBay. Furthermore, there is no need to explain the interest of identifing in Social Network illegal sellers ...
+
+The method consists in training the algortihm with words from the ad description of each seller. Then, it is tested with a part of the data which has not been used for training. The algorithm choosen for this method is *Support Vector Machine* but other alogrithms have been tested such as decision tree and random forest and results are similar. The result below has been obtained with a data containing the ads description from the `r TM_nb_sellers` main sellers.  
+
+```{r TM Predict Sellers}
+#----------------------------------------------------------------------
+#             Algo to predict sellers given words from their text
+#-----------------------------------------------------------------------
+
+#https://journal.r-project.org/archive/2013/RJ-2013-001/RJ-2013-001.pdf
+
+TMPredictSeller <- function(TM_nb_sellers){
+  
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  new.data <- data[matching_vector,]
+  
+  # Random rows :
+  new.data <- new.data[sample(nrow(new.data),nrow(new.data),replace=FALSE), ]
+  
+  
+  # Handling : seller
+  tab_sel <- table(new.data$seller)
+  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_sel <- tab_sel[1:TM_nb_sellers] # Taking only the most important : main sellers
+  name_sel <- names(tab_sel)
+  
+  # New data keeping only the main sellers
+  new.data <-subset(new.data, seller %in% name_sel) 
+  
+  new.data$seller <- factor(new.data$seller)
+  
+  # CREATE THE DOCUMENT-TERM MATRIX
+  doc_matrix <- create_matrix(new.data$ad, language="english", removeNumbers=TRUE,
+                              stemWords=TRUE, removeSparseTerms=.998)
+  
+  container <- create_container(doc_matrix, new.data$seller, trainSize=1:round(0.75*nrow(new.data)),
+                                testSize=round(0.75*nrow(new.data)+1,0):nrow(new.data), virgin=FALSE)
+  
+  
+  SVM <- train_model(container,"SVM")
+  
+  SVM_CLASSIFY <- classify_model(container, SVM)
+
+  
+  
+  test <- new.data[round(0.75*nrow(new.data)+1,0):nrow(new.data),]
+  # Comparison between the result and the prediction (prediction in colunm)
+  conf <- table(test[,match("seller",names(test))],SVM_CLASSIFY$SVM_LABEL)
+  
+  # Accuracy :
+  acc <- sum(diag(conf)) / sum(conf)
+  
+  # Display   
+  conf <- data.frame(conf)
+  names(conf) <- c("Sellers","Prediction","Freq")
+  print(conf)
+  
+  return (acc*100)
+}
+TM_nb_sellers <- 50
+accTM <- TMPredictSeller(TM_nb_sellers)
+sprintf("The accuracy is : %.2f %%", accTM)
+
+
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Sellers Prediction / Text Mining")
+```
+
+```{r echo=FALSE}
+sprintf("The accuracy is : %.2f %%", accTM)
+```
+
+The accuracy is `r accTM` % which is very high. For more sellers, (which own enough ads, in order to have some of them in the training dataset) the accuracy decreased but it is still very high. For instance for 150 main sellers it is around 90%. 
+
+However, this accuracy has to be taken with precaution. Indeed, most of the ads descriptions from one seller are very similar. The reason is that they create various ads for the same product with different quantities. Thus, ads description are almost the same. That is why, it is not surprising that the accuracy is so high.
+
+Anyway, that show us that the algorithm is working properly and it can be used in order to find hidden identities of one seller in AlphaBay or in other Website and eventually discover his real identity. 
+
 ## - Clustering of drugs
 
 Secondly, one can wonder if there were links between some drugs. That is to say, if this is possible to cluster some drugs.  
@@ -1926,67 +2011,6 @@ compCap <- figureCaption(compCap, "Variable Dependencies / Bayesian Neural Netwo
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
 
 Furthermore, expectancy of each event profitability X given category Y has been calculated. Thus, we can find the most profitable products to sold. Apparently it seems to be presciption, steroid and opioids. May be they are more profitable because they are not "common products" (and still wanted) contrary to Cannabis or Cocaine which can be found more easily on the street. 
-
-```{r TM Predict Sellers}
-#----------------------------------------------------------------------
-#             Algo to predict sellers given words from their text
-#-----------------------------------------------------------------------
-
-#https://journal.r-project.org/archive/2013/RJ-2013-001/RJ-2013-001.pdf
-
-TMPredictSeller <- function(){
-  
-  
-  # Select all "Drugs & Chemicals" ads
-  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-  new.data <- data[matching_vector,]
-  
-  # Random rows :
-  new.data <- new.data[sample(nrow(new.data),nrow(new.data),replace=FALSE), ]
-  
-  
-  # Handling : seller
-  tab_sel <- table(new.data$seller)
-  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-  tab_sel <- tab_sel[1:50] # Taking only the most important : main sellers
-  name_sel <- names(tab_sel)
-  
-  # New data keeping only the main sellers
-  new.data <-subset(new.data, seller %in% name_sel) 
-  
-  new.data$seller <- factor(new.data$seller)
-  
-  # CREATE THE DOCUMENT-TERM MATRIX
-  doc_matrix <- create_matrix(new.data$ad, language="english", removeNumbers=TRUE,
-                              stemWords=TRUE, removeSparseTerms=.998)
-  
-  container <- create_container(doc_matrix, new.data$seller, trainSize=1:round(0.75*nrow(new.data)),
-                                testSize=round(0.75*nrow(new.data)+1,0):nrow(new.data), virgin=FALSE)
-  
-  
-  SVM <- train_model(container,"SVM")
-  
-  SVM_CLASSIFY <- classify_model(container, SVM)
-
-  
-  
-  test <- new.data[round(0.75*nrow(new.data)+1,0):nrow(new.data),]
-  # Comparison between the result and the prediction (prediction in colunm)
-  conf <- table(test[,match("seller",names(test))],SVM_CLASSIFY$SVM_LABEL)
-  
-  # Accuracy :
-  acc <- sum(diag(conf)) / sum(conf)
-  
-  #print(conf)
-  
-  return (acc)
-}
-
-acc <- TMPredictSeller()
-print(acc)
-
-
-```
 
 
 # - References
