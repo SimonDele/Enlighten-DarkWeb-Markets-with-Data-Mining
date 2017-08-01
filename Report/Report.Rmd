@@ -140,41 +140,44 @@ All the code is publicly available in the Github project *"Data Mining - Dark We
 
 ## - Chosen Technologies
 
-There is a number of technologies and programming languages that can be used for Data Analysis. Here are the ones that have been used for this project.
+There is a number of technologies and programming languages that can be used for *Data Analysis*. Here are the ones that have been used for this project.
 
 ### - R / RStudio
 
-The 2 main progamming languages for this kind of research are *Python and R*. Python is the most used. But since R has obtained more attention for the last few years, that is the one that will be used here.  
-Moreover R, which is a language dedicated for statistical and graphical presentation, will suit our needs.
+The 2 main progamming languages for this kind of research are *Python and R*. Python is the most used. But since R has obtained more attention for the last few years, that is the one that will be used here. Moreover R, which is a language dedicated for statistical and graphical presentation, will suit our needs.
 
 Furthermore, R has a powerful dedicated environment (IDE) which is *RStudio* and a lot of *open-source libraries*. Here is a list of the main libraries used for this project.
 
 
-**1. stringr :** String manipulation library.
+**stringr :** String manipulation library.
 
-**2. units :** Unit library including solution for convertion.
+**units :** Unit library including solution for convertion.
 
-**3. rpart :** Package that contains a wide library for decision tree method.
+**rpart :** Package that contains a wide library for decision tree method.
 
-**4. arules :** Used for association rules.
+**arules :** Used for association rules.
 
-**5. e1071 :** Bayesian Naive implementation library.
+**e1071 :** Bayesian Naive implementation library.
 
-**6. bnlearn :** library including solution for bayesian network creation and visualisation.
+**bnlearn :** library including solution for bayesian network creation and visualisation.
 
 You can find the whole list of packages used in the *GitHub* repository. 
 
 
 ### - R Markdown Notebooks
 
-This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown* document with chunks that can be executed independently and interactively. It enables to produce the document in various formats such as *HTML, PDF and Word*.  
-In addition, it can be used directly into the RStudio IDE.
+This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown* document with chunks that can be executed independently and interactively. It enables to produce the document in various formats such as *HTML, PDF and Word*. In addition, it can be used directly into the RStudio IDE.
 
 ## - Detailed Diagram
 
 This is the representation of the technical implementation taking place during this project:
 
 ![](..\Images\Technical_Implementation.png)
+
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, "Technical implementation")
+```
+
 
 # - AlphaBay Market
 ***
@@ -218,9 +221,6 @@ Evolution <- function() {
   ad2016 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2016),])
   ad2017 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2017),])
   Number_of_Ads <- c(ad2015,ad2016,ad2017)
-  Time <- c("2015","2016","2017")
-  NbAds <- as.data.frame(Number_of_Ads,Time)
-  print(NbAds)
   
   # Month
   Evo.data$sold_since <- as.yearmon(Evo.data$sold_since)
@@ -264,9 +264,6 @@ Evolution <- function() {
 plot <- Evolution()
 
 ```
-```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Number of ads per year")
-```
 
 
 ```{r Plot display, echo=FALSE,fig.width=7.5,fig.height=4}
@@ -276,6 +273,34 @@ plot
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Evolution of AlphaBay Web Market")
 ```
+
+
+```{r Counting Ads, echo=FALSE}
+
+Counting_Ads <- function(){
+
+  # Select the column of the data that are interesting 
+  Evo.data <- subset(data, select=c(category,sold_since))
+    # Subset : choose the colunm that you want
+  
+  # Formatting
+  Evo.data$sold_since <-  as.Date(Evo.data$sold_since)
+  
+  # Counting the Ads
+  ad2015 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2015),])
+  ad2016 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2016),])
+  ad2017 <- nrow(Evo.data[which(year(Evo.data$sold_since) == 2017),])
+  Number_of_Ads <- c(ad2015,ad2016,ad2017)
+  
+  return(Number_of_Ads)
+   
+}
+
+Number_of_Ads <- Counting_Ads()
+
+```
+
+
 
 # - Data Retrieval
 ***
@@ -1541,27 +1566,19 @@ TMPredictSeller <- function(TM_nb_sellers){
   conf <- table(test[,match("seller",names(test))],SVM_CLASSIFY$SVM_LABEL)
   
   # Accuracy :
-  acc <- sum(diag(conf)) / sum(conf)
+  acc <- round((sum(diag(conf)) / sum(conf)*100),2)
   
   # Display   
   conf <- data.frame(conf)
   names(conf) <- c("Sellers","Prediction","Freq")
-  print(conf)
+  #print(conf)
   
-  return (acc*100)
+  return (acc)
 }
 TM_nb_sellers <- 50
 accTM <- TMPredictSeller(TM_nb_sellers)
 sprintf("The accuracy is : %.2f %%", accTM)
 
-
-```
-```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Sellers Prediction / Text Mining")
-```
-
-```{r echo=FALSE}
-sprintf("The accuracy is : %.2f %%", accTM)
 ```
 
 The accuracy is `r accTM` % which is very high. For more sellers, (which own enough ads, in order to have some of them in the training dataset) the accuracy decreased but it is still very high. For instance for 150 main sellers it is around 90%. 
