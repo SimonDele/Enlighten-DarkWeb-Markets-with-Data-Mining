@@ -134,12 +134,41 @@ All the code is publicly available in the Github project *"Data Mining - Dark We
 
 ## - Chosen Technologies
 
-### - R / RStudio 
+There is a number of technologies and programming languages that can be used for Data Analysis. Here are the ones that have been used for this project.
 
-### - RMarkdown Notebooks
+### - R / RStudio
 
+The 2 main progamming languages for this kind of research are *Python and R*. Python is the most used. But since R has obtained more attention for the last few years, that is the one that will be used here.  
+Moreover R, which is a language dedicated for statistical and graphical presentation, will suit our needs.
+
+Furthermore, R has a powerful dedicated environment (IDE) which is *RStudio* and a lot of *open-source libraries*. Here is a list of the main libraries used for this project.
+
+
+**1. stringr :** String manipulation library.
+
+**2. units :** Unit library including solution for convertion.
+
+**3. rpart :** Package that contains a wide library for decision tree method.
+
+**4. arules :** Used for association rules.
+
+**5. e1071 :** Bayesian Naive implementation library.
+
+**6. bnlearn :** library including solution for bayesian network creation and visualisation.
+
+You can find the whole list of packages used in the *GitHub* repository. 
+
+
+### - R Markdown Notebooks
+
+This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown* document with chunks that can be executed independently and interactively. It enables to produce the document in various formats such as *HTML, PDF and Word*.  
+In addition, it can be used directly into the RStudio IDE.
+
+## - Detailed Diagram
 
 This is the representation of the technical implementation taking place during this project:
+
+![](..\Images\Technical_Implementation.png)
 
 # - AlphaBay Market
 ***
