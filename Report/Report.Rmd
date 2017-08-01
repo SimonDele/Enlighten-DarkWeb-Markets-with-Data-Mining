@@ -78,6 +78,8 @@ Thus AlphaBay market will be analysed. Its nature, its different countries of or
 #install.packages("dygraphs")
 #install.packages("zoo")
 #install.packages("forecast")
+#install.packages("RTextTools")
+#install.packages("tm")
 
 # Mamipulation string
 library(stringr)
@@ -112,6 +114,10 @@ library(e1071)
 
 # Bayesian Network
 library(bnlearn)
+
+#Text mining 
+library(RTextTools)
+library(tm)
 
 ```
 
@@ -1920,6 +1926,67 @@ compCap <- figureCaption(compCap, "Variable Dependencies / Bayesian Neural Netwo
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
 
 Furthermore, expectancy of each event profitability X given category Y has been calculated. Thus, we can find the most profitable products to sold. Apparently it seems to be presciption, steroid and opioids. May be they are more profitable because they are not "common products" (and still wanted) contrary to Cannabis or Cocaine which can be found more easily on the street. 
+
+```{r TM Predict Sellers}
+#----------------------------------------------------------------------
+#             Algo to predict sellers given words from their text
+#-----------------------------------------------------------------------
+
+#https://journal.r-project.org/archive/2013/RJ-2013-001/RJ-2013-001.pdf
+
+TMPredictSeller <- function(){
+  
+  
+  # Select all "Drugs & Chemicals" ads
+  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
+  new.data <- data[matching_vector,]
+  
+  # Random rows :
+  new.data <- new.data[sample(nrow(new.data),nrow(new.data),replace=FALSE), ]
+  
+  
+  # Handling : seller
+  tab_sel <- table(new.data$seller)
+  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
+  tab_sel <- tab_sel[1:50] # Taking only the most important : main sellers
+  name_sel <- names(tab_sel)
+  
+  # New data keeping only the main sellers
+  new.data <-subset(new.data, seller %in% name_sel) 
+  
+  new.data$seller <- factor(new.data$seller)
+  
+  # CREATE THE DOCUMENT-TERM MATRIX
+  doc_matrix <- create_matrix(new.data$ad, language="english", removeNumbers=TRUE,
+                              stemWords=TRUE, removeSparseTerms=.998)
+  
+  container <- create_container(doc_matrix, new.data$seller, trainSize=1:round(0.75*nrow(new.data)),
+                                testSize=round(0.75*nrow(new.data)+1,0):nrow(new.data), virgin=FALSE)
+  
+  
+  SVM <- train_model(container,"SVM")
+  
+  SVM_CLASSIFY <- classify_model(container, SVM)
+
+  
+  
+  test <- new.data[round(0.75*nrow(new.data)+1,0):nrow(new.data),]
+  # Comparison between the result and the prediction (prediction in colunm)
+  conf <- table(test[,match("seller",names(test))],SVM_CLASSIFY$SVM_LABEL)
+  
+  # Accuracy :
+  acc <- sum(diag(conf)) / sum(conf)
+  
+  #print(conf)
+  
+  return (acc)
+}
+
+acc <- TMPredictSeller()
+print(acc)
+
+
+```
 
 
 # - References
