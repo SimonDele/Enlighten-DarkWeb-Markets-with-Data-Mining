@@ -1678,7 +1678,7 @@ AssRSellersCat <- function(){
   rules.sorted@quality$confidence <- round(rules.sorted@quality$confidence, 2)
   rules.sorted@quality$lift <- round(rules.sorted@quality$lift, 2)
   
-  inspect(rules.sorted, linebreak = TRUE)
+  arules::inspect(rules.sorted, linebreak = TRUE)
   
   cat("\n")
   cat("             ")
@@ -1862,7 +1862,7 @@ AssROriginSellerCat <- function(){
   rules.sorted@quality$confidence <- round(rules.sorted@quality$confidence, 2)
   rules.sorted@quality$lift <- round(rules.sorted@quality$lift, 2)
   
-  inspect(rules.sorted)
+  arules::inspect(rules.sorted)
   
   cat("\n")
   cat("               ")

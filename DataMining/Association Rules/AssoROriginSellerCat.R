@@ -30,7 +30,7 @@ rules <- apriori(asso.data,
                  control = list(verbose=F))
 
 rules.sorted <- sort(rules, by="lift")
-inspect(rules.sorted)
+arules::inspect(rules.sorted)
 
 #Plot graph of rules
 plot(rules.sorted, method="graph", control=list(type="items"),main ="Association Rules on the category and seller to deduce the country")

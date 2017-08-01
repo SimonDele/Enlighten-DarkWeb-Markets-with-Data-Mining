@@ -2,6 +2,8 @@
 #       Words analysis
 #-----------------------------------------------
 
+# The data of common words  have been downloaded at http://www.wordfrequency.info/free.asp
+
 
 #data <- as.data.frame(read.csv("alphaClean.csv"))
 
