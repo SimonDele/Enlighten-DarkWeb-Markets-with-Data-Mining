@@ -178,19 +178,52 @@ This is the representation of the technical implementation taking place during t
 compCap <- figureCaption(compCap, "Technical implementation")
 ```
 
+# - Data Retrieval
+***
+
+Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD), url link, seller, payment, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+
+The Data represents approximately *1/10* of the Web Market, but gives a pretty good representation since the uploaded ads were fairly distributed.
+
+Thus, the first step was to clean the data (remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. With these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
+
+Here is what the *Database* looks like :
+
+```{r print data}
+#----------------------------------------------------------
+#               Display of the data :
+#----------------------------------------------------------
+
+printdata <- function() {
+  print.data <- subset (data[19409:19411,], select=-X)
+  for(i in 2:4){
+    print.data[,i] <- as.character(print.data[,i])
+  }
+  print(print.data)
+}
+
+printdata()
+
+```
+```{r echo=FALSE}
+compTab <- TableCaption(compTab, "Database Sample")
+```
 
 # - AlphaBay Market
 ***
 
-Its reputation can be reflected by looking at *Google statistics* @GTComp.  
+As it has been said in the [Introduction][- Introduction] *AlphaBay*, due to its popularity, drew the governmental attentions. As a matter of fact its reputation can be reflected by looking at *Google statistics* @GTComp.
 
 ![](..\Images\AlphaBayComparison.jpg)
+
 
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
 ```
 
-You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Markets from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplace.
+You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Markets from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplaces.
+
+Let's now try to look at the evolution of the market with the collected data. Here you can see the number of ads posted per month from *January 2015* until *June 2017*.
 
 ```{r Evolution of the market}
 #------------------------------------------------------------
@@ -265,7 +298,6 @@ plot <- Evolution()
 
 ```
 
-
 ```{r Plot display, echo=FALSE,fig.width=7.5,fig.height=4}
 plot
 ```
@@ -273,7 +305,6 @@ plot
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Evolution of AlphaBay Web Market")
 ```
-
 
 ```{r Counting Ads, echo=FALSE}
 
@@ -300,36 +331,9 @@ Number_of_Ads <- Counting_Ads()
 
 ```
 
+Once more, the general  can be 
+reach a pick of 5 thousand ads by the end of year.
 
-
-# - Data Retrieval
-***
-
-Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD), url link, seller, payment, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
-
-Thus, the first step was to clean the data (remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. With these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
-
-Here is what the *Database* looks like :
-
-```{r print data}
-#----------------------------------------------------------
-#               Display of the data :
-#----------------------------------------------------------
-
-printdata <- function() {
-  print.data <- subset (data[19409:19411,], select=-X)
-  for(i in 2:4){
-    print.data[,i] <- as.character(print.data[,i])
-  }
-  print(print.data)
-}
-
-printdata()
-
-```
-```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Database Sample")
-```
 
 # - Basic Statistics
 ***
@@ -1726,7 +1730,7 @@ These rules can be interpreted as follows : sellers often deal more than one pro
 
 ## - Prediction of ads origin
 
-After trying to make predictions on the seller (cf. [- Sellers Predictions]), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
+After trying to make predictions on the seller (cf. [Sellers Predictions][- Sellers Predictions]), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
 
 **1. Decision tree**
 
