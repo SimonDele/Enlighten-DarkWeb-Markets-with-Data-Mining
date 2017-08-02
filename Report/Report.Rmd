@@ -212,7 +212,7 @@ compTab <- TableCaption(compTab, "Database Sample")
 # - AlphaBay Market
 ***
 
-As it has been said in the [Introduction][- Introduction] *AlphaBay*, due to its popularity, drew the governmental attentions. As a matter of fact its reputation can be reflected by looking at *Google statistics* @GTComp.
+As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to its popularity, drew the governmental attentions. As a matter of fact its reputation can be reflected by looking at *Google statistics* @GTComp.
 
 ![](..\Images\AlphaBayComparison.jpg)
 
@@ -221,9 +221,9 @@ As it has been said in the [Introduction][- Introduction] *AlphaBay*, due to its
 compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
 ```
 
-You can see, on this graph, *AlphaBay* in blue and *Dream Market* in red, an other Dark Web Market, wich is still operating. This is showing the evolution of *Google* researchs that are related to these two Web Markets from 2015 till June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplaces.
+On this graph, *AlphaBay* is in blue and *Dream Market* is in red, which is an other Dark Web Market still operating. This is showing the evolution of *Google* researches that are related to these two Web Markets from 2015 until June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplaces.
 
-Let's now try to look at the evolution of the market with the collected data. Here you can see the number of ads posted per month from *January 2015* until *June 2017*.
+Let's now try to look at the evolution of the market with the collected data on *AlphaBay*. Here you can see the number of ads posted per month from *January 2015* until *June 2017*.
 
 ```{r Evolution of the market}
 #------------------------------------------------------------
@@ -331,9 +331,9 @@ Number_of_Ads <- Counting_Ads()
 
 ```
 
-Once more, the general  can be 
-reach a pick of 5 thousand ads by the end of year.
+The overall appearance and the growing popularity can be again pointed out with this graph. Between 2015 and 2016, there was a significant jump, the amount of ads rose from `r Number_of_Ads[1]` up to `r Number_of_Ads[2]`. Nevertheless the most surprising thing is that the number of ads that have been posted during the six first months of 2017 (before the closing) is `r Number_of_Ads[3]` which is almost the same that in the whole 2016.
 
+In order to see how the market would have looked like in the end of 2017 a prediction also has been added on this graph. Therefore, according to prognoses, the amount of ads would have reached a pick of 5,000 ads by the end of year. 
 
 # - Basic Statistics
 ***
@@ -342,7 +342,7 @@ reach a pick of 5 thousand ads by the end of year.
 
 As it has been said before, basic statistics have been first realized. Let's see the general distribution and trend of the market.
 
-**1. Global view of ads distribution.**
+**1. Global view of ads distribution**
 
 
 ```{r Number of ads}
@@ -402,7 +402,7 @@ Furthermore an interesting thing to point out is that the first four countries a
 compCap <- figureCaption(compCap, "AlphaBay world Google researches")
 ```
 
-**2. Now let's have a look at the distribution of ads per category.**
+**2. Now let's have a look at the distribution of ads per category**
 
 ```{r Function Select Drugs}
   selectDrug <- function(drugName){
@@ -486,7 +486,7 @@ It is also worth noting that the second most popular category is *"Fraud"*, that
 
 *AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Thus, let's focus on the drug market.
 
-**1. Distribution of drugs.**
+**1. Distribution of drugs**
 
 ```{r Distribution of Drugs}
 #-----------------------------------------------
@@ -550,11 +550,7 @@ DistributionDrugs()
 compCap <- figureCaption(compCap, "Drug Distribution")
 ```
 
-A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs and in parallel they are very requested in remaining countries. Indeed, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of Opioids on the market raises the issue of how some of them are prescripted. Maybe some countries should re-think their stance over prescription  
-//
-[what about so,e examples on legal production]. 
-//  
-The *remaining* of the market is splited by all other drugs.
+A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs for the remaining countries where they are very requested. As a matter of fact, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of this kind of drugs on the market raises the issue of how some of them are prescripted. The *remaining* of the market is splited by all other drugs.
 
 **2. World distribution of drugs**
 
@@ -607,7 +603,7 @@ This also matches with the second chart that shows that drugs are the main item 
 But so far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
 
 
-**3. Take a global view of the drugs market in Europe with the following map.**
+**3. Take a global view of the drugs market in Europe with the following map**
 
 ```{r Europe Map, message=FALSE}
 
@@ -743,7 +739,7 @@ Given that most of exported items are drugs, that is not surprising that they ar
 
 Most of European countries follows the same rules as *United Kingdom* and this confirms previous assumptions.
 
-**2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom :**
+**2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom**
 
 
 ```{r Exportation Afghanistan}
@@ -830,7 +826,7 @@ compCap <- figureCaption(compCap, "Afghanistan exportation")
 
 What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay Market*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
 
-**3. Let's compare France export & import flows and see if there is a difference between them.**
+**3. Let's compare France export & import flows and see if there is a difference between them**
 
 ```{r Export_Import FR}
 
@@ -1208,6 +1204,7 @@ sprintf("The accuracy is : %.2f %%", ResultDT1[1])
 It is striking to realise that predictions are very reliable since the accuracy is very high.  
 
 In the *Table 2* you can find by columns our Prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
+
 The tree enables to have a good visual aspect on it and gives a lot of essential information on these five main sellers.
 
 Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
@@ -1730,11 +1727,11 @@ These rules can be interpreted as follows : sellers often deal more than one pro
 
 ## - Prediction of ads origin
 
-After trying to make predictions on the seller (cf. [Sellers Predictions][- Sellers Predictions]), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
+After trying to make predictions on sellers (cf. [Sellers Predictions][- Sellers Predictions]), Prognoses on the origin of the ads have been made using Decision Tree method and Association Rules.  
 
 **1. Decision tree**
 
-Looking at prices and categories, a Decision Tree have been created in order to predict the origin. In the same way the algorithm has been trained on one half of the data, and predictions made on the other half.
+Looking at prices and categories, a *Decision Tree* has been created in order to predict the origin. In the same way the algorithm has been trained on one half of the data, and predictions made on the other half.
 
 ```{r DT origin}
 #----------------------------------------------------------------------
@@ -1834,15 +1831,13 @@ compTab <- ResultDT2[2]
 compCap <- figureCaption(compCap, "Origins prediction / Decision Tree")
 ```
 
-Results don't seem to be very good, the accuracy is `r ResultDT2[1]` % which is lower than previously. It turns out that without the Seller, which give a lot information on the origin, prognoses are not very reliable.  
+Results don't seem to be very good, the accuracy is `r ResultDT2[1]` % which is lower than previously. It turns out that without sellers, which give a lot of information on the origin, prognoses are not very reliable.  
 
-Let's see if correlations can be found between categories and origins.
-
+Now let's see if correlations can be found between categories and origins.
 
 **2. Rules to determine cateogries of ads coming from United States** 
 
-Secondly, the algorithm has been run with 2 variables : category and origin. Thus, one may be able to make a link with predictions of above decision tree. One country has been fixed, here United States. 
-
+To do so, *Association Rules Method* has been run with 2 variables : category and origin. Thus, one may be able to make a link with predictions of above decision tree. One country has been fixed, here United States. 
 
 ```{r Ass Rules Origin}
 #--------------------------------------------------------
