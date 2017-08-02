@@ -1,7 +1,7 @@
 ---
 title: "Data Mining - Dark Web Market"
 author: "Simon Delecourt & Edouard Donze"
-csl: elsevier-vancouver.csl
+bibliography: My_bibliography.bibtex
 output:
   html_notebook:
     code_folding: hide
@@ -10,7 +10,10 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
-bibliography: My_bibliography.bibtex
+  word_document:
+    toc: yes
+csl: elsevier-vancouver.csl
+always_allow_html: yes
 ---
 
 <style>
@@ -1517,6 +1520,10 @@ One last method, but not least : Text mining. This is a fashion method since wit
 
 The main interest comparing to previous methods is that it is only based on the words used by the sellers. Thus, it is possible to identify the seller according to his *writting style* in other type websites, such as Social Network. What previous methods can not do because they are trained with variables specific to AlphaBay. Furthermore, there is no need to explain the interest of identifing in Social Network illegal sellers ...
 
+```{r echo=FALSE}
+TM_nb_sellers <- 50
+```
+
 The method consists in training the algortihm with words from the ad description of each seller. Then, it is tested with a part of the data which has not been used for training. The algorithm choosen for this method is *Support Vector Machine* but other alogrithms have been tested such as decision tree and random forest and results are similar. The result below has been obtained with a data containing the ads description from the `r TM_nb_sellers` main sellers.  
 
 ```{r TM Predict Sellers}
@@ -1576,7 +1583,6 @@ TMPredictSeller <- function(TM_nb_sellers){
   
   return (acc)
 }
-TM_nb_sellers <- 50
 accTM <- TMPredictSeller(TM_nb_sellers)
 sprintf("The accuracy is : %.2f %%", accTM)
 
