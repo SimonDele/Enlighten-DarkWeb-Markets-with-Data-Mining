@@ -12,5 +12,5 @@ While the data set won't be made public, feel free to clone/fork the repo and pl
 
 In the folder Report you will find our notes and analyses. You can have a look at it with the PDF version, but if you want the full one please download "Report.nd.html" and open it in your Browser.
 
-In the other folders you will find the complete R-code of each part we made. (You can also visualise it in the html file).
+In the other folders you will find the complete R-code of each part we made. You can also visualise it in the html file.
 
