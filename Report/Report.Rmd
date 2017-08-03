@@ -49,15 +49,24 @@ TableCaption <- function(compTab, txt){
 # - Introduction
 ***
 
-For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds. However, plenty of those marketplaces are growing up on *Dark Web*. Even if government attempts to fight against this kind of illegal market, new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate.For more information on *Deep web* and *Dark Web marketplaces* please read the article: "Mining the Dark Web" @ABSW. You will also find in this paper an analysis of *Agora Market*. 
 
-This paper presents a research carried out on one of the largest marketplace (specially for drugs) on Internet, the ***AlphaBay Dark Web Market***. This web Market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. Therefore, during our research, AlphaBay and Hansa, another dark web market, have been shut down on July, 2017 as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
+[
+[For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds]. This is also happening on the dark web, with over # markets on line at the time of this research. Police forcese have been fighting strenuously against illegal marketplaces [ref], but new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
+]
 
-According to US Attorney General Jeff Sessions the aim of this action was to caution criminals from thinking that they could evade prosecution by using the dark web. However, it is widely believed that other web markets will take the place of *AlphaBay*. By the way, the popularity of AlphaBay can be explained by the shut down of *Silk Road 2.0* on 2013 since it has been launched on september 2014.
+Police forcese have been fighting strenuously against illegal websites [ref], but new ones resurface or re-migrate frequently.This is also happening on the dark web. As a matter of fact, over # marketplaces have been shut down between [2016 and 2017]. However there are still x marketplace online at the time of this research. On top of that, currently, we don't really know in detail how these websites operate. 
 
-The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allow to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help governmental agencies to identify recurrent sellers with various hidden identities.
+This paper presents a research carried out between June and September 2017 on the largest web market at the time (expecially for drugs) on Internet, ***AlphaBay***. This web market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. It has been shut down on July 2017,at the same time of Hansa, as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
 
-Thus AlphaBay market will be analysed. Its nature, its different countries of origin, its main sellers, its predominance of items and so on will be investigated. During a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the marketplace and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
+According to US Attorney General Jeff Sessions the aim of this action was to caution criminals from thinking that they could evade prosecution by using the dark web. Looking at previous large shut down marketplaces it is widely believed that other web markets will take the place of *AlphaBay*. By the way, the popularity of AlphaBay can be explained by the shut down of *Silk Road 2.0* on 2013 since it has been launched on september 2014.
+
+This paper reports on the last weeks of life of Alphabay. Its nature, its different countries of origin, its main sellers, its predominance of items will be analised. 
+
+# - Method 
+
+[AB part]
+
+During a first phase "Basic Statistics" will be carried out on the *Database*, in order to discover the web market and to point out its trends. Then, experimental results of *data mining techniques* will be discussed.
 
 
 ```{r Library, message=FALSE, warning=FALSE}
@@ -137,15 +146,11 @@ data <- as.data.frame(read.csv("../../alphaClean.csv"))
 # - Technical Implementation
 ***
 
-## - Code Repository
-
-All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [https://github.com/SimonDele/Data-Ming-Dark-Web-Market](https://github.com/SimonDele/Data-Ming-Dark-Web-Market)
-
 ## - Chosen Technologies
 
 There is a number of technologies and programming languages that can be used for *Data Analysis*. Here are the ones that have been used for this project.
 
-### - R / RStudio
+### - R / RStudio [Software stack]
 
 The 2 main progamming languages for this kind of research are *Python and R*. Python is the most used. But since R has obtained more attention for the last few years, that is the one that will be used here. Moreover R, which is a language dedicated for statistical and graphical presentation, will suit our needs.
 
@@ -164,12 +169,20 @@ Furthermore, R has a powerful dedicated environment (IDE) which is *RStudio* and
 
 **bnlearn :** library including solution for bayesian network creation and visualisation.
 
-You can find the whole list of packages used in the *GitHub* repository. 
+
 
 
 ### - R Markdown Notebooks
 
 This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown* document with chunks that can be executed independently and interactively. It enables to produce the document in various formats such as *HTML, PDF and Word*. In addition, it can be used directly into the RStudio IDE.
+
+
+## - Code Repository
+
+You can find the whole list of packages used in the *GitHub* repository. 
+
+All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [https://github.com/SimonDele/Data-Ming-Dark-Web-Market](https://github.com/SimonDele/Data-Ming-Dark-Web-Market)
+
 
 ## - Detailed Diagram
 
@@ -184,11 +197,11 @@ compCap <- figureCaption(compCap, "Technical implementation")
 # - Data Retrieval
 ***
 
-Thanks to Sin Wee Lee and Andres Baravalle data have been collected on the *AlphaBay Dark Web Market*. Each row of the data represents an ad and all the significant information can be find in the different columns : title, description, price (in USD), url link, seller, payment, origin, destination, category, timestamp that is to say the date when the ad was collected, creation date of the ad, number of product sold since this date and a link to the image.
+For each product we have collected and analysed ad title, description, price (in USD), url, seller, payment, origin, destination, category, collection timestamp, date of posting and number of products sold.
 
-The Data represents approximately *1/10* of the Web Market, but gives a pretty good representation since the uploaded ads were fairly distributed.
+[AB to refine]The data represents approximately *1/10* of the Web Market, but gives a pretty good representation since the uploaded ads were fairly distributed.
 
-Thus, the first step was to clean the data (remove special characters, switch in lowercase ... ) and makes it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. With these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
+Thus, the first step was to clean the data (remove special characters, switch in lowercase ... ) and to make it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. With these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
 
 Here is what the *Database* looks like :
 
@@ -215,7 +228,7 @@ compTab <- TableCaption(compTab, "Database Sample")
 # - AlphaBay Market
 ***
 
-As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to its popularity, drew the governmental attentions. As a matter of fact its reputation can be reflected by looking at *Google statistics* @GTComp.
+As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to its popularity, drew the police forces. As a matter of fact its reputation can be reflected by looking at *Google search statistics* between January 2015 until June 2017 @GTComp.
 
 ![](..\Images\AlphaBayComparison.jpg)
 
@@ -224,7 +237,7 @@ As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to it
 compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
 ```
 
-On this graph, *AlphaBay* is in blue and *Dream Market* is in red, which is an other Dark Web Market still operating. This is showing the evolution of *Google* researches that are related to these two Web Markets from 2015 until June 2017. It should be noted that *AlphaBay* has become more and more popular for the last tree years, and that just before being shut down by the authority in july 2017, it was one of the most popular marketplaces.
+On this graph, *AlphaBay* is in blue and *Dream Market* is in red, which is an other Dark Web Market still operating. *AlphaBay* has become more and more popular since the demise of Agora, and before being shut down, it was the most popular dark web market.
 
 Let's now try to look at the evolution of the market with the collected data on *AlphaBay*. Here you can see the number of ads posted per month from *January 2015* until *June 2017*.
 
@@ -395,9 +408,9 @@ compCap <- figureCaption(compCap, "Main Dealer Countries")
 
 This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
 
-Moreover, it is noticeable that most of these countries are  economically powerful. For instance on these ten main countries, five belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where a lot of trade are made with other countries.
+Moreover, it is noticeable that most of these countries have strong economies. Five of the top 10 countries belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where a lot of trade are made with other countries.
 
-Furthermore an interesting thing to point out is that the first four countries are exactly the one where the word *"AlphaBay"* is the most researched on *Google* @GTWorld.
+Furthermore it is worth pointing out that the first four countries are exactly the ones where the word *"AlphaBay"* is the most researched on *Google* @GTWorld !
 
 ![](..\Images\AlphaBayWorld.jpg)  
 
@@ -405,7 +418,7 @@ Furthermore an interesting thing to point out is that the first four countries a
 compCap <- figureCaption(compCap, "AlphaBay world Google researches")
 ```
 
-**2. Now let's have a look at the distribution of ads per category**
+**2. Distribution of ads per category**
 
 ```{r Function Select Drugs}
   selectDrug <- function(drugName){
@@ -480,14 +493,15 @@ rate <- RateDrugAd()
 ```
 
 
-To begin with, it is observable that there are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one. By the way, it represents `r rate[1]` % of the global market.  
+There are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one, representing `r rate[1]` % of the global market.  
 
-It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market. Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
+It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market.  
+Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
 
 
 ## - Drug Market
 
-*AlphaBay Web Market* is a well known place for dealing drugs, this last chart has proved that. Thus, let's focus on the drug market.
+*AlphaBay* core focus is clearly on Drugs.
 
 **1. Distribution of drugs**
 
@@ -553,9 +567,14 @@ DistributionDrugs()
 compCap <- figureCaption(compCap, "Drug Distribution")
 ```
 
-A large range of drugs categories can be discerned. Nevertheless, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs for the remaining countries where they are very requested. As a matter of fact, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of this kind of drugs on the market raises the issue of how some of them are prescripted. The *remaining* of the market is splited by all other drugs.
+AlphaBay includes x subcategories for drugs. That said, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. 
+
+To delete ?
+[This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs for the remaining countries where they are very requested. As a matter of fact, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of this kind of drugs on the market raises the issue of how some of them are prescripted. The *remaining* of the market is splited by all other drugs.]
 
 **2. World distribution of drugs**
+
+When looking at drug-related ads by country, it is worth noting that the distribution [ref] has a strong resemblance with the overall ad distribution by country on Alphabay [first table].
 
 ```{r Number of ads of Drugs}
 #---------------------------------------------
@@ -600,8 +619,6 @@ compCap <- figureCaption(compCap, "Main drug dealer countries")
 ```
 
 Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.
-
-This also matches with the second chart that shows that drugs are the main item in the market. There are few exceptions such as *Afghanistan* which has been replaced by *Spain* and *Canada* has been reversed with *China*.  
 
 But so far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
 
@@ -2033,6 +2050,10 @@ compCap <- figureCaption(compCap, "Variable Dependencies / Bayesian Neural Netwo
 Neural Network shows that the profitability is conditionnaly dependant to category. That is to say category has a significant impact on profitability. Conditional probabilities are shown in the array. It is surprising that price and seller have no impacts on profitability.  
 
 Furthermore, expectancy of each event profitability X given category Y has been calculated. Thus, we can find the most profitable products to sold. Apparently it seems to be presciption, steroid and opioids. May be they are more profitable because they are not "common products" (and still wanted) contrary to Cannabis or Cocaine which can be found more easily on the street. 
+
+# - Conclusion
+
+The understanding of such illegal market is crucial to fight it. Information gathered in those websites, allow to identify which are the most wanted ads for the consumer and where they come from. Therefore it might be possible to detect the footprint of each seller and, thus, help governmental agencies to identify recurrent sellers with various hidden identities.
 
 
 # - References
