@@ -1,6 +1,6 @@
 #  Data Mining - Dark Web Market
 
-This repository contains all the R code for the internship we made at UEL. 
+This repository contains all the R-code and the Report that we made during our internship at the University of East London. 
 
 The aim of this project was to perform statistical analyses on a data set.
 
@@ -10,5 +10,7 @@ While the data set won't be made public, feel free to clone/fork the repo and pl
 
 ## Architecture
 
-In the folder Report you will find our notes and analyses 
-and the other folders the complete R code of each part we made. 
+In the folder Report you will find our notes and analyses. You can have a look at it with the PDF version, but if you want the full one please download "Report.nd.html" and open it in your Browser.
+
+In the other folders you will find the complete R-code of each part we made. (You can also visualise it in the html file).
+
