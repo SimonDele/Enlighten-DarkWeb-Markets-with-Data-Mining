@@ -661,7 +661,7 @@ MapEurope()
 compCap <- figureCaption(compCap, "European Drug Dealers")
 ```
 
-Circles show the amount of ads concerning drugs. The map confirms previous assumptions that there are a lot of Drug dealers in Europe with, as major dealer countries, *United Kingdom*, *Netherlands* and *Germany*.  
+Circles show the amount of ads concerning drugs. The map confirms previous assumptions that the majority of the products is supposedly originating from *United Kingdom*, *Netherlands* and *Germany*.  [ab to extend]
 
 It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat between countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
 
@@ -672,7 +672,7 @@ Let's now focus more specifically on different countries and study their trend. 
 
 **1. United Kingdom exportation**
 
-The pie below represents the repartition of each category that United Kingdom exports. Only the second subcategory has been kept because it appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
+The chart in "link" below represents the repartition of each category that United Kingdom exports. Only the second subcategory has been kept because it appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
 
 ```{r Exportation UK}
 #-----------------------------------------------
