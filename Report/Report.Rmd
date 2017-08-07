@@ -1,5 +1,5 @@
 ---
-title: "Data Mining - Dark Web Market"
+title: "Enlighten DarkWeb Markets with Data Mining"
 author: "Simon Delecourt & Edouard Donze"
 bibliography: My_bibliography.bibtex
 output:
@@ -142,11 +142,9 @@ data <- as.data.frame(read.csv("../../alphaClean.csv"))
 # - Technical Implementation
 ***
 
-## - Chosen Technologies
+## - Software stack
 
 There is a number of technologies and programming languages that can be used for *Data Analysis*. Here are the ones that have been used for this project.
-
-### - Software stack
 
 The 3 main progamming languages for this kind of research are *Python, SAS and R*. Since we would like to use *open-source* languages, we exclude SAS and eventually choosed R. @SASRPython
 
@@ -164,9 +162,7 @@ Beside standard libraries, we have made extensive use of :
 **bnlearn :** library including solution for bayesian network creation and visualisation.
 
 
-### - R Markdown Notebooks
-
-This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown* document with chunks that can be executed independently and interactively. It enables to produce the document in various formats such as *HTML, PDF and Word*. In addition, it can be used directly into the RStudio IDE.
+We have used RStudio for implementing code. As for publishing the results, we have used R Notebooks @Rmarkdown . 
 
 
 ## - Code Repository
@@ -188,12 +184,6 @@ compCap <- figureCaption(compCap, "Technical implementation")
 
 # - Data Retrieval
 ***
-
-For each product we have collected and analysed ad title, description, price (in USD), url, seller, payment, origin, destination, category, collection timestamp, date of posting and number of products sold.
-
-[AB to refine]The data represents approximately *1/10* of the Web Market, but gives a pretty good representation since the uploaded ads were fairly distributed.
-
-Thus, the first step was to clean the data (remove special characters, switch in lowercase ... ) and to make it readable in a computer way. That it's to say, to find in the title or description of the ads the amount (number and mass) of the product they are selling. Indeed, at the beginning these information were not given distinctly. Therefore an important work has been done on it in order to make analyses easier. With these information, the price of one unit of one dose (1 gram) of the product has been calculated and added.
 
 Here is what the *Database* looks like :
 
@@ -217,10 +207,19 @@ printdata()
 compTab <- TableCaption(compTab, "Database Sample")
 ```
 
+For each product we have collected and analysed ad title, description, price (in USD), url, seller, payment, origin, destination, category, collection timestamp, date of posting and number of products sold.
+
+[AB to refine]The data represents approximately *1/10* of the Web Market, but gives a pretty good representation since the uploaded ads were fairly distributed.
+
+Thus, the first step was to clean the data and to make it readable in a computer way. This is our pipelines : 
+  - Removing special characters, switching in lowercase.
+  - Finding in the title or description of the ads the amount (number and mass) of the product.
+  - Calculating the price of one unit of one dose (1 gram) each time.
+
 # - AlphaBay Market
 ***
 
-As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to its popularity, drew the police forces. As a matter of fact its reputation can be reflected by looking at *Google search statistics* between January 2015 until June 2017 @GTComp.
+As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to its popularity, drew the police forces attentions. As a matter of fact its reputation can be reflected by looking at *Google search statistics* with the keywords alphabay and dream market between January 2015 until June 2017 @GTComp.
 
 ![](..\Images\AlphaBayComparison.jpg)
 
@@ -229,7 +228,7 @@ As it has been said in the [Introduction][- Introduction], *AlphaBay*, due to it
 compCap <- figureCaption(compCap, "Evolution of AlphaBay and Dream Market Google researches")
 ```
 
-On this graph, *AlphaBay* is in blue and *Dream Market* is in red, which is an other Dark Web Market still operating. *AlphaBay* has become more and more popular since the demise of Agora, and before being shut down, it was the most popular dark web market.
+On this graph, *AlphaBay* is in blue and *Dream Market* is in red, which is an other Dark Web Market still operating. *AlphaBay* has become more and more popular since the demise of Agora, and before being shut down, it was the most popular dark web market @AlphaBig .
 
 Let's now try to look at the evolution of the market with the collected data on *AlphaBay*. Here you can see the number of ads posted per month from *January 2015* until *June 2017*.
 
@@ -398,7 +397,7 @@ NumberOfAds()
 compCap <- figureCaption(compCap, "Main Dealer Countries")
 ```
 
-This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, which is *United Kingdom*.  
+This bar-chart represents the 10 main countries in the world regarding the number of ads. As we can see, *United States* are the biggest dealer far ahead of the rest. Their number of ads is more than twice as the number of the second one, *United Kingdom*.  
 
 Moreover, it is noticeable that most of these countries have strong economies. Five of the top 10 countries belong to the Group of Seven (G7), only *Japan* and *Italy* are not present. And other ones are also located in powerful areas where a lot of trade are made with other countries.
 
@@ -451,6 +450,7 @@ categ()
 ```
 ```{r echo=FALSE}
 compCap <- figureCaption(compCap, "Distribution of the Market")
+DrugsFig <- compCap
 ```
 
 
@@ -485,15 +485,16 @@ rate <- RateDrugAd()
 ```
 
 
-There are 12 main categories in this web marketplace. It appears that *"Drugs and Chemicals"* group is the largest one, representing `r rate[1]` % of the global market.  
+There are 12 main categories in this web marketplace. *"Drugs and Chemicals"* group is the largest one, representing `r rate[1]` % of the global market.  
 
 It is also worth noting that the second most popular category is *"Fraud"*, that is to say all the ads regarding impersonation, deception papers and accounts. It represents `r rate[2]` % of the market.  
+
 Eventually, all other items (digital product, weapons, jewelry ...) represent a small rate of the marketplace.
 
 
 ## - Drug Market
 
-*AlphaBay* core focus is clearly on Drugs.
+*AlphaBay* core focus is clearly on Drugs (cf. Figure `r DrugsFig`).
 
 **1. Distribution of drugs**
 
@@ -559,14 +560,11 @@ DistributionDrugs()
 compCap <- figureCaption(compCap, "Drug Distribution")
 ```
 
-AlphaBay includes x subcategories for drugs. That said, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. 
-
-To delete ?
-[This is not surprising since Cannabis and Opioids can be *easily found* in some countries. Thus, it is easy for them to sell these drugs for the remaining countries where they are very requested. As a matter of fact, Cannabis is *legalised* in some countries and some Opioids can be obtained thanks to *prescription* by a doctor. The massive presence of this kind of drugs on the market raises the issue of how some of them are prescripted. The *remaining* of the market is splited by all other drugs.]
+AlphaBay includes 13 subcategories for drugs. That said, *Cannabis*, *Opioids* and *Ecstasy* cover *more than 50 %* of the market. 
 
 **2. World distribution of drugs**
 
-When looking at drug-related ads by country, it is worth noting that the distribution [ref] has a strong resemblance with the overall ad distribution by country on Alphabay [first table].
+When looking at drug-related ads by country, it is worth noting that the distribution of Figure 8 has a strong resemblance with the overall ad distribution by country on Alphabay (Figure 4). This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.
 
 ```{r Number of ads of Drugs}
 #---------------------------------------------
@@ -610,12 +608,10 @@ NumberOfAdsDrugs()
 compCap <- figureCaption(compCap, "Main drug dealer countries")
 ```
 
-Once more, the 10 main dealer-countries in the world are plotted but this time regarding the number of drugs ads. At first sight, the chart looks like the first one. This is coherent, indeed, by comparing the ratio between drugs ads and the total number of ads, it is intelligible that they are mainly dealing drugs.
-
-But so far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
+So far it is possible to conclude that the market of drugs is gathered in Europe and the north of America.
 
 
-**3. Take a global view of the drugs market in Europe with the following map**
+**3. Global view of the drugs market in Europe**
 
 ```{r Europe Map, message=FALSE}
 
@@ -653,9 +649,9 @@ MapEurope()
 compCap <- figureCaption(compCap, "European Drug Dealers")
 ```
 
-Circles show the amount of ads concerning drugs. The map confirms previous assumptions that the majority of the products is supposedly originating from *United Kingdom*, *Netherlands* and *Germany*.  [ab to extend]
+Circles show the amount of ads concerning drugs. The map confirms previous assumptions that the majority of the products is supposedly originating from *United Kingdom*, *Netherlands* and *Germany*.
 
-It appears that the principal dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat between countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
+It appears that dealer-countries are located on the Atlantic Coast and own huge harbours where there is important merchant shipping. Whereas on the East part there are not a lot of activities. This is probably due to the fact that dealers are using *international commercial maritime traffics* in order to dispatch their drugs all around the world. Maritime transport is an option increasingly used since it allows them to carry large quantities at one time. Drugs can be transported in small and fast boats (Go-Fast-Boat between countries border) or in containers on commercial vessels. Thus, significant seaports in Europe such as Rotterdam in Netherlands or Antwerp in Belgium are key points for this type of trafficking. In 2014 "Dutch police estimated that 25-50 % of the cocaine reaching Europe now enters via the port, which handles around 11 million containers a year." @BoatTraffic
 
 
 ## - Product Flow By Country
@@ -664,7 +660,7 @@ Let's now focus more specifically on different countries and study their trend. 
 
 **1. United Kingdom exportation**
 
-The chart in "link" below represents the repartition of each category that United Kingdom exports. Only the second subcategory has been kept because it appears to be the most relevant since the first one only gives information on the nature of the ad (for instance *"Drugs & Chemicals"*).
+The chart below (Figure 10) represents the repartition of each category that United Kingdom supposedly exports.
 
 ```{r Exportation UK}
 #-----------------------------------------------
@@ -726,7 +722,7 @@ country_Export <- function() {
   }
   
   # 2- Title :
-  title <- paste(country, txt, sep=" ")
+  title <- paste("Products from",country, sep=" ")
   
   # 3- Colors :
   c <- rainbow(length(piepercent))
@@ -744,14 +740,14 @@ country_Export <- function() {
 country_Export()
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "United Kingdom exportation")
+compCap <- figureCaption(compCap, "Products from United Kingdom")
 ```
 
-Given that most of exported items are drugs, that is not surprising that they are the most sold product, as it has been seen before. Once again this pie chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other highly dangerous drugs are significantly present as we. 
+Once again this chart shows the market diversity. Although a huge part concerns *"Cannabis & Hashish"* category, *"Stimulants"* and other illegal drugs are significantly present as well. 
 
-Most of European countries follows the same rules as *United Kingdom* and this confirms previous assumptions.
+Most of European countries follows the same pattern as *United Kingdom* and this confirms previous assumptions.
 
-**2. Let's have a look at the exportations of Afghanistan which seem different to United Kingdom**
+**2. Products from Afghanistan**
 
 
 ```{r Exportation Afghanistan}
@@ -814,7 +810,7 @@ country_Export <- function() {
   }
   
   # 2- Title :
-  title <- paste(country, txt, sep=" ")
+  title <- paste("Products from",country, sep=" ")
   
   # 3- Colors :
   c <- rainbow(length(piepercent))
@@ -833,12 +829,12 @@ country_Export <- function() {
 country_Export()
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "Afghanistan exportation")
+compCap <- figureCaption(compCap, "Products from Afghanistan")
 ```
 
-What is suprising is that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay Market*. Actually, a vast majority of exported products are false identity, deception account... *Afghanistan* is also dealing electronic devices or softwares.
+It is interesting to notice that, unlike most of countries, *Afghanistan* doesn't really retail drugs on *AlphaBay Market*. Actually, a vast majority of exported products are false identity, deception accounts... *Afghanistan* is also dealing electronic devices or softwares.
 
-**3. Let's compare France export & import flows and see if there is a difference between them**
+**3. France export & import flows**
 
 ```{r Export_Import FR}
 
@@ -938,7 +934,7 @@ Country_Export_Import <- function() {
     
     # 3- Plot :
     pie(piepercent,labels=lab,col=c)
-    mtext("Exportation",cex=1)
+    mtext("Produtcs From",cex=1)
     
     #----------------------------
     #    Pie Chart - Importation     
@@ -958,7 +954,7 @@ Country_Export_Import <- function() {
 
     # 2- Plot :
     pie(piepercent, labels=lab, col=c)
-    mtext("Importation",cex=1)
+    mtext("Products available In",cex=1)
     
     #------------------
     #   General - Plot     
@@ -976,10 +972,10 @@ Country_Export_Import <- function() {
 Country_Export_Import()
 ```
 ```{r echo=FALSE}
-compCap <- figureCaption(compCap, "France exportation and importation")
+compCap <- figureCaption(compCap, "Products from and available in France")
 ```
 
-It is noticeable that both pies are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other pie chart. However it is obvious that significant exported drugs are also imported. Morevover, *France* is importing some drugs that are not local.   
+It is noticeable that both charts are different. The percentages of each category are not equal and some of them don't appear systematicaly in the other chart.
 
 Nevertheless these conclusions should be moderated since targeting one particular country reduces significantly the number of information used for statistics.
 
@@ -987,9 +983,9 @@ Nevertheless these conclusions should be moderated since targeting one particula
 
 After analysing general trend and flows, one interesting topic to analyse is market prices. One may ask if sold products in *AlphaBay* are cheaper than in the streets. 
 
-**1. Average prices on the *AlphaBay Web Market* **
+**1. Average prices**
 
-Firstly, the average price of one gram of the most common drugs has been calculated and results below has been obtained.
+Firstly, the median price of one gram of the most common drugs has been calculated and results below has been obtained.
 
 ```{r Drugs Prices}
 
@@ -1011,9 +1007,10 @@ DrugsPrices <- function() {
   par(las=1) # Display yaxis horizontally
   par(mar=c(4,8,3,2)) # Give space for yaxis
   
-  barp <- barplot(priceDrugs$med, main="Average Price of Drugs per Gram", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
-  barp <- text(y = barp, x = priceDrugs$med, label = paste(priceDrugs$med, " $", sep=""), pos=4 , cex = 0.8, col= "Black")
-  
+  barp <- barplot(priceDrugs$med, main="Average Price of Drugs per Gram in USD", names.arg = priceDrugs$drugs, xlim = c(0,max(priceDrugs$med+100)), cex.names = 0.8, col =rainbow(length(priceDrugs$drugs)), horiz =TRUE)
+
+   axis(side=1,at=c(50,150,250,350),labels=c(50,150,250,350))
+   
   # Frame
   box(which = "outer", lty = "solid")
   
@@ -1029,8 +1026,7 @@ compCap <- figureCaption(compCap, "AlphaBay Drug Prices")
 
 **2. Comparison with the "street"**
 
-Finally, some information about prices of street sellers have been collected, for same drugs as above. Thus, prices in articles and websites have been gathered. Unfortunately, values on some drugs are missing. Below are results of these investigations.
-
+Information on street prices for commonly available drugs have been collected on websites.
 
 ```{r Comparison articles & data, message=FALSE, warning=FALSE}
 
@@ -1068,10 +1064,9 @@ DrugsPricesDoc <- function(){
   
   # Creating the barplot
   par(las=1)#display yaxis horizontally
-  par(mar=c(6,8,4,3)) # Give space for yaxis
- 
-  b <- barplot(rbind(beside_plot[,1], beside_plot[,2]), main="Average price of Drugs", xlim = c(0, 400),
-          xlab="Price of Drugs", beside=TRUE, names.arg = rownames(beside_plot), col=1:2, horiz = TRUE, space = c(0,0.4), cex.names = 0.8)
+  par(mar=c(4,8,3,2)) # Give space for yaxis
+  
+  b <- barplot(rbind(beside_plot[,1], beside_plot[,2]), main="Average price of Drugs in USD", xlim = c(0, 400), beside=TRUE, names.arg = rownames(beside_plot), col=1:2, horiz = TRUE, space = c(0,0.4), cex.names = 0.8)
   
   axis(side=1,at=c(50,150,250,350),labels=c(50,150,250,350))
   
@@ -1093,15 +1088,14 @@ compCap <- figureCaption(compCap, "Comparison of Prices between AlphaBay and Str
 
 Globally, it appears that prices of *street sellers* are often largely higher than *AlphaBay* ads. In few cases both prices tend to be similar.(Please find in the last section all references used : @DrugWise, @tele, @Rehab, @cana, @stu)
 
-# - Data mining
+# - Drugs on AlphaBay - Exploration analysis
 ***
 
-Secondly, data mining techniques have been performed in order to discover *hidden rules* and *correlations* in the database. Another goal is to predict the value of one variable given other values.  
-Please note that for all this part the analysis is only on *Drug Market*. 
+Secondly, data mining techniques have been performed in order to discover *hidden rules* and *correlations* in the database. 
 
 ## - Sellers Predictions 
 
-The first thing to wonder is how to guess the seller of an ad. To answer this question, different data mining methods have been used, especially *Decision Tree* and *Bayesian classification*.
+The first thing to wonder is how to guess the seller of an ad. This knowledge could enable to identify sellers in other WebMarket. To answer this question, different data mining methods have been used, especially *Decision Tree* and *Bayesian classification*.
 
 Algorithm has been run on a subset of the database with by rows ads and by columns the origin, category, seller and price. The aim is to predict who is selling each ads. By training the algorithm on one half of the data, predictions could be made on other half. Given that most of sellers own just few ads (occasional advertisements) only the main ones were selected, which represent at best the market. Otherwise, data mining techniques will fail in finding rules for them. 
 
@@ -1219,70 +1213,8 @@ In the *Table 2* you can find by columns our Prognoses and by rows the real sell
 
 The tree enables to have a good visual aspect on it and gives a lot of essential information on these five main sellers.
 
-Besides, with quick basic statistics, it is possible to validate this tree and its branchs, that is to say how it is splited. Indeed let's have a look at these five dealers. This array contains the main country, main category and median price of their ads.
 
-
-```{r DT Analysis}
-#-------------------------------------------------------------
-#               Statistics for decision tree
-#-------------------------------------------------------------
-
-DTanalysis <- function() {
-
-  # Select all "Drugs & Chemicals" ads
-  matching_vector <- c( str_detect(data$category, "Drugs & Chemicals"))
-  Drug.data <- data[matching_vector,]
-  
-  # Select the column of the data that are interesting for the tree
-  # ie removing colunm like "id" or "url" that don't give any informations
-  Drug.data <- subset(Drug.data, select=c(origin,category,seller,priceUnitDose))
-  # Subset : choose the colunm that you want
-  
-  # Handling : column categorie
-  # Regular expression for spliting the categories
-  regex <- "/(.*)/(.*)/(.*)"
-  cat <- str_match(Drug.data$category, regex)
-  Drug.data$category <- cat[,3] # keep only the second part
-  
-  # Handling : seller
-  tab_sel <- table(Drug.data$seller)
-  tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-  tab_sel <- tab_sel[1:5] # Taking only the 5 main sellers
-  seller <- names(tab_sel) # Names of the 5 main sellers
-  
-  # Initialization 
-  ori <- c()
-  price <- c()
-  cat <- c()
-  
-  # calculation of informations for each seller
-  for(i in 1:5) {
-    # Select ads from the ieme seller
-    matching_vector <- c( str_detect(Drug.data$seller, seller[i]))
-    sel.data <- Drug.data[matching_vector,]
-    
-    ori[i] <- names(sort(table(sel.data$origin),decreasing=TRUE)[1])  # First country 
-    cat[i] <-names(sort(table(sel.data$category),decreasing=TRUE)[1]) # First category
-    price[i] <- round(summary(sel.data$priceUnitDose)[[3]],2)  # Median price
-  }
-  
-  sel.data <- as.data.frame(seller)
-  sel.data$origin <- ori
-  sel.data$category <- cat
-  sel.data$price <- price
-  
-  print(sel.data)
-}
-
-DTanalysis()
-```
-```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Seller Analyses")
-```
-
-Obviously, these information are exactly the ones that are in the tree. *jnenfrancis* is guessed thanks to origin *United Kingdom*. For the sellers dealing mainly in *China*, that is to say *ALaurizen* and *ROCKETLABS*, the spliting is made regarding the price (*ALaurizen* is obviously cheaper). For other sellers the algorithm use the category *Cannabis & Hashish*.  
-
-Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, prognoses with more sellers can be made and with still a good accuracy. For instance, with 10 sellers, the results below are obtained.
+Predictions have been done here on only five sellers in order to have a readable tree (otherwise the size of the tree is too big for being plotted). However, prognoses with more sellers can be made and with still a good accuracy. For instance, with 10 sellers :
 
 ```{r DT Sellers Results}
 #----------------------------------------------------------------------
@@ -1354,30 +1286,22 @@ Dtsellers2 <- function(){
     # Accurency
     acc <- round((sum(diag(conf)) / sum(conf)*100),2)
     
-  # Display   
-  conf <- as.data.frame(conf)
-  names(conf) <- c("Sellers","Prediction","Freq")
-  print(conf)
+
   
   return(acc)
   
 }
 
 acc1 <- Dtsellers2()
-```
-
-```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Sellers Prediction / Decision Tree method")
-```
-```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", acc1)
+
 ```
 
 Once more, this array presents the number of mistakes and correct predictions.
 
 **2. Bayesian classification - Naive alogrithm**
 
-Bayesian Classification has been used in the same objective as decision tree,  making predictions. Here are results when running *Bayesian Naive Algorithm* with the same data.
+Bayesian Classification has been used in the same objective as decision tree, making predictions. When running *Bayesian Naive Algorithm* with the same data, the results are :
 
 ```{r Bayes Seller v1, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1427,28 +1351,19 @@ BayesSellersV1 <- function(){
   preds <- predict(model, newdata = pred.data)
   conf_matrix <- table(preds, pred.data$seller)
   acc <- round(sum(diag(conf_matrix)) / sum(conf_matrix)*100, 2)
-  
-  # Display   
-  conf_matrix <- data.frame(conf_matrix)
-  names(conf_matrix) <- c("Sellers","Prediction","Freq")
-  print(conf_matrix)
+
   
   
   return(acc)
 }
 
 accBayesV1 <- BayesSellersV1()
-```
-```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Sellers Prediction / Naive Bayesian Classification")
-```
-
-```{r echo=FALSE}
 sprintf("The accuracy is : %.2f %%", accBayesV1)
+
 ```
 
 
-The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. However one way to improve the prognosis is to add new variables to the data which could be relevant like the number of ads already sold and the creation date of the ad.
+The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. One way to improve the prognosis is to add new variables to the data which could be relevant like the number of ads already sold and the creation date of the ad.
 
 ```{r Bayesian Sellers, warning=FALSE}
 #----------------------------------------------------------------------------------
@@ -1518,16 +1433,15 @@ compTab <- TableCaption(compTab, "Sellers Prediction / Naive Bayesian Classifica
 sprintf("The accuracy is : %.2f %%", accBayesV2)
 ```
 
-
 Results show that the algorithm succeeds in predicting most of the sellers. Therefore, the accuracy is `r accBayesV2` %. Which is still a little bit less than with decision tree. However with more sellers (i.e more than 40 sellers for instance), this algorithm tends to be more accurate than the one based on decision tree method.  
 
 Later in the section *Prediction of profitability* , it will be discussed how to exploit at best this two values : the *creation date of ads* and the *number of sold products*.
 
 **3. Text Mining** 
 
-One last method, but not least : Text mining. This is a fashion method since with the power of our computer, we are now able to perform wide analyses on *text data*. It can be used for text classification (determinating the topic, the tone, etc...), but here it will be used for predicting who has written the text (i.e sellers).
+One last method, but not least : Text mining. It can be used for text classification (determinating the topic, the tone, etc...), but here it will be used for predicting who has written the text (i.e sellers).
 
-The main interest comparing to previous methods is that it is only based on the words used by the sellers. Thus, it is possible to identify the seller according to his *writting style* in other type websites, such as Social Network. What previous methods can not do because they are trained with variables specific to AlphaBay. Furthermore, there is no need to explain the interest of identifing in Social Network illegal sellers ...
+The main interest comparing to previous methods is that it is only based on the words used by the sellers. Thus, it is possible to identify the seller according to his *writting style* in other type websites, such as Social Network. What previous methods can not do because they are trained with variables specific to AlphaBay. Furthermore, there is no need to explain the interest of identifing in Social Network illegal sellers...
 
 ```{r echo=FALSE}
 TM_nb_sellers <- 50
@@ -1711,7 +1625,7 @@ AssRSellersCat <- function(){
   rules.sorted@quality$confidence <- round(rules.sorted@quality$confidence, 2)
   rules.sorted@quality$lift <- round(rules.sorted@quality$lift, 2)
   
-  arules::inspect(rules.sorted, linebreak = TRUE)
+  arules::inspect(rules.sorted[1:10], linebreak = TRUE)
   
   cat("\n")
   cat("             ")
@@ -1848,9 +1762,7 @@ compCap <- figureCaption(compCap, "Origins prediction / Decision Tree")
 
 Results don't seem to be very good, the accuracy is `r ResultDT2[1]` % which is lower than previously. It turns out that without sellers, which give a lot of information on the origin, prognoses are not very reliable.  
 
-Now let's see if correlations can be found between categories and origins.
-
-**2. Rules to determine cateogries of ads coming from United States** 
+**2.Correlations between categories and origins** 
 
 To do so, *Association Rules Method* has been run with 2 variables : category and origin. Thus, one may be able to make a link with predictions of above decision tree. One country has been fixed, here United States. 
 
