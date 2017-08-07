@@ -49,12 +49,7 @@ TableCaption <- function(compTab, txt){
 # - Introduction
 ***
 
-
-[
-[For the past few years, a lot of *web market* has been developed and you can now easily buy items of any kinds]. This is also happening on the dark web, with over # markets on line at the time of this research. Police forcese have been fighting strenuously against illegal marketplaces [ref], but new ones resurface or re-migrate frequently. On top of that, currently, we don't really know in detail how these websites operate. 
-]
-
-Police forcese have been fighting strenuously against illegal websites [ref], but new ones resurface or re-migrate frequently.This is also happening on the dark web. As a matter of fact, over # marketplaces have been shut down between [2016 and 2017]. However there are still x marketplace online at the time of this research. On top of that, currently, we don't really know in detail how these websites operate. 
+Police forcese have been fighting strenuously against illegal websites (e.g. megaupload @ShutDownMega ) , but new ones resurface or re-migrate frequently @RebootMega . This is also happening on the dark web. As a matter of fact, plenty of marketplaces have been shut down, however there are still a lot of them online at the time of this research @WebMarketsList . On top of that, currently, we don't really know in detail how these websites operate. 
 
 This paper presents a research carried out between June and September 2017 on the largest web market at the time (expecially for drugs) on Internet, ***AlphaBay***. This web market has caugth the attention of governemental agencies since two teenagers aged of 13 and 18 died after overdosing on a powerful synthetic opioid. It has been shut down on July 2017,at the same time of Hansa, as a part of a law enforcement operation by the Federal Bureau of Investigation, the Drugs Enforcement Administration and European law enforcement agencies acting through Europol.@IntroBBC @IntroCNN
 
@@ -63,6 +58,7 @@ According to US Attorney General Jeff Sessions the aim of this action was to cau
 This paper reports on the last weeks of life of Alphabay. Its nature, its different countries of origin, its main sellers, its predominance of items will be analised. 
 
 # - Method 
+***
 
 [AB part]
 
@@ -150,14 +146,12 @@ data <- as.data.frame(read.csv("../../alphaClean.csv"))
 
 There is a number of technologies and programming languages that can be used for *Data Analysis*. Here are the ones that have been used for this project.
 
-### - R / RStudio [Software stack]
+### - Software stack
 
-The 2 main progamming languages for this kind of research are *Python and R*. Python is the most used. But since R has obtained more attention for the last few years, that is the one that will be used here. Moreover R, which is a language dedicated for statistical and graphical presentation, will suit our needs.
+The 3 main progamming languages for this kind of research are *Python, SAS and R*. Since we would like to use *open-source* languages, we exclude SAS and eventually choosed R. @SASRPython
 
-Furthermore, R has a powerful dedicated environment (IDE) which is *RStudio* and a lot of *open-source libraries*. Here is a list of the main libraries used for this project.
+Beside standard libraries, we have made extensive use of :
 
-
-**stringr :** String manipulation library.
 
 **units :** Unit library including solution for convertion.
 
@@ -170,8 +164,6 @@ Furthermore, R has a powerful dedicated environment (IDE) which is *RStudio* and
 **bnlearn :** library including solution for bayesian network creation and visualisation.
 
 
-
-
 ### - R Markdown Notebooks
 
 This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown* document with chunks that can be executed independently and interactively. It enables to produce the document in various formats such as *HTML, PDF and Word*. In addition, it can be used directly into the RStudio IDE.
@@ -179,9 +171,9 @@ This document has been produced by *R Notebooks*. R Notebooks is an *R Markdown*
 
 ## - Code Repository
 
-You can find the whole list of packages used in the *GitHub* repository. 
-
 All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [https://github.com/SimonDele/Data-Ming-Dark-Web-Market](https://github.com/SimonDele/Data-Ming-Dark-Web-Market)
+
+You can also find the whole list of packages used in the *GitHub* repository. 
 
 
 ## - Detailed Diagram
