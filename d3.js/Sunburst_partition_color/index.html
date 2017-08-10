@@ -88,15 +88,73 @@
         depth1["Drugs&Chemicals"].next = {"couleur" : "#3b3eac", "next" : {} };
         console.log(depth1);
         
+        function tabColor(color1, color2){
+            var colorScale = d3.scaleLinear()
+                                .domain([0, 100])
+                                .range([color1, color2]);
+            
+            return colorScale;            
+        }
+
+        
         function createColors(json){
+            var depth1 = [];
             for(i=0;i<json.children.length;i++){
+                
                 console.log(json.children[i]);
+                var current = json.children[i];
+                depth1.push({name : json.children[i].name , "color" : colores_google(i), next : []});
+                
+                if(current.children != null){  
+                    for(j=0;j<current.children.length;j++){
+                        //For the first one
+                        if(i==0){
+                            depth1[i].next.push({name : current.children[j].name , "color" : tabColor("white",depth1[i].color)(j), next : []})    
+                        }else{ //For the other
+                            depth1[i].next.push({name : current.children[j].name , "color" : tabColor(depth1[i-1].color,depth1[i].color)(j), next : []})  
+                        }
+                        
+                        var current1 = current.children[j];
+                        if(current.children != null){  
+                            for(k=0;k<current1.children.length;k++){
+                                if(j==0){//For the first one
+                                    depth1[i].next[j].next.push(
+                                        {name : current1.children[k].name , "color" : tabColor("white",depth1[i].next[j].color)(k)}
+                                    )
+                                }else{//For the other
+                                    depth1[i].next[j].next.push(
+                                        {name : current1.children[k].name , "color" : tabColor(depth1[i].next[j-1].color,depth1[i].next[j].color)(k)}
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                return depth1;
             }
+            
+            console.log(depth1);
+            
+        }
+        
+        function getColor(d, colors){
+            if(d.data.name=="end"){
+               return  "white";
+            }else{
+                var par = d;
+                while(par!= null || par.name!="root"){
+                    par = par.parent;
+                }
+                console.log(par);
+                
+                return colores_google(d.value);
+            } 
             
         }
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
-        createColors(json);
+      var colors = createColors(json);
       // Basic setup of page elements.
       initializeBreadcrumbTrail();
       drawLegend();
@@ -120,8 +178,6 @@
           });
         
 
-        
-        
 /////////////////////////////////////        
       var path = vis.data([json]).selectAll("path")
           .data(nodes)
@@ -131,7 +187,7 @@
           .attr("fill-rule", "evenodd")
           .style("fill", function(d) {
               //console.log(d);
-              return colores_google(d.value);
+              return getColor(d, colors);
            })
           .style("opacity", 1)
           .on("mouseover", mouseover);

@@ -10,8 +10,8 @@ CounterfeitItems-Jewelry-Jewel-end,436
 CounterfeitItems-Jewelry-Jewelry-end,175
 CounterfeitItems-Money-Money-end,388
 CounterfeitItems-Other-Other-end,429
-DigitalProducts-E-Books-E-Book-end,114
-DigitalProducts-E-Books-E-Books-end,563
+DigitalProducts-EBooks-EBook-end,114
+DigitalProducts-EBooks-EBooks-end,563
 DigitalProducts-FraudSoftware-end,156
 DigitalProducts-FraudSoftware-FraudSoftware-end,301
 DigitalProducts-GameKeys-Game-end,177
@@ -51,8 +51,8 @@ Drugs&Chemicals-Other-Other-end,479
 Drugs&Chemicals-Paraphernalia-Paraphernalia-end,203
 Drugs&Chemicals-Prescription--end,405
 Drugs&Chemicals-Prescription-Prescription-end,203
-Drugs&Chemicals-Psychedelics-2C-B-end,313
-Drugs&Chemicals-Psychedelics-DMA-DOX-end,71
+Drugs&Chemicals-Psychedelics-2CB-end,313
+Drugs&Chemicals-Psychedelics-DMADOX-end,71
 Drugs&Chemicals-Psychedelics-DMT-end,366
 Drugs&Chemicals-Psychedelics-LSA-end,8
 Drugs&Chemicals-Psychedelics-LSD-end,776
@@ -125,6 +125,6 @@ Software&Malware-SecuritySoftware-SecuritySoftware-end,277
 Weapons-Ammunition-Ammunition-end,118
 Weapons-Explosives-Explosives-end,30
 Weapons-HandWeapons-HandWeapons-end,75
-Weapons-Long-RangeGuns-Long-RangeGuns-end,48
+Weapons-LongRangeGuns-LongRangeGuns-end,48
 Weapons-Other-Other-end,36
 Weapons-Pistols-Pistols-end,316
