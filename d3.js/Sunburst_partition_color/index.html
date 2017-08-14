@@ -19,19 +19,15 @@
         </div>
       </div>
     </div>
-    <div id="sidebar">
-      <input type="checkbox" id="togglelegend"> Legend<br/>
-      <div id="legend" style="visibility: hidden;"></div>
-    </div>
     <script type="text/javascript">
       // Dimensions of sunburst.
     var width = 750;
     var height = 600;
     var radius = Math.min(width, height) / 2;
-
+        var colors;
     // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
     var b = {
-      w: 75, h: 30, s: 3, t: 10
+      w: 150, h: 30, s: 3, t: 10
     };
 
     // Mapping of step names to colors.
@@ -75,11 +71,11 @@
         
         
        function colores_google(n) {
-      var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
+      var colores_g = ["#3366cc", "#ff9900","#dc3912", "#109618", "#990099", "#0099c6", "#b82e2e", "#994499", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
       return colores_g[n % colores_g.length];
        }
     
-        
+        /*
         var depth1 = {
                         "Drugs&Chemicals" : {"couleur" : "#3366cc", "next" : {}},
                         "Fraud" : {"couleur" :"#329262", "next" : {}}
@@ -87,10 +83,10 @@
         
         depth1["Drugs&Chemicals"].next = {"couleur" : "#3b3eac", "next" : {} };
         console.log(depth1);
-        
+        */
         function tabColor(color1, color2){
             var colorScale = d3.scaleLinear()
-                                .domain([0, 100])
+                                .domain([0, 10])
                                 .range([color1, color2]);
             
             return colorScale;            
@@ -99,9 +95,9 @@
         
         function createColors(json){
             var depth1 = [];
+            console.log(json);
             for(i=0;i<json.children.length;i++){
-                
-                console.log(json.children[i]);
+                //console.log(json.children.length);
                 var current = json.children[i];
                 depth1.push({name : json.children[i].name , "color" : colores_google(i), next : []});
                 
@@ -109,7 +105,7 @@
                     for(j=0;j<current.children.length;j++){
                         //For the first one
                         if(i==0){
-                            depth1[i].next.push({name : current.children[j].name , "color" : tabColor("white",depth1[i].color)(j), next : []})    
+                            depth1[i].next.push({name : current.children[j].name , "color" : tabColor("grey",depth1[i].color)(j), next : []})    
                         }else{ //For the other
                             depth1[i].next.push({name : current.children[j].name , "color" : tabColor(depth1[i-1].color,depth1[i].color)(j), next : []})  
                         }
@@ -119,7 +115,7 @@
                             for(k=0;k<current1.children.length;k++){
                                 if(j==0){//For the first one
                                     depth1[i].next[j].next.push(
-                                        {name : current1.children[k].name , "color" : tabColor("white",depth1[i].next[j].color)(k)}
+                                        {name : current1.children[k].name , "color" : tabColor("grey",depth1[i].next[j].color)(k)}
                                     )
                                 }else{//For the other
                                     depth1[i].next[j].next.push(
@@ -130,35 +126,63 @@
                         }
                     }
                 }
-                
-                return depth1;
+
             }
+            //console.log(depth1);
+            return depth1;
             
-            console.log(depth1);
             
         }
         
-        function getColor(d, colors){
+        function getColor(d){
+            //console.log("colors");
+            //console.log(colors);
             if(d.data.name=="end"){
                return  "white";
             }else{
+                return colores_google(d.value);
+                //Build array of all parents of d
                 var par = d;
-                while(par!= null || par.name!="root"){
+                var tabParent =[];
+                while(par!=null && par.parent !="null"){
+                    tabParent.push(par.data.name); 
                     par = par.parent;
                 }
-                console.log(par);
                 
-                return colores_google(d.value);
+                var tempColors = colors;
+                //Get color of d
+                //console.log(d);
+                //console.log(tabParent);
+                
+                for(let i=tabParent.length-2;i>=0;i--){
+                    let j=0;
+                    while(tempColors[j].name!=tabParent[i]){
+                        j++;
+                    }
+                    if(i!=0){
+                        tempColors = tempColors[j].next;
+                    }else{
+                        tempColors = tempColors[j];
+                    }
+                }
+                 //console.log(tempColors);
+                if(tempColors!=null){
+                    return tempColors.color;
+                }else{
+                    return "black";
+                }
+                //console.log(tabParent);
+                //console.log(tempColors[0].color);
+                
+                
             } 
             
         }
     // Main function to draw and set up the visualization, once we have the data.
     function createVisualization(json) {
-      var colors = createColors(json);
+      colors = createColors(json);
       // Basic setup of page elements.
       initializeBreadcrumbTrail();
-      drawLegend();
-      d3.select("#togglelegend").on("click", toggleLegend);
 
       // Bounding circle underneath the sunburst, to make it easier to detect
       // when the mouse leaves the parent g.
@@ -256,7 +280,7 @@
     function initializeBreadcrumbTrail() {
       // Add the svg area.
       var trail = d3.select("#sequence").append("svg:svg")
-          .attr("width", width)
+          .attr("width", 700)
           .attr("height", 50)
           .attr("id", "trail");
       // Add the label at the end, for the percentage.
@@ -295,7 +319,7 @@
 
       entering.append("svg:polygon")
           .attr("points", breadcrumbPoints)
-          .style("fill", function(d) { return colors[d.data.name]; });
+          .style("fill", function(d) { return getColor(d); });
 /////////////////////////////////////
       entering.append("svg:text")
           .attr("x", (b.w + b.t) / 2)
@@ -323,47 +347,9 @@
 
     }
 
-    function drawLegend() {
+   
 
-      // Dimensions of legend item: width, height, spacing, radius of rounded rect.
-      var li = {
-        w: 75, h: 30, s: 3, r: 3
-      };
 
-      var legend = d3.select("#legend").append("svg:svg")
-          .attr("width", li.w)
-          .attr("height", d3.keys(colors).length * (li.h + li.s));
-
-      var g = legend.selectAll("g")
-          .data(d3.entries(colors))
-          .enter().append("svg:g")
-          .attr("transform", function(d, i) {
-                  return "translate(0," + i * (li.h + li.s) + ")";
-               });
-
-      g.append("svg:rect")
-          .attr("rx", li.r)
-          .attr("ry", li.r)
-          .attr("width", li.w)
-          .attr("height", li.h)
-          .style("fill", function(d) { return d.value; });
-
-      g.append("svg:text")
-          .attr("x", li.w / 2)
-          .attr("y", li.h / 2)
-          .attr("dy", "0.35em")
-          .attr("text-anchor", "middle")
-          .text(function(d) { return d.key; });
-    }
-
-    function toggleLegend() {
-      var legend = d3.select("#legend");
-      if (legend.style("visibility") == "hidden") {
-        legend.style("visibility", "");
-      } else {
-        legend.style("visibility", "hidden");
-      }
-    }
 
     // Take a 2-column CSV and transform it into a hierarchical structure suitable
     // for a partition layout. The first column is a sequence of step names, from
@@ -377,7 +363,7 @@
         if (isNaN(size)) { // e.g. if this is a header row
           continue;
         }
-        var parts = sequence.split("-");
+        var parts = sequence.split("/");
         var currentNode = root;
         for (var j = 0; j < parts.length; j++) {
           var children = currentNode["children"];
