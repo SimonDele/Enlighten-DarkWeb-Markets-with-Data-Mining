@@ -1,0 +1,85 @@
+
+ - The top journals and conferences in data mining / data science : 
+
+http://data-mining.philippe-fournier-viger.com/the-top-journals-and-conferences-in-data-mining-data-science/
+
+
+ - IEEE Conference Proceedings :
+
+https://www.ieee.org/publications_standards/publications/confproc/index.html
+
+
+ - Publishing Conference Papers :
+
+https://www.ieee.org/conferences_events/conferences/organizers/publishing_conference_papers.html
+
+
+ - Manuscript Templates for Conference Proceedings :
+
+https://www.ieee.org/conferences_events/conferences/publishing/templates.html
+
+
+ - Publish a Paper with IEEE :
+
+https://www.ieee.org/publications_standards/publications/authors/paper.html
+
+
+ - IEEE Journals & Magazines List :
+
+https://www.ieee.org/publications_standards/publications/periodicals/journals_magazines.html
+
+
+ - Which Journal Would Be Right for My Research?
+
+https://www.ieee.org/publications_standards/publications/periodicals/new_titles.html
+
+
+ - IEEE Publication Recommender :
+
+http://publication-recommender.ieee.org/home
+
+
+ - IEEE Xplore :
+
+http://ieeexplore.ieee.org/Xplore/home.jsp
+
+ - The IEEE Article Submission Process :
+
+http://ieeeauthorcenter.ieee.org/submit-your-article-for-peer-review/the-ieee-article-submission-process/
+
+
+ ---->> 
+
+    ---------
+   | Journal |
+    ---------
+
+ 1 - Knowledge and Data Engineering, IEEE Transactions on
+
+http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=69
+https://www.ieee.org/membership-catalog/productdetail/showProductDetailPage.html?product=PER147-EAA
+
+Template : http://ieeeauthorcenter.ieee.org/create-your-ieee-article/use-authoring-tools-and-ieee-article-templates/ieee-article-templates/templates-for-transactions/
+
+
+ 2 - Big Data, IEEE Transactions on
+
+http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=6687317
+https://www.ieee.org/membership-catalog/productdetail/showProductDetailPage.html?product=PER472-EAA
+
+
+
+ 3? - Visualization and Computer Graphics, IEEE Transactions on
+
+http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=2945
+
+
+    ------------
+   | Conference |
+    ------------
+
+
+ - EISIC :
+
+http://www.eisic.eu/call.aspx
+http://ieeexplore.ieee.org/xpl/mostRecentIssue.jsp?punumber=6059524
