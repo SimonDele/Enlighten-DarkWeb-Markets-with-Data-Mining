@@ -10,6 +10,8 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
+  word_document:
+    toc: yes
 csl: elsevier-vancouver.csl
 always_allow_html: yes
 ---
