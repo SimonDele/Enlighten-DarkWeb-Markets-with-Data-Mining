@@ -3,8 +3,6 @@ title: "Enlighten DarkWeb Markets with Data Mining"
 author: "Simon Delecourt & Edouard Donze"
 bibliography: My_bibliography.bibtex
 output:
-  word_document:
-    toc: yes
   html_notebook:
     code_folding: hide
     highlight: pygments
@@ -12,6 +10,8 @@ output:
     theme: readable
     toc: yes
     toc_float: yes
+  word_document:
+    toc: yes
 csl: elsevier-vancouver.csl
 always_allow_html: yes
 ---
