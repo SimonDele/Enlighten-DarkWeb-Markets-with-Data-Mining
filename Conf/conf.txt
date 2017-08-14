@@ -43,6 +43,10 @@ http://publication-recommender.ieee.org/home
 
 http://ieeexplore.ieee.org/Xplore/home.jsp
 
+ - The IEEE Article Submission Process :
+
+http://ieeeauthorcenter.ieee.org/submit-your-article-for-peer-review/the-ieee-article-submission-process/
+
 
  ---->> 
 
@@ -50,15 +54,24 @@ http://ieeexplore.ieee.org/Xplore/home.jsp
    | Journal |
     ---------
 
- 1 - TKDE : 
+ 1 - Knowledge and Data Engineering, IEEE Transactions on
 
 http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=69
+https://www.ieee.org/membership-catalog/productdetail/showProductDetailPage.html?product=PER147-EAA
+
+Template : http://ieeeauthorcenter.ieee.org/create-your-ieee-article/use-authoring-tools-and-ieee-article-templates/ieee-article-templates/templates-for-transactions/
 
 
  2 - Big Data, IEEE Transactions on
 
 http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=6687317
 https://www.ieee.org/membership-catalog/productdetail/showProductDetailPage.html?product=PER472-EAA
+
+
+
+ 3? - Visualization and Computer Graphics, IEEE Transactions on
+
+http://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=2945
 
 
     ------------
