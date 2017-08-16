@@ -9,7 +9,7 @@
   #  New Data frame for analysis
   #------------------------------
   
-  data <- as.data.frame(read.csv("data.csv"))
+  #data <- as.data.frame(read.csv("data.csv"))
   
   library(stringr)
   library(arules)

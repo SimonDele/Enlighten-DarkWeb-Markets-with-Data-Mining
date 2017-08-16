@@ -3,7 +3,7 @@
     
     <head>
         <meta charset="utf-8">
-        <title>BarChart</title>
+        <title>GETTING STARTED WITH D3.js</title>
         <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
     </head>
     <body>
@@ -43,32 +43,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
 
-
-var monAxeY =  svg.append("g")
-      .attr("class", "y axis")
-     
-            
-
-var titre =  svg.append("text")
-                .attr("x",200)
-                .attr("y", 79)
-                .attr("dy", ".47em")                        
-                .style("text-anchor", "start")
-                .style("font-size", "34px");
-            
-var monAxeX =   svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-
-            
-d3.csv("adsAnnee2016.csv",function(error, data){
-   rect = svg.selectAll("bar")
-      .data(data)
-    .enter().append("rect")
-      .style("fill", "steelblue")  ;
-});
-            
-
+ svg.append("text");
             
 function plot(data, annee) {
 
@@ -79,17 +54,29 @@ function plot(data, annee) {
   x.domain(data.map(function(d) { return d.origin; }));
   y.domain([0, 50]);
 
-  titre.text(annee);
+    
+    svg.selectAll("text")
+        .attr("x",200)
+        .attr("y", 79)
+    .attr("dy", ".47em")                        
+    .style("text-anchor", "start")
+        .style("font-size", "34px")
+        .text(annee);
 
-   
-monAxeX.call(xAxis)
+    
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
     .selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
       .attr("dy", "-.55em")
       .attr("transform", "rotate(-90)" );
 
-monAxeY.call(yAxis)
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
     .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
@@ -97,7 +84,10 @@ monAxeY.call(yAxis)
       .style("text-anchor", "end")
       .text("Value ($)");
 
-  rect.style("fill", "steelblue")
+  svg.selectAll("bar")
+      .data(data)
+    .enter().append("rect")
+      .style("fill", "steelblue")
       .attr("x", function(d,i) { return x(d.origin); })
       .attr("width", 20)
       .attr("y", height)
@@ -125,48 +115,48 @@ setInterval(function(){
     if(i==1){
         d3.csv("adsAnnee2015.csv",function(error, data){
             
-        rect
+        svg.selectAll("bar")
+            .data(data)
+            .enter().selectAll("rect")
             .transition()
             .duration(500)
             .attr("y", height)
             .attr("height", 0);
             
-            //d3.selectAll("g > *").remove();
-            setTimeout(function(){
-                plot(data,2015); 
-            },500);
-               
+            d3.selectAll("g > *").remove();
             
-            
+            plot(data,2015); 
         });
     }else if(i==2){
         d3.csv("adsAnnee2016.csv",function(error, data){
             
-        rect
+        svg.selectAll("bar")
+            .data(data)
+            .enter().selectAll("rect")
             .transition()
             .duration(500)
             .attr("y", height)
             .attr("height", 0);
             
-            //d3.selectAll("g > *").remove();
-                        setTimeout(function(){
-                plot(data,2016); 
-            },500);
+            d3.selectAll("g > *").remove();
+            
+            plot(data,2016); 
         });
     }else if(i==3){
         i=0;
         d3.csv("adsAnnee2017.csv",function(error, data){
 
-       rect
+        svg.selectAll("bar")
+            .data(data)
+            .enter().selectAll("rect")
             .transition()
             .duration(500)
             .attr("y", height)
             .attr("height", 0);
             
-            //d3.selectAll("g > *").remove();
-            setTimeout(function(){
-                plot(data,2017); 
-            },500); 
+            d3.selectAll("g > *").remove();
+            
+            plot(data,2017); 
         });
     }
 
