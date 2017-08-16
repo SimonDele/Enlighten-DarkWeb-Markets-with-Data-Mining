@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>GETTING STARTED WITH D3.js</title>
+        <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <body>
+        
+        <h1>Number of ads per country</h1>
+        <script type="text/javascript">
+            
+         var dataset =[];
+
+        d3.csv("adsAnnee2015.csv", function(data) {
+                dataset = data;
+             console.log(data);
+
+            
+        }); 
+
+var margin = {top: 20, right: 20, bottom: 70, left: 40},
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scaleBand().rangeRound([0, width]);
+
+var y = d3.scaleLinear().range([height, 0]);
+
+var xAxis = d3.axisBottom()
+.scale(x)
+    .ticks(1);
+            
+var yAxis = d3.axisLeft()
+.scale(y)
+    .ticks(10);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+function plot(data, annee) {
+
+    data.forEach(function(d) {
+        d.Freq = +d.Freq;
+    });
+ 
+  x.domain(data.map(function(d) { return d.origin; }));
+  y.domain([0, 50]);
+
+    
+    svg.append("text")
+        .attr("x",200)
+        .attr("y", 79)
+    .attr("dy", ".47em")                        
+    .style("text-anchor", "start")
+        .style("font-size", "34px")
+        .text(annee);
+
+    
+  svg.append("g")
+
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Value ($)");
+
+  svg.selectAll("bar")
+      .data(data)
+    .enter().append("rect")
+      .style("fill", "steelblue")
+      .attr("x", function(d,i) { return x(d.origin); })
+      .attr("width", 20)
+      .attr("y", function(d) { return y(d.Freq); })
+      .attr("height", function(d) { return height - y(d.Freq); });
+
+};
+
+i=0;         
+setInterval(function(){
+    i++;
+    console.log(i);
+    console.log(svg);
+    d3.selectAll("g > *").remove();
+    if(i==1){
+        d3.csv("adsAnnee2015.csv",function(error, data){
+            plot(data,2015); 
+        });
+    }else if(i==2){
+        d3.csv("adsAnnee2016.csv",function(error, data){
+            plot(data,2016); 
+        });
+    }else if(i==3){
+        i=0;
+        d3.csv("adsAnnee2017.csv",function(error, data){
+            plot(data,2017); 
+        });
+    }
+
+ 
+},3000)            
+
+
+        </script>
+
+        
+    </body>
+</html>
+
