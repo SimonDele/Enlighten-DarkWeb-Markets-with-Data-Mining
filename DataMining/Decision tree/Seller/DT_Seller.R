@@ -89,3 +89,4 @@ for(i in 1:nrow(conf)){
 corrplot(conf,cl.lim=c(0,1),method="color",type="lower")
 
 #https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html
+#option
