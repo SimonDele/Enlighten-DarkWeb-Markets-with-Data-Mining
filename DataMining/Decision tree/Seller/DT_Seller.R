@@ -3,7 +3,7 @@
 #   Prediction of the seller knowing the price / category / origin
 #-----------------------------------------------------------------------
 
-#data <- as.data.frame(read.csv("alphaClean.csv"))
+data <- as.data.frame(read.csv("alphaClean.csv"))
 
 library(stringr)
 library(rattle)
@@ -33,7 +33,7 @@ dectree.data$category <- cat[,3] # keep only the second part
 # Handling : seller
 tab_sel <- table(dectree.data$seller)
 tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sel <- tab_sel[1:5] # Taking only the most important : main sellers
+tab_sel <- tab_sel[1:10] # Taking only the most important : main sellers
 name_sel <- names(tab_sel)
 # New data keeping only the main sellers
 dectree.data <-subset(dectree.data, seller %in% name_sel) 
@@ -78,3 +78,14 @@ pred <- predict(tree,test,type="class")
 
 print(conf)
 print(acc)
+
+
+library(corrplot)
+
+for(i in 1:nrow(conf)){
+  conf[,i] <- conf[,i]/sum(conf[,i])
+}
+
+corrplot(conf,cl.lim=c(0,1),method="color",type="lower")
+
+#https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html
