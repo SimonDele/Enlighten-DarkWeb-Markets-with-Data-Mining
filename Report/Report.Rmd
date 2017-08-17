@@ -88,6 +88,8 @@ During a first phase "Basic Statistics" will be carried out on the *Database*, i
 #install.packages("forecast")
 #install.packages("RTextTools")
 #install.packages("tm")
+#install.packages("corrplot")
+
 
 # Mamipulation string
 library(stringr)
@@ -99,6 +101,9 @@ library(units)
 library(lubridate)
 library(zoo)
 library(forecast)
+
+# Confusion Matrix
+library(corrplot)
 
 # dynamic Plot
 library(dygraphs)
@@ -1209,7 +1214,7 @@ sprintf("The accuracy is : %.2f %%", ResultDT1[1])
 
 It is striking to realise that predictions are very reliable since the accuracy is very high.  
 
-In the *Table 2* you can find by columns our Prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
+In the *Table 2* you can find by columns our prognoses and by rows the real sellers. In other words the diagonal shows the number of correct predictions and all other values are mistakes made by the algortihm.  
 
 The tree enables to have a good visual aspect on it and gives a lot of essential information on these five main sellers.
 
@@ -1286,18 +1291,14 @@ Dtsellers2 <- function(){
     # Accurency
     acc <- round((sum(diag(conf)) / sum(conf)*100),2)
     
-
-  
   return(acc)
   
 }
 
 acc1 <- Dtsellers2()
 sprintf("The accuracy is : %.2f %%", acc1)
-
 ```
 
-Once more, this array presents the number of mistakes and correct predictions.
 
 **2. Bayesian classification - Naive alogrithm**
 
@@ -1352,16 +1353,28 @@ BayesSellersV1 <- function(){
   conf_matrix <- table(preds, pred.data$seller)
   acc <- round(sum(diag(conf_matrix)) / sum(conf_matrix)*100, 2)
 
-  
+  for(i in 1:nrow(conf_matrix)){
+  conf_matrix[,i] <- conf_matrix[,i]/sum(conf_matrix[,i])
+  }
+
+  corrplot(conf_matrix, cl.lim=c(0,1), method="square", cl.pos="b", tl.srt=60, tl.col="black")
   
   return(acc)
 }
 
 accBayesV1 <- BayesSellersV1()
-sprintf("The accuracy is : %.2f %%", accBayesV1)
-
 ```
 
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, " Confusion Matrix / Bayesian Classification ")
+```
+
+
+```{r echo=FALSE}
+sprintf("The accuracy is : %.2f %%", accBayesV1)
+```
+
+This confusion matrix presents the different mistake and correct predictions, i.e. by row you can find the real sellers and by column our predictions. the color scale shows our precision out of one.
 
 The accuracy is `r accBayesV1` % which is not very good comparing to decision tree. One way to improve the prognosis is to add new variables to the data which could be relevant like the number of ads already sold and the creation date of the ad.
 
@@ -1414,11 +1427,11 @@ BayesSellers <- function(){
   conf_matrix <- table(preds, pred.data$seller)
   acc <- round(sum(diag(conf_matrix)) / sum(conf_matrix)*100, 2)
   
-    # Display   
-  conf_matrix <- data.frame(conf_matrix)
-  names(conf_matrix) <- c("Sellers","Prediction","Freq")
-  print(conf_matrix)
-  
+  for(i in 1:nrow(conf_matrix)){
+  conf_matrix[,i] <- conf_matrix[,i]/sum(conf_matrix[,i])
+  }
+
+  corrplot(conf_matrix, cl.lim=c(0,1), method="square", cl.pos="b", tl.srt=60, tl.col="black")
   
   return(acc)
 }
@@ -1426,7 +1439,7 @@ BayesSellers <- function(){
 accBayesV2 <- BayesSellers()
 ```
 ```{r echo=FALSE}
-compTab <- TableCaption(compTab, "Sellers Prediction / Naive Bayesian Classification")
+compCap <- figureCaption(compCap, " Confusion Matrix / Bayesian Classification ")
 ```
 
 ```{r echo=FALSE}
@@ -1500,15 +1513,27 @@ TMPredictSeller <- function(TM_nb_sellers){
   acc <- round((sum(diag(conf)) / sum(conf)*100),2)
   
   # Display   
-  conf <- data.frame(conf)
-  names(conf) <- c("Sellers","Prediction","Freq")
+  #conf <- data.frame(conf)
+  #names(conf) <- c("Sellers","Prediction","Freq")
   #print(conf)
+  
+  for(i in 1:nrow(conf)){
+    conf[,i] <- (conf[,i]/sum(conf[,i]))
+  }
+
+  corrplot(conf, cl.lim=c(0,1), method="square", cl.pos="b", tl.pos="n")
   
   return (acc)
 }
 accTM <- TMPredictSeller(TM_nb_sellers)
-sprintf("The accuracy is : %.2f %%", accTM)
+```
+```{r echo=FALSE}
+compCap <- figureCaption(compCap, " Confusion Matrix / Text Mining ")
+```
 
+
+```{r echo=FALSE}
+sprintf("The accuracy is : %.2f %%", accTM)
 ```
 
 The accuracy is `r accTM` % which is very high. For more sellers, (which own enough ads, in order to have some of them in the training dataset) the accuracy decreased but it is still very high. For instance for 150 main sellers it is around 90%. 
