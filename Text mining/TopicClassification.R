@@ -5,8 +5,8 @@
 #http://tidytextmining.com/topicmodeling.html
 #http://data-analytics.net/cep/Schedule_files/Textmining%20%20Clustering,%20Topic%20Modeling,%20and%20Classification.htm
 
-install.packages("topicmodels")
-install.packages("tidytext")
+#install.packages("topicmodels")
+#install.packages("tidytext")
 
 library(topicmodels)
 library(RTextTools)

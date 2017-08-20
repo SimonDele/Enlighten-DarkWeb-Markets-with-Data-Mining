@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <title>World Map</title>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+        <script src="/datamaps.world.min.js"></script>
+        <!-- <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>-->
+    </head>
+    
+    <body>
+        
+        <div id="container" style="width: 1200px; height: 900px;"></div>
+        <script>
+            //var map = new Datamap({element: document.getElementById('container')});
+d3.csv("dataWorldMap.csv",function(error, data){
+    data.forEach(function(d) {
+        d.latitude = +d.latitude;
+        d.longitude = +d.longitude;
+    });
+    console.log(data);
+    bubble_map = new Datamap({
+      element: document.getElementById("container"),
+        dataType: 'csv', // For use with dataUrl, currently 'json' or 'csv'. CSV should have an `id` column
+    dataUrl: 'dataWorldMap.csv',
+      geographyConfig: {
+        popupOnHover: false,
+        highlightOnHover: false
+      },
+      fills: {
+        defaultFill: 'blue',
+        "United States": 'blue',
+        RUS: 'red'
+      }
+    });
+    
+    createBubble(data);
+    console.log(data[63]);
+    data[63].radius = 10;
+    console.log(data[63]);
+    createBubble(data);
+    
+});
+function createBubble (data) {
+    
+    bubble_map.bubbles(data
+        /*
+        [
+      {
+        name: 'Not a bomb, but centered on Brazil',
+        radius: 23,
+        centered: 'BRA',
+        country: 'USA',
+        yeild: 0,
+        fillKey: 'USA',
+        date: '1954-03-01'
+      },
+      {
+        name: 'Not a bomb',
+        radius: 90,
+        yeild: 0,
+        country: 'USA',
+        //centered: 'USA',
+        date: '1986-06-05',
+        significance: 'Centered on US',
+        fillKey: 'USA'
+      },
+      {
+        name: 'Castle Bravo',
+        radius: 25,
+        yeild: 15000,
+        country: 'USA',
+        significance: 'First dry fusion fuel "staged" thermonuclear weapon; a serious nuclear fallout accident occurred',
+        fillKey: 'USA',
+        date: '1954-03-01',
+        latitude: 11.415,
+        longitude: 165.1619
+      },{
+        name: 'Tsar Bomba',
+        radius: 70,
+        //yeild: 50000,
+        //country: 'USSR',
+        fillKey: 'RUS',
+        significance: 'Largest thermonuclear weapon ever tested—scaled down from its initial 100 Mt design by 50%',
+        date: '1961-10-31',
+        latitude: 73.482,
+        longitude: 54.5854
+      }
+    ]*/, {
+      popupTemplate: function(geo, data) {
+        return '<div class="hoverinfo">Yield:' + data.yeild + 'Exploded on ' + data.date + ' by the '  + data.country + ''
+      }
+    });
+}
+        </script>
+        
+    </body>

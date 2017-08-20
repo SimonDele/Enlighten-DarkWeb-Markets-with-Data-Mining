@@ -1,4 +1,4 @@
-data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("data.csv"))
 
 #-----------------------------------
 #         Europe Map Plot
