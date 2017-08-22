@@ -3,7 +3,7 @@
     
     <head>
         <meta charset="utf-8">
-        <title>World Map</title>
+        <title>Evolution of the number of ads</title>
         <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
         <script src="/datamaps.world.min.js"></script>
@@ -14,118 +14,85 @@
         
         <div id="container" style="width: 1200px; height: 900px;"></div>
         <script>
-            //var map = new Datamap({element: document.getElementById('container')});
-d3.csv("dataWorldMap.csv",function(error, data){
-    data.forEach(function(d) {
-        d.latitude = +d.latitude;
-        d.longitude = +d.longitude;
-    });
-    console.log(data);
-    bubble_map = new Datamap({
-      element: document.getElementById("container"),
-        dataType: 'csv', // For use with dataUrl, currently 'json' or 'csv'. CSV should have an `id` column
-    dataUrl: 'dataWorldMap.csv',
-      geographyConfig: {
-        popupOnHover: false,
-        highlightOnHover: false
-      },
-      fills: {
-        defaultFill: 'blue',
-        "United States": 'blue',
-        RUS: 'red'
-      }
-    });
+
+function colores_google(n) {
+  var colores_g = ["#3366cc", "#ff9900","#dc3912", "#109618", "#990099", "#0099c6", "#b82e2e", "#994499", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
     
-    //createBubble(data);
-    console.log(data[63]);
-    data[63].radius = 10;
-    console.log(data[63]);
-    //createBubble(data);
-    
-});
-function createBubble (data) {
-    
-    bubble_map.bubbles(data
-                    /*
-        [
-      {
-        "name": "Afghanistan",
-        "radius": 20,
-        "latitude": 0,
-        "longitude": 15
-      },
-      {
-        "name": "Albania",
-        "radius": 20,
-        "latitude": 0,
-        "longitude": 15
-      },
-      {
-        "name": "Algeria",
-        "radius": 20,
-        "latitude": 0,
-        "longitude": 15
-      }
-    ]
-        /*
-        [
-      {
-        name: 'Not a bomb, but centered on Brazil',
-        radius: 23,
-        centered: 'BRA',
-        country: 'USA',
-        yeild: 0,
-        fillKey: 'USA',
-        date: '1954-03-01'
-      },
-      {
-        name: 'Not a bomb',
-        radius: 90,
-        yeild: 0,
-        country: 'USA',
-        //centered: 'USA',
-        date: '1986-06-05',
-        significance: 'Centered on US',
-        fillKey: 'USA'
-      },
-      {
-        name: 'Castle Bravo',
-        radius: 25,
-        yeild: 15000,
-        country: 'USA',
-        significance: 'First dry fusion fuel "staged" thermonuclear weapon; a serious nuclear fallout accident occurred',
-        fillKey: 'USA',
-        date: '1954-03-01',
-        latitude: 11.415,
-        longitude: 165.1619
-      },{
-        name: 'Tsar Bomba',
-        radius: 70,
-        //yeild: 50000,
-        //country: 'USSR',
-        fillKey: 'RUS',
-        significance: 'Largest thermonuclear weapon ever tested—scaled down from its initial 100 Mt design by 50%',
-        date: '1961-10-31',
-        latitude: 73.482,
-        longitude: 54.5854
-      }
-    ]*/, {
-      popupTemplate: function(geo, data) {
-        return '<div class="hoverinfo">Yield:' + data.yeild + 'Exploded on ' + data.date + ' by the '  + data.country + ''
-      }
-    });
-}
-d3.json("jsonWorldMap.json", function(data) {
-  console.log(data);
-    data.forEach(function(d) {
-        console.log(d);
-        d.data.latitude = +d.data.latitude;
-        d.data.longitude = +d.data.longitude;
-        d.data.radius = +d.data.radius;
-    });
-    createBubble(data[0].data)    
+  return colores_g[n % colores_g.length];
+}            
+
+
+bubble_map = new Datamap({
+  element: document.getElementById("container"),
+
+  geographyConfig: {
+    popupOnHover: false,
+    highlightOnHover: false
+  },
+  fills: {
+    defaultFill :'#dddddd'
+  }
 });
 
+            
+function createBubble (data) {
+    
+    bubble_map.bubbles(data,{
+      popupTemplate: function(geo, data) {
+        return '<div class="hoverinfo">Number of ads : ' + data.radius + ' by '  + data.name + ''
+      }
+    });
+    
+                d3.selectAll("circle")
+                .style("fill", function(d, i) {return d.color}); 
+
+}
+
+var pause = false;            
+d3.json("jsonWorldMap.json", function(data) {
+
+    
+        data.forEach(function(d) {
+            d.data.latitude = +d.data.latitude;
+            d.data.longitude = +d.data.longitude;
+            d.data.radius = +d.data.radius;
+        });
+
+        var i=0;
+        interval = setInterval(function(){
+            if(!this.pause){
+                createBubble(data[i].data, data[i].date);
+                i++;
+                if(i==1){
+
+                }
+                if(i==data.length){
+                    i=0;
+                }
+            }
+        },500)  
+       
+
+       
+});
+            
+//Barre de temps
+            
+
+// Pour l'europe :
+            
+function start(){
+    console.log("Hello world");
+    this.pause =true;
+}
+function resume(){
+    
+}
+function pause(){
+    
+}
+
         </script>
+    <button onclick="start()">Click me</button>
         
     </body>
