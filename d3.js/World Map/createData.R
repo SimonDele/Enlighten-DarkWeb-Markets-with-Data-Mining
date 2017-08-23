@@ -1,4 +1,4 @@
-data <- as.data.frame(read.csv("data.csv"))
+#data <- as.data.frame(read.csv("data.csv"))
 
 #Objective built a json object with {time1 : {Country1, Country2...}, time2 : {...},...}
 
@@ -19,8 +19,8 @@ for(i in 1:ncol(perMonth)){
   perMonth[i,] <- cumsum(perMonth[i,])
 }
 
-perMonth <- as.data.frame(as.matrix(t(perMonth)))
+#perMonth <- as.data.frame(as.matrix(t(perMonth)))
 
-data_plot <- merge(perMonth, lat_long,  by.x = "name", by.y = "Country" )
+#data_plot <- merge(perMonth, lat_long,  by.x = "name", by.y = "Country" )
 
 write.csv(perMonth, file = "test.csv")
