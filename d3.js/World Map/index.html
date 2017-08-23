@@ -12,9 +12,50 @@
     
     <body>
         
-        <div id="container" style="width: 1200px; height: 900px;"></div>
-        <script>
+        <div id="container" style="width: 1200px; height: 600px; overflow : hidden; border : 2px solid black"></div>
+        <div class="time" style="width : 1200px; height : 100px;"></div>
+        <style>
 
+.ticks {
+  font: 10px sans-serif;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+.track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+
+.track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  stroke: transparent;
+  cursor: crosshair;
+}
+
+.handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+}
+
+</style>
+        <script>
+            
+        
+//Colors
 function colores_google(n) {
   var colores_g = ["#3366cc", "#ff9900","#dc3912", "#109618", "#990099", "#0099c6", "#b82e2e", "#994499", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
     
@@ -30,37 +71,184 @@ bubble_map = new Datamap({
     highlightOnHover: false
   },
   fills: {
-    defaultFill :'#dddddd'
+    defaultFill :'#b5b5b5'
   }
 });
 
+affichageDate = d3.select("body").append("textDate")
+    .attr("type", "text")
+    .style("position", "absolute")
+    .style("top", "20px")
+    .style("left", "550px")
+    .style("font-size", "30px")
+    .text("");
             
-function createBubble (data) {
-    
+function createBubble (data, date) {
+    this.affichageDate.text(date);
     bubble_map.bubbles(data,{
       popupTemplate: function(geo, data) {
         return '<div class="hoverinfo">Number of ads : ' + data.radius + ' by '  + data.name + ''
       }
     });
     
-                d3.selectAll("circle")
-                .style("fill", function(d, i) {return d.color}); 
+    d3.select("#container").selectAll("circle")
+        .style("fill", function(d, i) {return d.color}); 
 
 }
 
-var pause = false;            
-d3.json("jsonWorldMap.json", function(data) {
 
+   
+//Zoom on map
+var margin = {top: -5, right: -5, bottom: -5, left: -5},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+            
+var zoom = d3.behavior.zoom()
+    .scaleExtent([1, 10])
+    .on("zoom", zoomed);
+            
+function zoomed() {
+    console.log("zoom")
+    d3.select(".datamap").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+//Drag
+var drag = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", dragstarted)
+    .on("drag", dragged)
+    .on("dragend", dragended);
+            
+function dragstarted(d) {
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed("dragging", true);
+}
+
+function dragged(d) {
+    console.log("drag");
+  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+}
+
+function dragended(d) {
+  d3.select(this).classed("dragging", false);
+}
+
+var container = d3.select("body").select("#container")
+    //.attr("width", width + margin.left + margin.right)
+    //.attr("height", height + margin.top + margin.bottom)
+.style("pointer-events", "all")
+  .select(".datamap")
+    .attr("transform", "translate(" + margin.left + "," + margin.right + ")")
+    .call(zoom);
+//Boutons
+var boutonpauseresume = d3.select("body").append("button-pause-resume")
+            .attr("type", "button")
+            .style("position", "absolute")
+            //.style("width", "100px")
+            //.style("height", "50px")
+            .style("background-color","blue")
+            .style("color", "black")
+            .attr("onclick", "pause()")
+            .text("Pause");
+
+            
+function start(){
+    //console.log("Hello world");
+
+}
+
+function pause(){
+    if(this.isPause){
+        this.isPause = false;
+        this.boutonpauseresume.text("Pause");
+    }else{
+        this.isPause =true;
+        this.boutonpauseresume.text("Resume");
+    }
+
+}
+
+
+        
+var isPause = false;            
+d3.json("jsonWorldMap.json", function(data) {
+    
+       var i=0;
     
         data.forEach(function(d) {
             d.data.latitude = +d.data.latitude;
             d.data.longitude = +d.data.longitude;
             d.data.radius = +d.data.radius;
         });
+    
+    
+//Slider
+   
+let svg = d3.select(".time").append("svg")
+    .style("width","1200px")
+    .style("height", "100px");
 
-        var i=0;
+var x  = d3.scale.linear()
+        .domain([0, data.length])
+        .range([0, 1000])
+        .clamp(true);
+
+var slider = svg.append("g")
+    .attr("class", "slider")
+   .attr("transform", "translate(" + 50 + "," + 50 + ")");
+ 
+slider.append("line")
+    .attr("class", "track")
+    .attr("x1", x.range()[0])
+    .attr("x2", x.range()[1])
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-inset")
+  .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+    .attr("class", "track-overlay")
+   .call(d3.behavior.drag()
+        .on("dragend", function() { slider.interrupt();})
+        .on("drag", function(){ console.log(x.invert(d3.mouse(this)[0]) ); 
+                              // this.isPause = true;
+                               i = Math.floor(x.invert(d3.mouse(this)[0]));
+                        hue(x.invert(d3.mouse(this)[0])); 
+        }));
+
+
+
+
+var handle = slider.insert("circle", ".track-overlay")
+    .attr("class", "handle")
+    .attr("r", 9);
+
+slider.transition() // Gratuitous intro!
+    .duration(750)
+    .tween("hue", function() {
+      var i = d3.interpolate(0, 70);
+      return function(t) { hue(i(t)); };
+    });
+
+
+function hue(h, data, date) {
+    console.log(h);
+  handle.attr("cx", x(h));
+    //createBubble(data, date)
+  //svg.style("background-color", d3.hsl(h, 0.8, 0.8));
+}
+    
+    
+        slider.insert("g", ".track-overlay")
+    .attr("class", "ticks")
+    .attr("transform", "translate(0," + 18 + ")")
+  .selectAll("text")
+  .data(x.ticks(data.length))
+  .enter().append("text")
+    .attr("x", x)
+    .attr("text-anchor", "middle");
+    //.text(function(d,i) { return data[i].date });
+
+     
         interval = setInterval(function(){
-            if(!this.pause){
+            if(!this.isPause){
+                hue(i);
                 createBubble(data[i].data, data[i].date);
                 i++;
                 if(i==1){
@@ -75,24 +263,9 @@ d3.json("jsonWorldMap.json", function(data) {
 
        
 });
-            
-//Barre de temps
-            
-
-// Pour l'europe :
-            
-function start(){
-    console.log("Hello world");
-    this.pause =true;
-}
-function resume(){
-    
-}
-function pause(){
-    
-}
+         
 
         </script>
-    <button onclick="start()">Click me</button>
+<!--<button class="button-pause-start" onclick="pause()">Play</button>-->
         
     </body>
