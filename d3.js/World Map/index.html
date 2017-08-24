@@ -13,7 +13,9 @@
     <body>
         
         <div id="container" style="width: 1200px; height: 600px; overflow : hidden; border : 2px solid black"></div>
-        <div class="time" style="width : 1200px; height : 100px;"></div>
+        <div class="time" style="width : 1200px; height : 100px; display: inline-block">
+            <button id="boutons" style="  margin-top : 10px; margin-left : 10px"  onclick="pause()"><img id="bouton" src="pause.png"; style="width : 20px; height : 20px;"></button>
+        </div>
         <style>
 
 .ticks {
@@ -108,7 +110,7 @@ var zoom = d3.behavior.zoom()
     .on("zoom", zoomed);
             
 function zoomed() {
-    console.log("zoom")
+    //console.log("zoom")
     d3.select(".datamap").attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
 }
 //Drag
@@ -124,7 +126,7 @@ function dragstarted(d) {
 }
 
 function dragged(d) {
-    console.log("drag");
+   // console.log("drag");
   d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
 }
 
@@ -139,30 +141,22 @@ var container = d3.select("body").select("#container")
   .select(".datamap")
     .attr("transform", "translate(" + margin.left + "," + margin.right + ")")
     .call(zoom);
-//Boutons
-var boutonpauseresume = d3.select("body").append("button-pause-resume")
-            .attr("type", "button")
-            .style("position", "absolute")
-            //.style("width", "100px")
-            //.style("height", "50px")
-            .style("background-color","blue")
-            .style("color", "black")
-            .attr("onclick", "pause()")
-            .text("Pause");
 
-            
-function start(){
-    //console.log("Hello world");
-
-}
+//Boutons            
+var boutons = d3.select("#boutons")
+                .style("color", "black")
+            .attr("onclick", "pause()");
+         
 
 function pause(){
+    console.log("pause");
     if(this.isPause){
         this.isPause = false;
-        this.boutonpauseresume.text("Pause");
+        document.getElementById("bouton").src="pause.png";
+
     }else{
         this.isPause =true;
-        this.boutonpauseresume.text("Resume");
+        document.getElementById("bouton").src="play.png";
     }
 
 }
@@ -184,8 +178,11 @@ d3.json("jsonWorldMap.json", function(data) {
 //Slider
    
 let svg = d3.select(".time").append("svg")
+    .style("position", "absolute")
+    .style("float", "right")
     .style("width","1200px")
     .style("height", "100px");
+    
 
 var x  = d3.scale.linear()
         .domain([0, data.length])
@@ -194,7 +191,7 @@ var x  = d3.scale.linear()
 
 var slider = svg.append("g")
     .attr("class", "slider")
-   .attr("transform", "translate(" + 50 + "," + 50 + ")");
+   .attr("transform", "translate(" + 50 + "," + 25 + ")");
  
 slider.append("line")
     .attr("class", "track")
@@ -266,6 +263,5 @@ function hue(h, data, date) {
          
 
         </script>
-<!--<button class="button-pause-start" onclick="pause()">Play</button>-->
         
     </body>
