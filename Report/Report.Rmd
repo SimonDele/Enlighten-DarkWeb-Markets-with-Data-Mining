@@ -172,7 +172,7 @@ We have used RStudio for implementing code. As for publishing the results, we ha
 
 ## - Code Repository
 
-All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [https://github.com/SimonDele/Data-Ming-Dark-Web-Market](https://github.com/SimonDele/Data-Ming-Dark-Web-Market)
+All the code is publicly available in the Github project *"Data Mining - Dark Web Market"*. The repository is accessible from the following link: [https://github.com/SimonDele/Enlighten-DarkWeb-Markets-with-Data-Mining](https://github.com/SimonDele/Enlighten-DarkWeb-Markets-with-Data-Mining)
 
 You can also find the whole list of packages used in the *GitHub* repository. 
 

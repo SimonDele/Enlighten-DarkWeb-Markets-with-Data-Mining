@@ -60,6 +60,7 @@ Evo <- ts(Evo.data$Ads, start=Evo.data$Time[1], frequency=12)
 # Prediction to Dec 2017 :
   # Analyse 
 fit <- HoltWinters(Evo)
+plot(fit)
   # Prediction 
   # n.ahead : predict next six month with a confidence of 0.95
   # Prediction.interval : up and low prediction
