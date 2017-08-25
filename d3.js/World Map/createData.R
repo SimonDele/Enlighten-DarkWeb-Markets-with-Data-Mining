@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-#data <- as.data.frame(read.csv("data.csv"))
-=======
 library(stringr)
 library(jsonlite)
 library(randomcoloR)
@@ -15,7 +12,6 @@ for(i in 1:nrow(lat_long)){
   lat_long[i,4] <- randomColor() 
 }
 
->>>>>>> 4f677de600abb4fad6ca1b5d19b11437e0092f5f
 
 #Objective built a json object with {time1 : {Country1, Country2...}, time2 : {...},...}
 
@@ -30,22 +26,17 @@ new.data <- new.data[new.data[,1]!="NULL",]
 #keep only the year and the month
 new.data$sold_since <- str_sub(new.data$sold_since, 0, 7)
 
+
+
 perMonth <- table(new.data)
 
 for(i in 1:nrow(perMonth)){
   perMonth[i,] <- cumsum(perMonth[i,])
 }
 
-<<<<<<< HEAD
+monthFull = c("January", "February", "March", "April", "May", "June","July","August","September","October","November","December")
+colnames(perMonth) <- paste(monthFull[as.numeric(str_sub(colnames(perMonth), 6, 7))], str_sub(colnames(perMonth), 0, 4) )
 #perMonth <- as.data.frame(as.matrix(t(perMonth)))
-
-#data_plot <- merge(perMonth, lat_long,  by.x = "name", by.y = "Country" )
-=======
-
->>>>>>> 4f677de600abb4fad6ca1b5d19b11437e0092f5f
-
-
-
 
 
 liste <- list()
