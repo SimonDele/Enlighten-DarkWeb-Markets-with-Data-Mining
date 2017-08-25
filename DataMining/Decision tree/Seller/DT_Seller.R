@@ -33,7 +33,7 @@ dectree.data$category <- cat[,3] # keep only the second part
 # Handling : seller
 tab_sel <- table(dectree.data$seller)
 tab_sel <- sort(tab_sel, decreasing=TRUE)  # Sorting (biggest in first)
-tab_sel <- tab_sel[1:7] # Taking only the most important : main sellers
+tab_sel <- tab_sel[1:5] # Taking only the most important : main sellers
 name_sel <- names(tab_sel)
 # New data keeping only the main sellers
 dectree.data <-subset(dectree.data, seller %in% name_sel) 
